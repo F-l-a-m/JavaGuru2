@@ -1,0 +1,28 @@
+Business rules:
+1. Not to add duplicate products to list
+2. Add product quantity
+3. Introduce product importance in the list
+4. Implement list sorting according product importance
+5. Permanently store created products list
+   and load it on program startup
+6. Add possibility to create different shopping lists
+   Introduce shopping list title - must be unique
+   across all user lists
+7. Add possibility to manage shopping lists:
+   implement CRUD for shopping lists
+8. Introduce shopping list archive for deleted/used lists
+9.
+
+Next steps:
+0. Single Responsibility Principle
+1. Implement each menu step in separate class
+2. Introduce Command design pattern
+3. Introduce Strategy design pattern
+4. Introduce three layer application architecture:
+   UI, Business Logic, Data Access Layer
+
+5. Database, SQL, JDBC API, DAL implementation
+6. IoC, Business Logic implementation
+7. HTML, CSS, simple Spring MVC introduction, UI implementation
+8. ORM, Hibernate, JPA
+9.
