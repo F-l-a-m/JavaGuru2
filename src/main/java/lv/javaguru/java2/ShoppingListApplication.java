@@ -40,16 +40,13 @@ public class ShoppingListApplication {
     }
 
     private static void addProductToList(List<Product> products) {
-        System.out.println();
-        System.out.println("Add product to list execution start!");
+        System.out.println("\nAdd product to list execution start!");
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter product title:");
         String title = sc.nextLine();
         System.out.print("Enter product description:");
         String description = sc.nextLine();
-        Product product = new Product();
-        product.setTitle(title);
-        product.setDescription(description);
+        Product product = new Product(title, description);
         products.add(product);
         System.out.println("Add product to list execution end!");
         System.out.println();
@@ -77,11 +74,11 @@ public class ShoppingListApplication {
 
     private static void printShoppingListToConsole(List<Product> products) {
         System.out.println();
-        System.out.println("Print shopping list to console execution start!");
+        System.out.println("Print shopping list to console execution start!\n");
         for (Product product : products) {
             System.out.println(product.getTitle() + "[" + product.getDescription() + "]");
         }
-        System.out.println("Print shopping list to console execution end!");
+        System.out.println("\nPrint shopping list to console execution end!");
         System.out.println();
     }
 
@@ -96,7 +93,14 @@ public class ShoppingListApplication {
     private static int getFromUserMenuItemToExecute() {
         System.out.print("Please enter menu item number to execute:");
         Scanner sc = new Scanner(System.in);
-        return Integer.parseInt(sc.nextLine());
+        int input = 0;
+        try {
+            input = Integer.parseInt(sc.nextLine());
+        }
+        catch (Exception ex){
+            System.out.println("Please enter 1 - 4.");
+        }
+        return input;
     }
 
 }
