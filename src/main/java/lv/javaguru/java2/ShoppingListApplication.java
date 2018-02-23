@@ -48,13 +48,11 @@ public class ShoppingListApplication {
         String description = sc.nextLine();
         Product product = new Product(title, description);
         products.add(product);
-        System.out.println("Add product to list execution end!");
-        System.out.println();
+        System.out.println("Add product to list execution end!\n");
     }
 
     private static void removeProductFromList(List<Product> products) {
-        System.out.println();
-        System.out.println("Remove product from list execution start!");
+        System.out.println("\nRemove product from list execution start!");
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter product title:");
         final String title = sc.nextLine();
@@ -68,8 +66,7 @@ public class ShoppingListApplication {
         } else {
             System.out.println("Product with title " + title + " not found and not be removed from list!");
         }
-        System.out.println("Remove product from list execution end!");
-        System.out.println();
+        System.out.println("Remove product from list execution end!\n");
     }
 
     private static void printShoppingListToConsole(List<Product> products) {
@@ -78,8 +75,7 @@ public class ShoppingListApplication {
         for (Product product : products) {
             System.out.println(product.getTitle() + "[" + product.getDescription() + "]");
         }
-        System.out.println("\nPrint shopping list to console execution end!");
-        System.out.println();
+        System.out.println("\nPrint shopping list to console execution end!\n");
     }
 
     private static void printProgramMenu() {
