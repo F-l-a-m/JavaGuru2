@@ -7,28 +7,17 @@ import java.util.*;
 
 public class ChatApplication {
 
-    static User user = new User();
-    static ChatLine line;
-
     public static void main(String[] args) {
- /*      read message
-            read user input
-         parse message
-         execute
-         show message
-         save chat history to file
-*/
 
-        ChatDatabase db = new ChatHistoryInMemoryDatabase();
+        ChatDatabase database = new ChatHistoryInMemoryDatabase();
         Timestamp timestamp = new Timestamp();
 
         View chatCommandsView = new ChatCommandsView();
-        View addChatLineView = new AddChatLineView(db, line);
+        View addChatLineView = new AddChatLineView(database);
         View changeNicknameView = new ChangeNicknameView();
         View programExitView = new ProgramExitView();
         View badCommandView = new BadCommandView();
-        View refreshConsoleView = new RefreshConsoleView(db);
-
+        View refreshConsoleView = new RefreshConsoleView(database);
 
         // ready actions
         Map<Enum, View> actionMap = new HashMap<>();
@@ -53,7 +42,6 @@ public class ChatApplication {
     }
 
     private static String readUserInput() {
-        System.out.print("> ");
         Scanner sc = new Scanner(System.in);
         return sc.nextLine();
     }
@@ -71,17 +59,23 @@ public class ChatApplication {
         }
         else if(userInputString.equals("/nick")){
             //setnick
-            System.out.println("Please enter your username");
+            /*System.out.println("Please enter your username");
             Scanner sc = new Scanner(System.in);
             String input = sc.nextLine();
-            user.setNickname(input);
+            user.setNickname(input);*/
             return Constants.userActions.CHANGE_NICK;
         }
         else if(userInputString.equals("/r")){
             return Constants.userActions.REFRESH_CONSOLE;
         }
         else { // Usual chat message
-            line = new ChatLine(new Timestamp().getTimestamp(), user.getNickname(), userInputString);
+            User user = new User();
+            ChatLine line = new ChatLine(
+                    new Timestamp().getTimestamp(),
+                    user.getNickname(),
+                    userInputString
+            );
+            GlobalLine.SetLine(line);
             return Constants.userActions.MESSAGE;
         }
     }
