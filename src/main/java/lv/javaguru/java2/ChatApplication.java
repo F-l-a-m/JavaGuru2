@@ -1,7 +1,6 @@
 package lv.javaguru.java2;
 
 import lv.javaguru.java2.businesslogic.HandleUserInput;
-import lv.javaguru.java2.businesslogic.models.Timestamp;
 import lv.javaguru.java2.database.*;
 import lv.javaguru.java2.views.*;
 
@@ -28,8 +27,8 @@ public class ChatApplication {
         actionMap.put(Constants.userActions.EMPTY_MESSAGE, emptyMessageView); // +
         actionMap.put(Constants.userActions.CHANGE_NICK, changeNicknameView); // +
         actionMap.put(Constants.userActions.REFRESH_CONSOLE, refreshConsoleView); // +
-        actionMap.put(Constants.userActions.BAD_COMMAND, badCommandView); // -
-        actionMap.put(Constants.userActions.QUIT, programExitView); // -
+        actionMap.put(Constants.userActions.BAD_COMMAND, badCommandView); // +
+        actionMap.put(Constants.userActions.QUIT, programExitView); // +
 
         chatCommandsView.execute();
 
