@@ -25,11 +25,11 @@ public class ChatApplication {
         // ready actions
         Map<Enum, View> actionMap = new HashMap<>();
         actionMap.put(Constants.userActions.MESSAGE, addChatLineView); // +
-        actionMap.put(Constants.userActions.CHANGE_NICK, changeNicknameView); // -
-        actionMap.put(Constants.userActions.QUIT, programExitView); // -
+        actionMap.put(Constants.userActions.EMPTY_MESSAGE, emptyMessageView); // +
+        actionMap.put(Constants.userActions.CHANGE_NICK, changeNicknameView); // +
+        actionMap.put(Constants.userActions.REFRESH_CONSOLE, refreshConsoleView); // +
         actionMap.put(Constants.userActions.BAD_COMMAND, badCommandView); // -
-        actionMap.put(Constants.userActions.REFRESH_CONSOLE, refreshConsoleView);
-        actionMap.put(Constants.userActions.EMPTY_MESSAGE, emptyMessageView);
+        actionMap.put(Constants.userActions.QUIT, programExitView); // -
 
         chatCommandsView.execute();
 
