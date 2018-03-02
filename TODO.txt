@@ -1,9 +1,9 @@
 Business rules:
-1. Not to add duplicate products to list
-2. Add product quantity
-3. Introduce product importance in the list
-4. Implement list sorting according product importance
-5. Permanently store created products list
+1. Not to add duplicate chatLines to list
+2. Add chatLine quantity
+3. Introduce chatLine importance in the list
+4. Implement list sorting according chatLine importance
+5. Permanently store created chatLines list
    and load it on program startup
 6. Add possibility to create different shopping lists
    Introduce shopping list title - must be unique
