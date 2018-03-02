@@ -1,7 +1,7 @@
 package lv.javaguru.java2.businesslogic;
 
 import lv.javaguru.java2.database.ChatDatabase;
-import lv.javaguru.java2.models.ChatLine;
+import lv.javaguru.java2.businesslogic.models.ChatLine;
 
 public class AddChatLineService {
 

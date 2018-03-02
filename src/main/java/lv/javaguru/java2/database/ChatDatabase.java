@@ -1,6 +1,6 @@
 package lv.javaguru.java2.database;
 
-import lv.javaguru.java2.models.ChatLine;
+import lv.javaguru.java2.businesslogic.models.ChatLine;
 import java.util.List;
 
 public interface ChatDatabase {

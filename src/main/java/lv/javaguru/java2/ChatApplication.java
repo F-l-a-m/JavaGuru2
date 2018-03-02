@@ -1,8 +1,10 @@
 package lv.javaguru.java2;
 
+import lv.javaguru.java2.businesslogic.HandleUserInput;
+import lv.javaguru.java2.businesslogic.models.Timestamp;
 import lv.javaguru.java2.database.*;
-import lv.javaguru.java2.models.*;
 import lv.javaguru.java2.views.*;
+
 import java.util.*;
 
 public class ChatApplication {
@@ -10,7 +12,7 @@ public class ChatApplication {
     public static void main(String[] args) {
 
         ChatDatabase database = new ChatHistoryInMemoryDatabase();
-        Timestamp timestamp = new Timestamp();
+        HandleUserInput handleUserInput = new HandleUserInput();
 
         View chatCommandsView = new ChatCommandsView();
         View addChatLineView = new AddChatLineView(database);
@@ -18,6 +20,7 @@ public class ChatApplication {
         View programExitView = new ProgramExitView();
         View badCommandView = new BadCommandView();
         View refreshConsoleView = new RefreshConsoleView(database);
+        View emptyMessageView = new EmptyMessageView();
 
         // ready actions
         Map<Enum, View> actionMap = new HashMap<>();
@@ -26,58 +29,22 @@ public class ChatApplication {
         actionMap.put(Constants.userActions.QUIT, programExitView); // -
         actionMap.put(Constants.userActions.BAD_COMMAND, badCommandView); // -
         actionMap.put(Constants.userActions.REFRESH_CONSOLE, refreshConsoleView);
+        actionMap.put(Constants.userActions.EMPTY_MESSAGE, emptyMessageView);
 
         chatCommandsView.execute();
 
         // get message
-        while(true) {
-            String userInput;
-            userInput = readUserInput();
-            Enum e;
-            e = HandleUserMessage(userInput);
+        while (true) {
+            String line = readLine();
+            Enum e = handleUserInput.CheckLine(line);
             View view = actionMap.get(e);
             view.execute();
         }
 
     }
 
-    private static String readUserInput() {
+    private static String readLine() {
         Scanner sc = new Scanner(System.in);
         return sc.nextLine();
     }
-
-    // decide action
-    private static Enum HandleUserMessage(String userInputString){
-        if(userInputString.equals("")){
-            //handle ?
-            return Constants.userActions.MESSAGE;
-        }
-        else if(userInputString.equals("/quit")){
-            //quit app
-            System.exit(0);
-            return Constants.userActions.QUIT;
-        }
-        else if(userInputString.equals("/nick")){
-            //setnick
-            /*System.out.println("Please enter your username");
-            Scanner sc = new Scanner(System.in);
-            String input = sc.nextLine();
-            user.setNickname(input);*/
-            return Constants.userActions.CHANGE_NICK;
-        }
-        else if(userInputString.equals("/r")){
-            return Constants.userActions.REFRESH_CONSOLE;
-        }
-        else { // Usual chat message
-            User user = new User();
-            ChatLine line = new ChatLine(
-                    new Timestamp().getTimestamp(),
-                    user.getNickname(),
-                    userInputString
-            );
-            GlobalLine.SetLine(line);
-            return Constants.userActions.MESSAGE;
-        }
-    }
-
 }
