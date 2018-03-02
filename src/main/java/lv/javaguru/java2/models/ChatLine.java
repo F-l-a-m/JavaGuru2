@@ -1,15 +1,15 @@
-package lv.javaguru.java2;
+package lv.javaguru.java2.models;
 
 public class ChatLine {
 
-    private String nickname;
     private String timestamp;
+    private String nickname;
     private String message;
-    // Flam [2018.03.01] Hello chat!
+    // [2018.03.01] Flam: Hello chat!
 
-    public ChatLine(String nickname, String timestamp, String message) {
-        this.nickname = nickname;
+    public ChatLine(String timestamp, String nickname, String message) {
         this.timestamp = timestamp;
+        this.nickname = nickname;
         this.message = message;
     }
 
@@ -47,6 +47,6 @@ public class ChatLine {
 
     @Override
     public String toString() {
-        return nickname + ' ' + timestamp + ' ' + message;
+        return timestamp + ' ' + nickname + ": " + message;
     }
 }

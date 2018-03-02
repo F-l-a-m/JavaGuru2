@@ -1,28 +1,25 @@
-Business rules:
-1. Not to add duplicate chatLines to list
-2. Add chatLine quantity
-3. Introduce chatLine importance in the list
-4. Implement list sorting according chatLine importance
-5. Permanently store created chatLines list
-   and load it on program startup
-6. Add possibility to create different shopping lists
-   Introduce shopping list title - must be unique
-   across all user lists
-7. Add possibility to manage shopping lists:
-   implement CRUD for shopping lists
-8. Introduce shopping list archive for deleted/used lists
-9.
+Список заданий для Java 2
+Репозиторий: https://github.com/HenriARM/JavaChat
 
-Next steps:
-0. Single Responsibility Principle
-1. Implement each menu step in separate class
-2. Introduce Command design pattern
-3. Introduce Strategy design pattern
-4. Introduce three layer application architecture:
-   UI, Business Logic, Data Access Layer
+Краткое описание задачи: создать чат с поддержкой создания, удаления, редактирования комнат и пользователей.
+Опебпечить чат возможностью регистрации пользователей.
 
-5. Database, SQL, JDBC API, DAL implementation
-6. IoC, Business Logic implementation
-7. HTML, CSS, simple Spring MVC introduction, UI implementation
-8. ORM, Hibernate, JPA
-9.
+* * * * * * * * * *
+* Основные задачи *
+* * * * * * * * * *
+o Консольный чат с индусским кодом
+o Консольный чат MVC
+o Создать простой чат без поддержки базы данных и регистрации
+o Возможность создания дополнительных комнат
+o Возможность перехода по комнатам чата
+o Возможность редактирования комнат чата
+o Возможность удаления комнат чата
+o Хранение состояния чата в БД (список комнат и сообщений в них)
+o Регистрация пользователей по связке логин+пароль
+
+* * * * * * * * * * * * *
+* Дополнительные задачи *
+* * * * * * * * * * * * *
+o Команды для управления чатом, например /create "roomname", /join "roomname" и т.д
+o Вставка картинок в чат
+o Bootstrap UI ?
