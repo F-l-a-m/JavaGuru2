@@ -2,26 +2,28 @@ package lv.javaguru.java2.businesslogic.services;
 
 import lv.javaguru.java2.Constants;
 import lv.javaguru.java2.businesslogic.models.ChatLine;
-import lv.javaguru.java2.Globals;
 import lv.javaguru.java2.businesslogic.models.Timestamp;
-import lv.javaguru.java2.database.ChatDatabase;
+import lv.javaguru.java2.database.Database;
 
 public class HandleUserInputService {
 
-    private ChatDatabase database;
+    private Database database;
     private SaveChatMessageService saveChatMessageService;
 
-    public HandleUserInputService(ChatDatabase database) {
+    public HandleUserInputService(Database database) {
         this.database = database;
         this.saveChatMessageService = new SaveChatMessageService(database);
     }
 
     public Enum CheckLine(String input){
+        // Empty message
+        if(input.equals("")){
+            return Constants.userActions.EMPTY_MESSAGE;
+        }
         // Check if user entered a command and handle it
-        if(input.charAt(0) == '/'){
+        else if(input.charAt(0) == '/'){
             switch (input){
                 case "/quit":
-                    System.exit(0);
                     return Constants.userActions.QUIT;
                 case "/nick":
                     return Constants.userActions.CHANGE_NICK;
@@ -31,18 +33,16 @@ public class HandleUserInputService {
                     return Constants.userActions.BAD_COMMAND;
             }
         }
-        // Handle as message
+        // Handle as usual message
         else {
             ChatLine newLine = new ChatLine(
                     new Timestamp().getTimestamp(),
-                    Globals.getUser().getNickname(),
+                    database.getCurrentUser().getNickname(),
                     input
             );
             saveChatMessageService.SaveMessageToDatabase(newLine);
 
             switch (input){
-                case "":
-                    return Constants.userActions.EMPTY_MESSAGE;
                 default:
                     return Constants.userActions.MESSAGE;
             }

@@ -1,17 +1,17 @@
 package lv.javaguru.java2.businesslogic.services;
 
 import lv.javaguru.java2.businesslogic.models.ChatLine;
-import lv.javaguru.java2.database.ChatDatabase;
+import lv.javaguru.java2.database.Database;
 
 public class GetChatMessageService {
 
-    private ChatDatabase chatDatabase;
+    private Database database;
 
-    public GetChatMessageService(ChatDatabase chatDatabase) {
-        this.chatDatabase = chatDatabase;
+    public GetChatMessageService(Database database) {
+        this.database = database;
     }
 
     public ChatLine GetLastMessageFromDB(){
-        return chatDatabase.GetLastMessage();
+        return database.getLastChatMessage();
     }
 }
