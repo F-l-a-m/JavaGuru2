@@ -3,6 +3,7 @@ package lv.javaguru.java2.database;
 import lv.javaguru.java2.businesslogic.models.ChatLine;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class ChatHistoryInMemoryDatabase implements ChatDatabase{
 
@@ -23,5 +24,10 @@ public class ChatHistoryInMemoryDatabase implements ChatDatabase{
         List<ChatLine> copyChat = new ArrayList<>();
         copyChat.addAll(chatHistory);
         return copyChat;
+    }
+
+    @Override
+    public ChatLine GetLastMessage(){
+        return chatHistory.get(chatHistory.size() - 1);
     }
 }

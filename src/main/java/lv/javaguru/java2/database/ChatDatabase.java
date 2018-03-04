@@ -13,4 +13,6 @@ public interface ChatDatabase {
 
     List<ChatLine> getAllChat();
 
+    ChatLine GetLastMessage();
+
 }

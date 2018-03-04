@@ -14,9 +14,11 @@ public class RefreshConsoleView implements View {
     @Override
     public void execute() {
         // Clear console
-        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+/*        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
                 +"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-        );
+        );*/
+
+
         // Print whole chat history
         for(ChatLine line : database.getAllChat()){
             System.out.println(line);

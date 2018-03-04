@@ -1,12 +1,20 @@
-package lv.javaguru.java2.businesslogic;
+package lv.javaguru.java2.businesslogic.services;
 
 import lv.javaguru.java2.Constants;
 import lv.javaguru.java2.businesslogic.models.ChatLine;
 import lv.javaguru.java2.Globals;
 import lv.javaguru.java2.businesslogic.models.Timestamp;
-import lv.javaguru.java2.businesslogic.models.User;
+import lv.javaguru.java2.database.ChatDatabase;
 
-public class HandleUserInput {
+public class HandleUserInputService {
+
+    private ChatDatabase database;
+    private SaveChatMessageService saveChatMessageService;
+
+    public HandleUserInputService(ChatDatabase database) {
+        this.database = database;
+        this.saveChatMessageService = new SaveChatMessageService(database);
+    }
 
     public Enum CheckLine(String input){
         // Check if user entered a command and handle it
@@ -25,12 +33,12 @@ public class HandleUserInput {
         }
         // Handle as message
         else {
-            ChatLine line = new ChatLine(
+            ChatLine newLine = new ChatLine(
                     new Timestamp().getTimestamp(),
                     Globals.getUser().getNickname(),
                     input
             );
-            Globals.SetLine(line);
+            saveChatMessageService.SaveMessageToDatabase(newLine);
 
             switch (input){
                 case "":
