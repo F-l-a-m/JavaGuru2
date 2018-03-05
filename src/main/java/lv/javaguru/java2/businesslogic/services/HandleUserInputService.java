@@ -15,14 +15,14 @@ public class HandleUserInputService {
         this.saveChatMessageService = new SaveChatMessageService(database);
     }
 
-    public Enum CheckLine(String input){
+    public Enum HandleUserInput(String userInput){
         // Empty message
-        if(input.equals("")){
+        if(userInput.equals("")){
             return Constants.userActions.EMPTY_MESSAGE;
         }
         // Check if user entered a command and handle it
-        else if(input.charAt(0) == '/'){
-            switch (input){
+        else if(userInput.charAt(0) == '/'){
+            switch (userInput){
                 case "/quit":
                     return Constants.userActions.QUIT;
                 case "/nick":
@@ -38,11 +38,11 @@ public class HandleUserInputService {
             ChatLine newLine = new ChatLine(
                     new Timestamp().getTimestamp(),
                     database.getCurrentUser().getNickname(),
-                    input
+                    userInput
             );
             saveChatMessageService.SaveMessageToDatabase(newLine);
 
-            switch (input){
+            switch (userInput){
                 default:
                     return Constants.userActions.MESSAGE;
             }

@@ -21,7 +21,7 @@ public class UserService {
         database.createNewUser(user);
     }
 
-    public void ChangeUserNickname(String nickname){
+    public void changeUserNickname(String nickname){
         // validate here
         User currentUser = getCurrentUser();
         currentUser.setNickname(nickname);

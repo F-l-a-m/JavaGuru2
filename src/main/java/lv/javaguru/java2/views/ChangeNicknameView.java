@@ -20,7 +20,7 @@ public class ChangeNicknameView implements View{
         String input = sc.nextLine();
 
         //Implement to return true if validated
-        userService.ChangeUserNickname(input);
+        userService.changeUserNickname(input);
 
         System.out.println("User nickname set to \'" + input + '\'');
 

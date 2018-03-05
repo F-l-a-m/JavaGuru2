@@ -40,7 +40,7 @@ public class ChatApplication {
         // Get message from user
         while (true) {
             String line = readLine();
-            Enum e = handleUserInputService.CheckLine(line);
+            Enum e = handleUserInputService.HandleUserInput(line);
             View view = actionMap.get(e);
             view.execute();
         }
