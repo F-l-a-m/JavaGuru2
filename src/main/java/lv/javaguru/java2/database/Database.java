@@ -13,10 +13,7 @@ public interface Database {
 
     ChatLine getLastChatMessage();
 
-    void createNewUser(User user);
-
     User getCurrentUser();
 
-    void changeUserNickname(User user);
-
+    void setCurrentUser(User user);
 }

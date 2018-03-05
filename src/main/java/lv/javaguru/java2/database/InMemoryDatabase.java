@@ -2,14 +2,14 @@ package lv.javaguru.java2.database;
 
 import lv.javaguru.java2.businesslogic.models.ChatLine;
 import lv.javaguru.java2.businesslogic.models.User;
-
 import java.util.List;
 import java.util.ArrayList;
 
 public class InMemoryDatabase implements Database {
 
     private List<ChatLine> chatHistory = new ArrayList<>();
-    private List<User> userTable = new ArrayList<>();
+    //private List<User> userTable = new ArrayList<>();
+    private User currentUser;
 
     @Override
     public void addChatLine(ChatLine chatLine) {
@@ -29,17 +29,12 @@ public class InMemoryDatabase implements Database {
     }
 
     @Override
-    public void createNewUser(User user){
-        userTable.add(user);
-    }
-
-    @Override
     public User getCurrentUser() {
-        return userTable.get(0);
+        return this.currentUser;
     }
 
     @Override
-    public void changeUserNickname(User user) {
-        userTable.add(user);
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
     }
 }

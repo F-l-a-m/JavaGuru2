@@ -7,11 +7,11 @@ import lv.javaguru.java2.database.Database;
 
 public class HandleUserInputService {
 
-    private Database database;
+    private UserService userService;
     private SaveChatMessageService saveChatMessageService;
 
     public HandleUserInputService(Database database) {
-        this.database = database;
+        this.userService = new UserService(database);
         this.saveChatMessageService = new SaveChatMessageService(database);
     }
 
@@ -37,7 +37,7 @@ public class HandleUserInputService {
         else {
             ChatLine newLine = new ChatLine(
                     new Timestamp().getTimestamp(),
-                    database.getCurrentUser().getNickname(),
+                    userService.getCurrentUser().getNickname(),
                     userInput
             );
             saveChatMessageService.SaveMessageToDatabase(newLine);

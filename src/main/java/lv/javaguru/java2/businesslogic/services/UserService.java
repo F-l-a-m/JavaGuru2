@@ -6,7 +6,7 @@ import lv.javaguru.java2.database.Database;
 public class UserService {
 
     private Database database;
-    private User user;
+    private User newUser;
 
     public UserService(Database database) {
         this.database = database;
@@ -16,16 +16,19 @@ public class UserService {
         return database.getCurrentUser();
     }
 
+    public void setCurrentUser(User user){
+        database.setCurrentUser(user);
+    }
+
     public void createNewUser(){
-        this.user = new User();
-        database.createNewUser(user);
+        this.newUser = new User();
+        database.setCurrentUser(newUser);
     }
 
     public void changeUserNickname(String nickname){
         // validate here
         User currentUser = getCurrentUser();
         currentUser.setNickname(nickname);
-        database.changeUserNickname(user);
+        database.setCurrentUser(currentUser);
     }
-
 }
