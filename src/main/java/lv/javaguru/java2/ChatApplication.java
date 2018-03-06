@@ -27,7 +27,7 @@ class Launcher implements Constants {
         // user service creates new user
         // saves it to db
 
-        View chatCommandsPrintView = new ChatCommandsPrintView();
+        View chatCommandsPrintView = new PrintAvailableChatCommandsView();
         View printLastChatLineView = new PrintLastChatLineView(database);
         View changeNicknameView = new ChangeNicknameView(database);
         View programExitView = new ProgramExitView();
