@@ -8,10 +8,20 @@ import java.util.*;
 public class ChatApplication {
 
     public static void main(String[] args) {
+        Launcher launcher = new Launcher();
+        launcher.initialize();
+        launcher.start();
+    }
+}
 
-        Database database = new InMemoryDatabase();
-        HandleUserInputService handleUserInputService = new HandleUserInputService(database);
-        UserService userService = new UserService(database);
+class Launcher implements Constants {
+
+    private Database database = new InMemoryDatabase();
+    private HandleUserInputService handleUserInputService = new HandleUserInputService(database);
+    private UserService userService = new UserService(database);
+    Map<Enum, View> actionMap = new HashMap<>();
+
+    public void initialize(){
         // Request to create new user
         userService.createNewUser();
         // user service creates new user
@@ -26,17 +36,18 @@ public class ChatApplication {
         View emptyMessageView = new EmptyMessageView(database);
 
         // All available actions depending on user input
-        Map<Enum, View> actionMap = new HashMap<>();
-        actionMap.put(Constants.userActions.MESSAGE, printLastChatLineView);
-        actionMap.put(Constants.userActions.EMPTY_MESSAGE, emptyMessageView);
-        actionMap.put(Constants.userActions.CHANGE_NICK, changeNicknameView);
-        actionMap.put(Constants.userActions.REFRESH_CONSOLE, refreshConsoleView);
-        actionMap.put(Constants.userActions.BAD_COMMAND, badCommandView);
-        actionMap.put(Constants.userActions.QUIT, programExitView);
+        actionMap.put(userActions.MESSAGE, printLastChatLineView);
+        actionMap.put(userActions.EMPTY_MESSAGE, emptyMessageView);
+        actionMap.put(userActions.CHANGE_NICK, changeNicknameView);
+        actionMap.put(userActions.REFRESH_CONSOLE, refreshConsoleView);
+        actionMap.put(userActions.BAD_COMMAND, badCommandView);
+        actionMap.put(userActions.QUIT, programExitView);
 
         // Print available chat commands
         chatCommandsPrintView.execute();
+    }
 
+    public void start(){
         // Get message from user
         while (true) {
             String line = readLine();
@@ -44,10 +55,9 @@ public class ChatApplication {
             View view = actionMap.get(e);
             view.execute();
         }
-
     }
 
-    private static String readLine() {
+    private String readLine() {
         Scanner sc = new Scanner(System.in);
         return sc.nextLine();
     }

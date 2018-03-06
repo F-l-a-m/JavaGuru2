@@ -5,7 +5,7 @@ import lv.javaguru.java2.businesslogic.models.ChatLine;
 import lv.javaguru.java2.businesslogic.models.Timestamp;
 import lv.javaguru.java2.database.Database;
 
-public class HandleUserInputService {
+public class HandleUserInputService implements Constants{
 
     private UserService userService;
     private SaveChatMessageService saveChatMessageService;
@@ -18,19 +18,19 @@ public class HandleUserInputService {
     public Enum HandleUserInput(String userInput){
         // Empty message
         if(userInput.equals("")){
-            return Constants.userActions.EMPTY_MESSAGE;
+            return userActions.EMPTY_MESSAGE;
         }
         // Check if user entered a command and handle it
         else if(userInput.charAt(0) == '/'){
             switch (userInput){
                 case "/quit":
-                    return Constants.userActions.QUIT;
+                    return userActions.QUIT;
                 case "/nick":
-                    return Constants.userActions.CHANGE_NICK;
+                    return userActions.CHANGE_NICK;
                 case "/r":
-                    return Constants.userActions.REFRESH_CONSOLE;
+                    return userActions.REFRESH_CONSOLE;
                 default:
-                    return Constants.userActions.BAD_COMMAND;
+                    return userActions.BAD_COMMAND;
             }
         }
         // Handle as usual message
@@ -44,7 +44,7 @@ public class HandleUserInputService {
 
             switch (userInput){
                 default:
-                    return Constants.userActions.MESSAGE;
+                    return userActions.MESSAGE;
             }
         }
     }

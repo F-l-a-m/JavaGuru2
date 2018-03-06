@@ -1,8 +1,7 @@
 package lv.javaguru.java2;
 
-public final class Constants {
-
-    public static enum userActions {
+public interface Constants {
+    enum userActions {
         MESSAGE,
         EMPTY_MESSAGE,
         CHANGE_NICK,
@@ -10,9 +9,4 @@ public final class Constants {
         REFRESH_CONSOLE,
         QUIT
     }
-
-    public static enum adminCommands{
-
-    }
-
 }
