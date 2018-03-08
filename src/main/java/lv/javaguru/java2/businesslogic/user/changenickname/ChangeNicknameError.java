@@ -1,10 +1,10 @@
-package lv.javaguru.java2.businesslogic.services;
+package lv.javaguru.java2.businesslogic.user.changenickname;
 
-public class ValidationError {
+public class ChangeNicknameError {
 
     private String errorMessage;
 
-    public ValidationError(String errorMessage) {
+    public ChangeNicknameError(String errorMessage) {
         this.errorMessage = errorMessage;
     }
 

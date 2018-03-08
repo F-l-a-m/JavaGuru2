@@ -1,7 +1,7 @@
 package lv.javaguru.java2.views;
 
-import lv.javaguru.java2.businesslogic.models.ChatLine;
-import lv.javaguru.java2.businesslogic.models.Timestamp;
+import lv.javaguru.java2.businesslogic.chat.ChatLine;
+import lv.javaguru.java2.businesslogic.chat.Timestamp;
 import lv.javaguru.java2.database.Database;
 
 public class EmptyMessageView implements View {

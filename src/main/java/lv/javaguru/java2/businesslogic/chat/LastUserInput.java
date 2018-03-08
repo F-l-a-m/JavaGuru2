@@ -1,6 +1,6 @@
-package lv.javaguru.java2.database;
+package lv.javaguru.java2.businesslogic.chat;
 
-public class LastChatMessage {
+public class LastUserInput {
 
     private String userInput;
 
@@ -11,5 +11,4 @@ public class LastChatMessage {
     public void setUserInput(String userInput) {
         this.userInput = userInput;
     }
-
 }

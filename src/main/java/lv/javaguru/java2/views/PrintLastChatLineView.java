@@ -1,18 +1,17 @@
 package lv.javaguru.java2.views;
 
-import lv.javaguru.java2.businesslogic.services.GetChatMessageService;
 import lv.javaguru.java2.database.Database;
 
 public class PrintLastChatLineView implements View {
 
-    private GetChatMessageService getChatMessageService;
+    private Database database;
 
     public PrintLastChatLineView(Database database) {
-        this.getChatMessageService = new GetChatMessageService(database);
+        this.database = database;
     }
 
     @Override
     public void execute() {
-        System.out.println(getChatMessageService.GetLastMessageFromDB());
+        System.out.println(database.getLastChatMessage());
     }
 }

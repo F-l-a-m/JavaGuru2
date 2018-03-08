@@ -1,4 +1,4 @@
-package lv.javaguru.java2.businesslogic.models;
+package lv.javaguru.java2.businesslogic.chat;
 
 public class ChatLine {
 

@@ -1,34 +1,35 @@
-package lv.javaguru.java2.businesslogic.services;
+package lv.javaguru.java2.businesslogic.chat;
 
 import lv.javaguru.java2.Constants;
-import lv.javaguru.java2.businesslogic.models.ChatLine;
-import lv.javaguru.java2.businesslogic.models.Timestamp;
+import lv.javaguru.java2.businesslogic.user.UserService;
 import lv.javaguru.java2.database.Database;
-import lv.javaguru.java2.database.LastChatMessage;
 
 public class HandleUserInputService implements Constants {
 
     private UserService userService;
     private SaveChatMessageService saveChatMessageService;
-    private LastChatMessage lastChatMessage;
+    private LastUserInput lastUserInput;
     private int maxCommandLength;
 
-    public HandleUserInputService(Database database, LastChatMessage lastChatMessage) {
+    public HandleUserInputService(Database database, LastUserInput lastUserInput) {
         this.userService = new UserService(database);
         this.saveChatMessageService = new SaveChatMessageService(database);
-        this.lastChatMessage = lastChatMessage;
+        this.lastUserInput = lastUserInput;
         this.maxCommandLength = 40;
     }
 
     public Enum handle(String userInput){
+
         // Empty message
         if(userInput.isEmpty()){
             return userActions.EMPTY_MESSAGE;
         }
+
         // Check if user entered a command and handle it
         else if(userInput.charAt(0) == '/'){
            return handleChatCommand(userInput);
         }
+
         // Handle as usual message
         else {
             ChatLine newLine = new ChatLine(
@@ -37,11 +38,7 @@ public class HandleUserInputService implements Constants {
                     userInput
             );
             saveChatMessageService.SaveMessageToDatabase(newLine);
-
-            switch (userInput){
-                default:
-                    return userActions.MESSAGE;
-            }
+            return userActions.PRINT_MESSAGE;
         }
     }
 
@@ -50,7 +47,7 @@ public class HandleUserInputService implements Constants {
             return userActions.BAD_COMMAND;
         }
         else {
-            userInput.trim();
+            userInput = userInput.trim();
             String[] splitStr = userInput.split("\\s+");
 
             // One word commands
@@ -69,7 +66,7 @@ public class HandleUserInputService implements Constants {
                     case "/nick":
                         // write nick to db? temp variable ?
                         // need later in view
-                        lastChatMessage.setUserInput(splitStr[1]);
+                        lastUserInput.setUserInput(splitStr[1]);
                         return userActions.CHANGE_NICK;
                 }
             }

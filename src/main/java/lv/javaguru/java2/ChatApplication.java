@@ -1,9 +1,12 @@
 package lv.javaguru.java2;
 
-import lv.javaguru.java2.businesslogic.services.*;
+import lv.javaguru.java2.businesslogic.chat.*;
+import lv.javaguru.java2.businesslogic.user.UserService;
 import lv.javaguru.java2.database.*;
 import lv.javaguru.java2.views.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 public class ChatApplication {
 
@@ -16,29 +19,32 @@ public class ChatApplication {
 
 class Launcher implements Constants {
 
-    private Database database = new InMemoryDatabase();
-    LastChatMessage lastChatMessage = new LastChatMessage();
-    private HandleUserInputService handleUserInputService = new HandleUserInputService(database, lastChatMessage);
-    private UserService userService = new UserService(database);
-    Map<Enum, View> actionMap = new HashMap<>();
+    private Database database;
+    private LastUserInput lastUserInput;
+    private HandleUserInputService handleUserInputService;
+    private UserService userService;
+    private Map<Enum, View> actionMap;
 
+    public void initialize() {
 
-    public void initialize(){
-        // Request to create new user
+        database = new InMemoryDatabase();
+        lastUserInput = new LastUserInput(); // only user input string
+        handleUserInputService = new HandleUserInputService(database, lastUserInput);
+        userService = new UserService(database);
+        // user service creates new user, saves it to db
         userService.createNewUser();
-        // user service creates new user
-        // saves it to db
+        actionMap = new HashMap<>();
 
         View chatCommandsPrintView = new PrintAvailableChatCommandsView();
         View printLastChatLineView = new PrintLastChatLineView(database);
-        View changeNicknameView = new ChangeNicknameView(database, lastChatMessage);
+        View changeNicknameView = new ChangeNicknameView(database, lastUserInput);
         View programExitView = new ProgramExitView();
         View badCommandView = new BadCommandView();
         View refreshConsoleView = new RefreshConsoleView(database);
         View emptyMessageView = new EmptyMessageView(database);
 
         // All available actions depending on user input
-        actionMap.put(userActions.MESSAGE, printLastChatLineView);
+        actionMap.put(userActions.PRINT_MESSAGE, printLastChatLineView);
         actionMap.put(userActions.EMPTY_MESSAGE, emptyMessageView);
         actionMap.put(userActions.CHANGE_NICK, changeNicknameView);
         actionMap.put(userActions.REFRESH_CONSOLE, refreshConsoleView);
@@ -49,7 +55,7 @@ class Launcher implements Constants {
         chatCommandsPrintView.execute();
     }
 
-    public void start(){
+    public void start() {
         // Get message from user
         while (true) {
             String userInput = readLine();

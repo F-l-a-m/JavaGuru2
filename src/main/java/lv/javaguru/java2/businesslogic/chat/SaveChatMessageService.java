@@ -1,7 +1,6 @@
-package lv.javaguru.java2.businesslogic.services;
+package lv.javaguru.java2.businesslogic.chat;
 
 import lv.javaguru.java2.database.Database;
-import lv.javaguru.java2.businesslogic.models.ChatLine;
 
 public class SaveChatMessageService {
 
