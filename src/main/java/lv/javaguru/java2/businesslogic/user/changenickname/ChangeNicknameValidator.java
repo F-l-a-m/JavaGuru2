@@ -9,12 +9,9 @@ public class ChangeNicknameValidator {
     private String nickname;
     private boolean isEmpty;
 
-    public ChangeNicknameValidator(String nickname) {
+    public List<ChangeNicknameError> validate(String nickname) {
         this.nickname = nickname;
         isEmpty = false;
-    }
-
-    public List<ChangeNicknameError> validate() {
         List<ChangeNicknameError> errors = new ArrayList<>();
         validateEmpty().ifPresent(errors::add);
         if (!isEmpty) validateLength().ifPresent(errors::add);
@@ -23,7 +20,7 @@ public class ChangeNicknameValidator {
     }
 
     private Optional<ChangeNicknameError> validateEmpty() {
-        if (this.nickname == null || this.nickname.isEmpty()) {
+        if (nickname == null || nickname.isEmpty()) {
             isEmpty = true;
             return Optional.of(new ChangeNicknameError("Nickname must not be empty"));
         }

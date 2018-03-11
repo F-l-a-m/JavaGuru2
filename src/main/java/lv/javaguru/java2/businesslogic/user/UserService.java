@@ -30,19 +30,4 @@ public class UserService {
         this.newUser = new User();
         database.setCurrentUser(newUser);
     }
-
-    public ChangeNicknameResponse changeUserNickname(String nickname){
-        // validate here
-        ChangeNicknameValidator changeNicknameValidator = new ChangeNicknameValidator(nickname);
-        List<ChangeNicknameError> errors = changeNicknameValidator.validate();
-        if(!errors.isEmpty()){
-            return new ChangeNicknameResponse(false, errors);
-        }
-
-        User currentUser = getCurrentUser();
-        currentUser.setNickname(nickname);
-        database.setCurrentUser(currentUser);
-
-        return new ChangeNicknameResponse(true, null);
-    }
 }
