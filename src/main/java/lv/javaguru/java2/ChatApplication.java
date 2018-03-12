@@ -20,16 +20,16 @@ public class ChatApplication {
 class Launcher implements Constants {
 
     private Database database;
-    private LastUserInput lastUserInput;
-    private HandleUserInputService handleUserInputService;
+    private LastChatInput lastChatInput;
+    private HandleChatInputService handleChatInputService;
     private UserService userService;
     private Map<Enum, View> actionMap;
 
     public void initialize() {
 
         database = new InMemoryDatabase();
-        lastUserInput = new LastUserInput(); // only user input string
-        handleUserInputService = new HandleUserInputService(database, lastUserInput);
+        lastChatInput = new LastChatInput(); // only user input string
+        handleChatInputService = new HandleChatInputService(database, lastChatInput);
         userService = new UserService(database);
         // user service creates new user, saves it to db
         userService.createNewUser();
@@ -37,7 +37,7 @@ class Launcher implements Constants {
 
         View chatCommandsPrintView = new PrintAvailableChatCommandsView();
         View printLastChatLineView = new PrintLastChatLineView(database);
-        View changeNicknameView = new ChangeNicknameView(database, lastUserInput);
+        View changeNicknameView = new ChangeNicknameView(database, lastChatInput);
         View programExitView = new ProgramExitView();
         View badCommandView = new BadCommandView();
         View refreshConsoleView = new RefreshConsoleView(database);
@@ -59,7 +59,7 @@ class Launcher implements Constants {
         // Get message from user
         while (true) {
             String userInput = readLine();
-            Enum action = handleUserInputService.handle(userInput);
+            Enum action = handleChatInputService.handle(userInput);
             View view = actionMap.get(action);
             view.execute();
         }

@@ -1,6 +1,6 @@
 package lv.javaguru.java2.businesslogic.chat;
 
-public class LastUserInput {
+public class LastChatInput {
 
     private String userInput;
 

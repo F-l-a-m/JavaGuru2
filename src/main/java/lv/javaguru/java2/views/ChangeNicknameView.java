@@ -4,16 +4,16 @@ import lv.javaguru.java2.businesslogic.user.changenickname.ChangeNicknameRespons
 import lv.javaguru.java2.businesslogic.user.changenickname.ChangeNicknameService;
 import lv.javaguru.java2.businesslogic.user.changenickname.ChangeNicknameValidator;
 import lv.javaguru.java2.database.Database;
-import lv.javaguru.java2.businesslogic.chat.LastUserInput;
+import lv.javaguru.java2.businesslogic.chat.LastChatInput;
 
 public class ChangeNicknameView implements View {
 
-    private LastUserInput lastUserInput;
+    private LastChatInput lastChatInput;
     private ChangeNicknameService changeNicknameService;
     private ChangeNicknameValidator changeNicknameValidator;
 
-    public ChangeNicknameView(Database database, LastUserInput lastUserInput) {
-        this.lastUserInput = lastUserInput;
+    public ChangeNicknameView(Database database, LastChatInput lastChatInput) {
+        this.lastChatInput = lastChatInput;
         this.changeNicknameValidator = new ChangeNicknameValidator();
         this.changeNicknameService = new ChangeNicknameService(database, changeNicknameValidator);
     }
@@ -21,7 +21,7 @@ public class ChangeNicknameView implements View {
     @Override
     public void execute() {
 
-        String nickname = lastUserInput.getUserInput();
+        String nickname = lastChatInput.getUserInput();
         ChangeNicknameResponse changeNicknameResponse = changeNicknameService.changeUserNickname(nickname);
         if(changeNicknameResponse.isSuccess()){
             System.out.println("User nickname set to \'" + nickname + '\'');
