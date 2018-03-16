@@ -1,3 +1,4 @@
+/*
 package lv.javaguru.java2.businesslogic.chat;
 
 import lv.javaguru.java2.Constants;
@@ -7,14 +8,14 @@ public class HandleChatInputService implements Constants {
 
     private Database database;
     private SaveChatMessageService saveChatMessageService;
-    private LastChatInput lastChatInput;
+    private StringCache stringCache;
     private int maxCommandLength;
     private String input;
 
-    public HandleChatInputService(Database database, LastChatInput lastChatInput) {
+    public HandleChatInputService(Database database, StringCache stringCache) {
         this.database = database;
         saveChatMessageService = new SaveChatMessageService(database); // how to test ?
-        this.lastChatInput = lastChatInput;
+        this.stringCache = stringCache;
         maxCommandLength = 40;
     }
 
@@ -53,20 +54,26 @@ public class HandleChatInputService implements Constants {
                     case "/nick":
                         // write nick to db? temp variable ?
                         // need later in view
-                        lastChatInput.setUserInput(splitStr[1]);
+                        stringCache.setTemporaryString(splitStr[1]);
                         return userActions.CHANGE_NICK;
+                    case "/join":
+                        stringCache.setTemporaryString(splitStr[1]);
+                        return userActions.JOIN_CHAT_ROOM;
                 }
             }
         }
         return userActions.BAD_COMMAND;
     }
 
-    private Enum handleMessage(){
+    */
+/*private Enum handleMessage(){
         saveChatMessageService.SaveMessageToDatabase(
-                new ChatLine(new Timestamp().getTimestamp(),
-                        database.getCurrentUser().getNickname(),
+                new Message(new Timestamp().getTimestamp(),
+                        database.getLastUser().getNickname(),
                         input)
         );
         return userActions.PRINT_MESSAGE;
-    }
+    }*//*
+
 }
+*/

@@ -2,27 +2,33 @@ package lv.javaguru.java2.businesslogic.user;
 
 import lv.javaguru.java2.database.Database;
 
-import java.util.List;
-
 public class UserService {
 
     private Database database;
-    private User newUser;
 
     public UserService(Database database) {
         this.database = database;
     }
 
-    public User getCurrentUser(){
-        return database.getCurrentUser();
+    public void setCurrentUser(User user){
+        CurrentUser.id = user.getId();
+        CurrentUser.login = user.getLogin();
+        CurrentUser.nickname = user.getNickname();
+        CurrentUser.password = user.getPassword();
     }
 
-    public void setCurrentUser(User user){
-        database.setCurrentUser(user);
+    public User getCurrentUser(){
+        User u = new User();
+        u.setId(CurrentUser.id);
+        u.setLogin(CurrentUser.login);
+        u.setNickname(getCurrentUser().getNickname());
+        u.setNickname(getCurrentUser().getPassword());
+        return u;
     }
 
     public void createNewUser(){
-        this.newUser = new User();
-        database.setCurrentUser(newUser);
+        // Generete guest and add it to database
+        User guest = new User();
+        database.addNewUser(guest);
     }
 }

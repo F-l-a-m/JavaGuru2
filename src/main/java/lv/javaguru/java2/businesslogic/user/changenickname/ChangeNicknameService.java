@@ -1,9 +1,13 @@
+/*
 package lv.javaguru.java2.businesslogic.user.changenickname;
 
+import lv.javaguru.java2.businesslogic.Error;
+import lv.javaguru.java2.businesslogic.Response;
 import lv.javaguru.java2.businesslogic.user.User;
 import lv.javaguru.java2.database.Database;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ChangeNicknameService {
 
@@ -15,16 +19,21 @@ public class ChangeNicknameService {
         this.changeNicknameValidator = changeNicknameValidator;
     }
 
-    public ChangeNicknameResponse changeUserNickname(String nickname) {
+    public Response changeUserNickname(String nickname) {
 
-        List<ChangeNicknameError> errors = changeNicknameValidator.validate(nickname);
+        List<Error> errors = changeNicknameValidator.validate(nickname);
         if(!errors.isEmpty()){
-            return new ChangeNicknameResponse(false, errors);
+            return new Response(false, errors);
         }
 
-        User currentUser = database.getCurrentUser();
+        Optional<User> lastUser = database.getLastUser();
+        if(lastUser.isPresent()){
+            ...
+        }
+        User currentUser = database.getLastUser();
         currentUser.setNickname(nickname);
-        database.setCurrentUser(currentUser);
-        return new ChangeNicknameResponse(true, null);
+        database.addNewUser(currentUser);
+        return new Response(true, null);
     }
 }
+*/

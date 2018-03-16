@@ -7,6 +7,7 @@ public interface Constants {
         CHANGE_NICK,
         BAD_COMMAND,
         REFRESH_CONSOLE,
-        QUIT
+        QUIT,
+        JOIN_CHAT_ROOM
     }
 }

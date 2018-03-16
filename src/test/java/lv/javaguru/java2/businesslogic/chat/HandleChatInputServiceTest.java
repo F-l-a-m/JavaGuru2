@@ -1,3 +1,4 @@
+/*
 package lv.javaguru.java2.businesslogic.chat;
 
 import lv.javaguru.java2.Constants;
@@ -15,8 +16,8 @@ public class HandleChatInputServiceTest implements Constants {
     @Before
     public void init() {
         Database database = Mockito.mock(Database.class);
-        LastChatInput lastChatInput = Mockito.mock(LastChatInput.class);
-        handleChatInputService = new HandleChatInputService(database, lastChatInput);
+        StringCache stringCache = Mockito.mock(StringCache.class);
+        handleChatInputService = new HandleChatInputService(database, stringCache);
     }
 
     @Test
@@ -44,11 +45,13 @@ public class HandleChatInputServiceTest implements Constants {
         assertEquals(result, userActions.REFRESH_CONSOLE);
     }
 
-    /*@Test
+@Test
     public void shouldReturnPrintMessageConstant(){
         UserService UserService = Mockito.mock(UserService.class);
         Mockito.when(UserService.getCurrentUser().getNickname()).thenReturn("nickname");
         Enum result = handleChatInputService.handle("Hello");
         assertEquals(result, userActions.PRINT_MESSAGE);
-    }*/
+    }
+
 }
+*/

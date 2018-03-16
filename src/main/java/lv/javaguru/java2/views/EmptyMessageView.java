@@ -1,6 +1,7 @@
+/*
 package lv.javaguru.java2.views;
 
-import lv.javaguru.java2.businesslogic.chat.ChatLine;
+import lv.javaguru.java2.businesslogic.chat.Message;
 import lv.javaguru.java2.businesslogic.chat.Timestamp;
 import lv.javaguru.java2.database.Database;
 
@@ -15,7 +16,7 @@ public class EmptyMessageView implements View {
 
     @Override
     public void execute() {
-        ChatLine emptyLine = new ChatLine(
+        Message emptyLine = new Message(
                 timestamp.getTimestamp(),
                 database.getCurrentUser().getNickname(),
                 ""
@@ -24,3 +25,4 @@ public class EmptyMessageView implements View {
         System.out.println(emptyLine);
     }
 }
+*/

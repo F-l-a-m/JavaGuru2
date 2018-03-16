@@ -1,40 +1,73 @@
+/*
 package lv.javaguru.java2.database;
 
-import lv.javaguru.java2.businesslogic.chat.ChatLine;
+import lv.javaguru.java2.businesslogic.chat.Message;
+import lv.javaguru.java2.businesslogic.room.ChatRoom;
 import lv.javaguru.java2.businesslogic.user.User;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class InMemoryDatabase implements Database {
 
-    private List<ChatLine> chatHistory = new ArrayList<>();
-    //private List<User> userTable = new ArrayList<>();
+    private List<Message> chatHistory = new ArrayList<>();
+    // all currently available chat rooms
+    private List<ChatRoom> roomList = new ArrayList();
+    // all registered users
+    private List<User> registeredUserList = new ArrayList<>();
+    // all connected users
+    private List<User> connectedUserList = new ArrayList<>();
     private User currentUser;
 
     @Override
-    public void addChatLine(ChatLine chatLine) {
-        chatHistory.add(chatLine);
+    public void addChatLine(Message message) {
+        chatHistory.add(message);
     }
 
     @Override
-    public List<ChatLine> getAllChat() {
-        List<ChatLine> copyChat = new ArrayList<>();
+    public List<Message> getAllChat() {
+        List<Message> copyChat = new ArrayList<>();
         copyChat.addAll(chatHistory);
         return copyChat;
     }
 
     @Override
-    public ChatLine getLastChatMessage(){
+    public Message getLastChatMessage(){
         return chatHistory.get(chatHistory.size() - 1);
     }
 
     @Override
-    public User getCurrentUser() {
+    public Optional<User> getLastUser() {
         return this.currentUser;
     }
 
     @Override
-    public void setCurrentUser(User user) {
+    public void addNewUser(User user) {
         this.currentUser = user;
     }
+
+    @Override
+    public void addToRoomList(ChatRoom newRoom){
+        roomList.add(newRoom);
+    }
+
+    @Override
+    public void removeFormRoomList(ChatRoom roomToDelete){
+        roomList.remove(roomToDelete);
+    }
+
+    @Override
+    public List<ChatRoom> getRoomList(){
+        List<ChatRoom> copyRooms = new ArrayList<>();
+        copyRooms.addAll(roomList);
+        return copyRooms;
+    }
+
+    @Override
+    public Optional<ChatRoom> findChatRoom(String name){
+        return roomList.stream()
+                .filter(r -> r.getName().equals(name))
+                .findFirst();
+    }
 }
+*/

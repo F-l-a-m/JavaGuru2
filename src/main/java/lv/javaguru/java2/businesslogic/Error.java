@@ -1,10 +1,10 @@
-package lv.javaguru.java2.businesslogic.user.changenickname;
+package lv.javaguru.java2.businesslogic;
 
-public class ChangeNicknameError {
+public class Error {
 
     private String errorMessage;
 
-    public ChangeNicknameError(String errorMessage) {
+    public Error(String errorMessage) {
         this.errorMessage = errorMessage;
     }
 

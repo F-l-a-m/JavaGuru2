@@ -1,19 +1,20 @@
+/*
 package lv.javaguru.java2.views;
 
-import lv.javaguru.java2.businesslogic.user.changenickname.ChangeNicknameResponse;
+import lv.javaguru.java2.businesslogic.Response;
 import lv.javaguru.java2.businesslogic.user.changenickname.ChangeNicknameService;
 import lv.javaguru.java2.businesslogic.user.changenickname.ChangeNicknameValidator;
 import lv.javaguru.java2.database.Database;
-import lv.javaguru.java2.businesslogic.chat.LastChatInput;
+import lv.javaguru.java2.businesslogic.chat.StringCache;
 
 public class ChangeNicknameView implements View {
 
-    private LastChatInput lastChatInput;
+    private StringCache stringCache;
     private ChangeNicknameService changeNicknameService;
     private ChangeNicknameValidator changeNicknameValidator;
 
-    public ChangeNicknameView(Database database, LastChatInput lastChatInput) {
-        this.lastChatInput = lastChatInput;
+    public ChangeNicknameView(Database database, StringCache stringCache) {
+        this.stringCache = stringCache;
         this.changeNicknameValidator = new ChangeNicknameValidator();
         this.changeNicknameService = new ChangeNicknameService(database, changeNicknameValidator);
     }
@@ -21,16 +22,17 @@ public class ChangeNicknameView implements View {
     @Override
     public void execute() {
 
-        String nickname = lastChatInput.getUserInput();
-        ChangeNicknameResponse changeNicknameResponse = changeNicknameService.changeUserNickname(nickname);
-        if(changeNicknameResponse.isSuccess()){
+        String nickname = stringCache.getTemporaryString();
+        Response response = changeNicknameService.changeUserNickname(nickname);
+        if(response.isSuccess()){
             System.out.println("User nickname set to \'" + nickname + '\'');
         }
         else{
-            changeNicknameResponse.getErrors()
+            response.getErrors()
                     .forEach(error -> System.out.println(error.getErrorMessage()));
         }
 
         System.out.println();
     }
 }
+*/

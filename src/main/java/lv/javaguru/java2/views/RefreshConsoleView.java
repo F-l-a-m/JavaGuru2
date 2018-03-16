@@ -1,7 +1,7 @@
 package lv.javaguru.java2.views;
 
 import lv.javaguru.java2.database.Database;
-import lv.javaguru.java2.businesslogic.chat.ChatLine;
+import lv.javaguru.java2.businesslogic.chat.Message;
 
 public class RefreshConsoleView implements View {
 
@@ -17,7 +17,7 @@ public class RefreshConsoleView implements View {
         System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 
         // Print whole chat history
-        for(ChatLine line : database.getAllChat()){
+        for(Message line : database.getAllChat()){
             System.out.println(line);
         }
     }

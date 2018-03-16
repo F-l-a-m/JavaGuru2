@@ -10,7 +10,7 @@ public class SaveChatMessageService {
         this.database = database;
     }
 
-    public void SaveMessageToDatabase(ChatLine line){
+    public void SaveMessageToDatabase(Message line){
         database.addChatLine(line);
     }
 }

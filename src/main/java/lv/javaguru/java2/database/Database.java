@@ -1,19 +1,27 @@
 package lv.javaguru.java2.database;
 
-import lv.javaguru.java2.businesslogic.chat.ChatLine;
+import lv.javaguru.java2.businesslogic.chat.Message;
+import lv.javaguru.java2.businesslogic.room.ChatRoom;
 import lv.javaguru.java2.businesslogic.user.User;
-
 import java.util.List;
+import java.util.Optional;
 
 public interface Database {
 
-    void addChatLine(ChatLine chatLine);
+    void addNewUser(User user);
 
-    List<ChatLine> getAllChat();
+    Optional<User> getLastUser();
 
-    ChatLine getLastChatMessage();
+    void addChatLine(Message message);
 
-    User getCurrentUser();
+    List<Message> getAllChat();
 
-    void setCurrentUser(User user);
+    Message getLastChatMessage();
+    void addToRoomList(ChatRoom newRoom);
+
+    void removeFormRoomList(ChatRoom newRoom);
+
+    List<ChatRoom> getRoomList();
+
+    Optional<ChatRoom> findChatRoom(String name);
 }
