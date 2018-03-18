@@ -8,6 +8,7 @@ import lv.javaguru.java2.businesslogic.user.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +43,6 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
     @Override
     public Optional<User> getUserById(Long userId) {
         Connection connection = null;
-
         try {
             connection = getConnection();
             String sql = "select * from user where id = ?";
@@ -70,7 +70,6 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
     @Override
     public Optional<User> getUserByNickname(String nickname) {
         Connection connection = null;
-
         try {
             connection = getConnection();
             String sql = "select * from user where nickname = ?";
@@ -116,14 +115,27 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
     }
 
     @Override
-    public void removeUserFromRoom(Long userId, String roomName) {
-
+    public void removeUserFromRoom(Long userId, Long roomId) {
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            String sql = "delete from user_in_room where user_id = ? and room_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setLong(1, userId);
+            preparedStatement.setLong(2, roomId);
+            preparedStatement.executeUpdate();
+        } catch (Throwable e) {
+            System.out.println("Exception while execute database.removeUserFromRoom()");
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } finally {
+            closeConnection(connection);
+        }
     }
 
     @Override
     public boolean findUserInARoom(Long userId, String roomName) {
         Connection connection = null;
-
         try {
             connection = getConnection();
             String sql =
@@ -173,7 +185,6 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
     @Override
     public Optional<ChatRoom> findChatRoom(String roomName) {
         Connection connection = null;
-
         try {
             connection = getConnection();
             String sql = "select * from chat_room where name = ?";
@@ -198,36 +209,80 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
 
     @Override
     public List<ChatRoom> getListOfAllRooms() {
-        return null;
+        Connection connection = null;
+        List listOfAllChatRooms = new ArrayList();
+        try {
+            connection = getConnection();
+            String sql = "select * from chat_room";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            ChatRoom room = null;
+            if (resultSet.next()) {
+                room = new ChatRoom();
+                room.setId(resultSet.getLong("id"));
+                room.setName(resultSet.getString("name"));
+                listOfAllChatRooms.add(room);
+            }
+            return listOfAllChatRooms;
+        } catch (Throwable e) {
+            System.out.println("Exception while execute database.getListOfAllRooms()");
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } finally {
+            closeConnection(connection);
+        }
     }
 
 
     // message management
     @Override
     public void addChatMessage(Message message) {
-        /*Connection connection = null;
+        Connection connection = null;
         try {
             connection = getConnection();
-            String sql = "insert into message(id, timestamp, message_body, user_id, room_id) values(default, ?, ?, ?, ?)";
+            String sql = "insert into message(id, timestamp, message_body, user_id, room_id) " +
+                    "values(default, ?, ?, ?, ?)";
             PreparedStatement preparedStatement =
                     connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, message.getTimestamp());
-            preparedStatement.setString(2, message.getMessage());
-            preparedStatement.setString(3, message.);
-
+            preparedStatement.setString(2, message.getMessage_body());
+            preparedStatement.setLong(3, message.getUser_id());
+            preparedStatement.setLong(4, message.getRoom_id());
             preparedStatement.executeUpdate();
         } catch (Throwable e) {
-            System.out.println("Exception while execute ProductDAOImpl.save()");
+            System.out.println("Exception while execute database.addChatMessage()");
             e.printStackTrace();
             throw new RuntimeException(e);
         } finally {
             closeConnection(connection);
-        }*/
+        }
     }
 
     @Override
-    public Optional<Message> getLastChatMessageInRoom(String roomName) {
-        return Optional.empty();
+    public Optional<Message> getLastChatMessageInRoom(Long roomId) {
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            String sql = "select * from message order by id desc limit 1";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            Message message = null;
+            if (resultSet.next()) {
+                message = new Message();
+                message.setId(resultSet.getLong("id"));
+                message.setTimestamp(resultSet.getString("timestamp"));
+                message.setMessage_body(resultSet.getString("message_body"));
+                message.setUser_id(resultSet.getLong("user_id"));
+                message.setRoom_id(resultSet.getLong("room_id"));
+            }
+            return Optional.ofNullable(message);
+        } catch (Throwable e) {
+            System.out.println("Exception while execute database.getLastChatMessageInRoom()");
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } finally {
+            closeConnection(connection);
+        }
     }
 
     @Override

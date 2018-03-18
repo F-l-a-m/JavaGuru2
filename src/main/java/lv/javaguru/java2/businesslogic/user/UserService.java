@@ -36,7 +36,7 @@ public class UserService {
         database.addNewUser(guest);
     }
 
-    public void addUserToChatRoom(String roomName, User user) {
+    public void addUserToChatRoom(User user, String roomName) {
         // check if user is already in that room
         if(database.findUserInARoom(user.getId(), roomName)){
             System.out.println("User '" + user.getNickname() + "' is already in room '" + roomName + "'");
@@ -47,6 +47,19 @@ public class UserService {
             ChatRoom r = foundRoom.get();
             database.addUserToRoom(user.getId(), r.getId());
             System.out.println("Successfully added '" + user.getNickname() + "' to chat room '" + roomName + "'");
+        }
+
+    }
+
+    public void removeUserFromChatRoom(User user, String roomName) {
+        Optional<ChatRoom> foundRoom = database.findChatRoom(roomName);
+        if(foundRoom.isPresent()) {
+            ChatRoom room = foundRoom.get();
+            database.removeUserFromRoom(user.getId(), room.getId());
+            System.out.println("User '" + user.getNickname() + "' has left" + " " + roomName);
+        }
+        else {
+            System.out.println("Room " +roomName + " not found");
         }
 
     }

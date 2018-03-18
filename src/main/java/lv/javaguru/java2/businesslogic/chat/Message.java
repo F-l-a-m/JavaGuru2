@@ -9,6 +9,10 @@ public class Message {
     private Long room_id;
     // [2018.03.01] Flam: Hello chat!
 
+    public Message(){
+
+    }
+
     public Message(String timestamp, String message_body, Long user_id, Long room_id) {
         this.timestamp = timestamp;
         this.message_body = message_body;

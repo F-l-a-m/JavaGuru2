@@ -13,7 +13,7 @@ public interface Database {
     Optional<User> getUserById(Long userId);
     Optional<User> getUserByNickname(String nickname);
     void addUserToRoom(Long userId, Long roomId);
-    void removeUserFromRoom(Long userId, String roomName);
+    void removeUserFromRoom(Long userId, Long roomId);
     boolean findUserInARoom(Long userId, String roomName);
 
 
@@ -25,6 +25,6 @@ public interface Database {
 
     // Message management
     void addChatMessage(Message message);
-    Optional<Message> getLastChatMessageInRoom(String roomName);
+    Optional<Message> getLastChatMessageInRoom(Long roomId);
     List<Message> getAllChatHistoryInRoom(String roomName);
 }

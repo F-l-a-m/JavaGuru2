@@ -1,6 +1,7 @@
 package lv.javaguru.java2;
 
 import lv.javaguru.java2.businesslogic.chat.*;
+import lv.javaguru.java2.businesslogic.room.ChatRoom;
 import lv.javaguru.java2.businesslogic.room.ChatRoomService;
 import lv.javaguru.java2.businesslogic.user.CurrentUser;
 import lv.javaguru.java2.businesslogic.user.User;
@@ -8,6 +9,7 @@ import lv.javaguru.java2.businesslogic.user.UserService;
 import lv.javaguru.java2.database.*;
 import lv.javaguru.java2.views.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
@@ -49,9 +51,26 @@ class Launcher implements Constants {
             User u = userById.get();
             System.out.println(u.getNickname() + ";  id: " + u.getId());
 
-            userService.addUserToChatRoom("Guest room", u);
+            userService.addUserToChatRoom(u,"Guest room");
+
+
+            userService.removeUserFromChatRoom(u,"Guest room");
+
+
+            MessageService messageService = new MessageService(database);
+            ChatRoom r = chatRoomService.findChatRoomByName("Guest room");
+            messageService.saveMessageToDatabase("Hello world!", u, r);
+
+            Message msg = messageService.getLastChatMessageInARoom(r);
+            System.out.println(msg.getTimestamp() + msg.getMessage_body());
         }
 
+
+        List<ChatRoom> rooms = chatRoomService.getListOfAllChatRooms();
+        System.out.println("All available rooms");
+        for(ChatRoom r : rooms){
+            System.out.print(r.getName() + " ");
+        }
 
 
         /*Optional<User> user4 = database.getUserById(Integer.toUnsignedLong(4));

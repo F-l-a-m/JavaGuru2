@@ -30,7 +30,27 @@ public class ChatRoomService {
         }
     }
 
+    public ChatRoom findChatRoomByName(String roomName){
+        Optional<ChatRoom> foundRoom = database.findChatRoom(roomName);
+        if(foundRoom.isPresent()){
+            return foundRoom.get();
+        }
+        else {
+            System.out.println("Room " + roomName + " not found");
+        }
+        return null;
+    }
 
+    public List<ChatRoom> getListOfAllChatRooms(){
+        List<ChatRoom> chatRooms = database.getListOfAllRooms();
+        if(chatRooms.isEmpty()){
+            System.out.println("No chat rooms found in database");
+            return null;
+        }
+        else {
+            return chatRooms;
+        }
+    }
 
 
     /*public Response join(Database database, String roomName, User userToJoin){
