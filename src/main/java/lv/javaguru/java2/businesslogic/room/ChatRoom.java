@@ -9,6 +9,10 @@ public class ChatRoom {
     private Long id;
     private String name;
 
+    public ChatRoom(){
+
+    }
+
     public ChatRoom(String name) {
         this.name = name;
     }

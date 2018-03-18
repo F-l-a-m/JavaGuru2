@@ -1,3 +1,4 @@
+/*
 package lv.javaguru.java2.views;
 
 import lv.javaguru.java2.database.Database;
@@ -12,6 +13,7 @@ public class PrintLastChatLineView implements View {
 
     @Override
     public void execute() {
-        System.out.println(database.getLastChatMessage());
+        System.out.println(database.getLastChatMessageInRoom());
     }
 }
+*/

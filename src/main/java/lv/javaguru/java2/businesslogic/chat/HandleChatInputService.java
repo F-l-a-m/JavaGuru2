@@ -69,7 +69,7 @@ public class HandleChatInputService implements Constants {
 /*private Enum handleMessage(){
         saveChatMessageService.SaveMessageToDatabase(
                 new Message(new Timestamp().getTimestamp(),
-                        database.getLastUser().getNickname(),
+                        database.getUserById().getNickname(),
                         input)
         );
         return userActions.PRINT_MESSAGE;

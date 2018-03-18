@@ -21,7 +21,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `chat`.`chat_room`;
 
 CREATE TABLE IF NOT EXISTS `chat`.`chat_room` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `room_id_UNIQUE` (`id` ASC))
@@ -31,7 +31,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `chat`.`message`;
 
 CREATE TABLE IF NOT EXISTS `chat`.`message` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `timestamp` VARCHAR(45) NULL,
   `message_body` VARCHAR(45) NULL,
   `user_id` INT NOT NULL,

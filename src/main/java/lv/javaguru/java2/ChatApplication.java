@@ -1,11 +1,15 @@
 package lv.javaguru.java2;
 
 import lv.javaguru.java2.businesslogic.chat.*;
+import lv.javaguru.java2.businesslogic.room.ChatRoomService;
+import lv.javaguru.java2.businesslogic.user.CurrentUser;
+import lv.javaguru.java2.businesslogic.user.User;
 import lv.javaguru.java2.businesslogic.user.UserService;
 import lv.javaguru.java2.database.*;
 import lv.javaguru.java2.views.*;
-import java.util.HashMap;
+
 import java.util.Map;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class ChatApplication {
@@ -24,6 +28,7 @@ class Launcher implements Constants {
     //private HandleChatInputService handleChatInputService;
     private UserService userService;
     private Map<Enum, View> actionMap;
+    private ChatRoomService chatRoomService;
 
     public void initialize() {
 
@@ -31,7 +36,47 @@ class Launcher implements Constants {
 
         // user service creates new user, saves it to db
         userService = new UserService(database);
-        userService.createNewUser();
+        //userService.createNewUser();
+
+        // room service creates / opens guest room
+        chatRoomService = new ChatRoomService(database);
+        chatRoomService.initializeGuestRoom();
+
+
+
+        Optional<User> userById = database.getUserById(Integer.toUnsignedLong(3));
+        if(userById.isPresent()){
+            User u = userById.get();
+            System.out.println(u.getNickname() + ";  id: " + u.getId());
+
+            userService.addUserToChatRoom("Guest room", u);
+        }
+
+
+
+        /*Optional<User> user4 = database.getUserById(Integer.toUnsignedLong(4));
+        if(user4.isPresent()){
+            User user = user4.get();
+            System.out.println(user.getNickname() + ";  id: " + user.getId());
+        }
+
+
+        Optional<User> userFromDB = database.getUserByNickname("guest6");
+        if(userFromDB.isPresent()){
+            User user = userFromDB.get();
+            System.out.println(user.getNickname() + ";  id: " + user.getId());
+        }*/
+
+
+
+
+
+
+
+
+
+
+
 
         stringCache = new StringCache(); // data for views
         //handleChatInputService = new HandleChatInputService(database, stringCache);

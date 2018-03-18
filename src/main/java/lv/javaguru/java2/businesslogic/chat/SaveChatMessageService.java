@@ -11,6 +11,6 @@ public class SaveChatMessageService {
     }
 
     public void SaveMessageToDatabase(Message line){
-        database.addChatLine(line);
+        database.addChatMessage(line);
     }
 }

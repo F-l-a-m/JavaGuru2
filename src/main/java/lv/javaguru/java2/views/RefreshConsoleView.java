@@ -1,3 +1,4 @@
+/*
 package lv.javaguru.java2.views;
 
 import lv.javaguru.java2.database.Database;
@@ -17,8 +18,9 @@ public class RefreshConsoleView implements View {
         System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 
         // Print whole chat history
-        for(Message line : database.getAllChat()){
+        for(Message line : database.getAllChatHistoryInRoom()){
             System.out.println(line);
         }
     }
 }
+*/
