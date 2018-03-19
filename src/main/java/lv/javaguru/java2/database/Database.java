@@ -9,22 +9,25 @@ import java.util.Optional;
 public interface Database {
 
     // User management
-    void addNewUser(User user);
+    User addNewUser(User user);
     Optional<User> getUserById(Long userId);
     Optional<User> getUserByNickname(String nickname);
+    void changeUserNickname(Long userId, String nickname);
     void addUserToRoom(Long userId, Long roomId);
     void removeUserFromRoom(Long userId, Long roomId);
-    boolean findUserInARoom(Long userId, String roomName);
+    boolean findUserInRoomById(Long userId, String roomName);
+    //boolean findUserInRoomByNickname(String nickname, String roomName);
 
 
     // Chat room management
-    void createNewChatRoom(String roomName);
-    Optional<ChatRoom> findChatRoom(String roomName);
+    Optional<ChatRoom> createNewChatRoom(String roomName);
+    Optional<ChatRoom> findChatRoomByRoomId(Long roomId);
+    Optional<ChatRoom> findChatRoomByRoomName(String roomName);
     List<ChatRoom> getListOfAllRooms();
 
 
     // Message management
     void addChatMessage(Message message);
     Optional<Message> getLastChatMessageInRoom(Long roomId);
-    List<Message> getAllChatHistoryInRoom(String roomName);
+    List<Message> getAllChatHistoryInRoom(Long roomId);
 }

@@ -1,42 +1,42 @@
-/*
 package lv.javaguru.java2.views;
 
-import lv.javaguru.java2.businesslogic.Response;
-import lv.javaguru.java2.businesslogic.chat.StringCache;
+import lv.javaguru.java2.businesslogic.StringCache;
+import lv.javaguru.java2.businesslogic.room.ChatRoom;
 import lv.javaguru.java2.businesslogic.room.ChatRoomService;
+import lv.javaguru.java2.businesslogic.room.CurrentRoom;
 import lv.javaguru.java2.businesslogic.user.User;
+import lv.javaguru.java2.businesslogic.user.UserService;
 import lv.javaguru.java2.database.Database;
 
-public class JoinChatRoomView implements View{
+public class JoinChatRoomView implements View {
 
-    private Database database;
     private ChatRoomService chatRoomService;
+    private UserService userService;
     private StringCache stringCache;
+    private User user;
 
-    public JoinChatRoomView(Database database, StringCache stringCache){
-        this.database = database;
+    public JoinChatRoomView(Database database, User user, StringCache stringCache) {
         this.stringCache = stringCache;
-        this.chatRoomService = new ChatRoomService();
+        this.chatRoomService = new ChatRoomService(database);
+        this.userService = new UserService(database);
+        this.user = user;
     }
 
     @Override
-    public void execute(){
-        // If room exists - join
-        // db -get room list
-        String roomname = stringCache.getTemporaryString();
-        User currentUser = database.getCurrentUser();
-        Response response = chatRoomService.join(database, roomname, currentUser);
-        if (response.isSuccess()){
-            System.out.println("Successfully joined " + roomname);
-            System.out.println("Now chatting in " + roomname);
-
-            // now chatting in roomname ...
-            // print users in room
+    public void execute() {
+        String roomName = stringCache.getTemporaryString();
+        ChatRoom room = chatRoomService.findChatRoomByName(roomName);
+        if(room != null) {
+            // join
+            userService.addUserToChatRoom(user, roomName);
+            CurrentRoom.setRoom(room);
         }
-
-
-
-        // If room does not exist - create new
+        else {
+            // create new room and add user to it
+            chatRoomService.createNewChatRoom(roomName);
+            room = userService.addUserToChatRoom(user, roomName);
+            CurrentRoom.setRoom(room);
+            System.out.println("Successfully joined " + roomName);
+        }
     }
 }
-*/

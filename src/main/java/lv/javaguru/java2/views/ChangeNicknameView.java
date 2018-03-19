@@ -1,29 +1,28 @@
-/*
 package lv.javaguru.java2.views;
 
 import lv.javaguru.java2.businesslogic.Response;
-import lv.javaguru.java2.businesslogic.user.changenickname.ChangeNicknameService;
-import lv.javaguru.java2.businesslogic.user.changenickname.ChangeNicknameValidator;
+import lv.javaguru.java2.businesslogic.user.User;
+import lv.javaguru.java2.businesslogic.user.UserService;
 import lv.javaguru.java2.database.Database;
-import lv.javaguru.java2.businesslogic.chat.StringCache;
+import lv.javaguru.java2.businesslogic.StringCache;
 
 public class ChangeNicknameView implements View {
 
     private StringCache stringCache;
-    private ChangeNicknameService changeNicknameService;
-    private ChangeNicknameValidator changeNicknameValidator;
+    private UserService userService;
+    private User user;
 
-    public ChangeNicknameView(Database database, StringCache stringCache) {
+    public ChangeNicknameView(Database database, User user, StringCache stringCache) {
         this.stringCache = stringCache;
-        this.changeNicknameValidator = new ChangeNicknameValidator();
-        this.changeNicknameService = new ChangeNicknameService(database, changeNicknameValidator);
+        this.userService = new UserService(database);
+        this.user = user;
     }
 
     @Override
     public void execute() {
 
         String nickname = stringCache.getTemporaryString();
-        Response response = changeNicknameService.changeUserNickname(nickname);
+        Response response = userService.changeUserNickname(user, nickname);
         if(response.isSuccess()){
             System.out.println("User nickname set to \'" + nickname + '\'');
         }
@@ -35,4 +34,3 @@ public class ChangeNicknameView implements View {
         System.out.println();
     }
 }
-*/

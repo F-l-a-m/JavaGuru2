@@ -1,4 +1,4 @@
-package lv.javaguru.java2.businesslogic.user.changenickname;
+package lv.javaguru.java2.businesslogic.user;
 
 import lv.javaguru.java2.businesslogic.Error;
 

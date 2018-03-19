@@ -4,8 +4,8 @@ public class Message {
 
     private Long id;
     private String timestamp;
+    private String user_nickname;
     private String message_body;
-    private Long user_id;
     private Long room_id;
     // [2018.03.01] Flam: Hello chat!
 
@@ -13,10 +13,10 @@ public class Message {
 
     }
 
-    public Message(String timestamp, String message_body, Long user_id, Long room_id) {
+    public Message(String timestamp, String user_nickname, String message_body, Long room_id) {
         this.timestamp = timestamp;
+        this.user_nickname = user_nickname;
         this.message_body = message_body;
-        this.user_id = user_id;
         this.room_id = room_id;
     }
 
@@ -36,20 +36,20 @@ public class Message {
         this.timestamp = timestamp;
     }
 
+    public String getUser_nickname() {
+        return user_nickname;
+    }
+
+    public void setUser_nickname(String user_nickname) {
+        this.user_nickname = user_nickname;
+    }
+
     public String getMessage_body() {
         return message_body;
     }
 
     public void setMessage_body(String message_body) {
         this.message_body = message_body;
-    }
-
-    public Long getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(Long user_id) {
-        this.user_id = user_id;
     }
 
     public Long getRoom_id() {
@@ -62,6 +62,6 @@ public class Message {
 
     @Override
     public String toString() {
-        return timestamp + ' ' + "nickname-will be here" + ": " + message_body;
+        return timestamp + ' ' + user_nickname + ": " + message_body;
     }
 }

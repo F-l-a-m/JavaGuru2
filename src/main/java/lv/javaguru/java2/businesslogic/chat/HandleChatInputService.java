@@ -1,25 +1,28 @@
-/*
 package lv.javaguru.java2.businesslogic.chat;
 
 import lv.javaguru.java2.Constants;
+import lv.javaguru.java2.businesslogic.StringCache;
+import lv.javaguru.java2.businesslogic.room.ChatRoom;
+import lv.javaguru.java2.businesslogic.room.CurrentRoom;
+import lv.javaguru.java2.businesslogic.user.User;
 import lv.javaguru.java2.database.Database;
 
 public class HandleChatInputService implements Constants {
 
     private Database database;
-    private SaveChatMessageService saveChatMessageService;
     private StringCache stringCache;
     private int maxCommandLength;
     private String input;
+    private User user;
 
-    public HandleChatInputService(Database database, StringCache stringCache) {
+    public HandleChatInputService(Database database, User user, StringCache stringCache) {
         this.database = database;
-        saveChatMessageService = new SaveChatMessageService(database); // how to test ?
         this.stringCache = stringCache;
+        this.user = user;
         maxCommandLength = 40;
     }
 
-    public Enum handle(String userInput){
+    public Enum handle(String userInput) {
         input = userInput;
         // Empty message
         if(input.isEmpty() || userInput.trim().isEmpty())
@@ -31,7 +34,7 @@ public class HandleChatInputService implements Constants {
         else return handleMessage();
     }
 
-    private Enum handleChatCommand(){
+    private Enum handleChatCommand() {
         if(input.length() > maxCommandLength)
             return userActions.BAD_COMMAND;
         else {
@@ -49,8 +52,8 @@ public class HandleChatInputService implements Constants {
             }
 
             // Two word commands
-            else if (splitStr.length == 2){
-                switch (splitStr[0]){
+            else if (splitStr.length == 2) {
+                switch (splitStr[0]) {
                     case "/nick":
                         // write nick to db? temp variable ?
                         // need later in view
@@ -65,15 +68,9 @@ public class HandleChatInputService implements Constants {
         return userActions.BAD_COMMAND;
     }
 
-    */
-/*private Enum handleMessage(){
-        saveChatMessageService.SaveMessageToDatabase(
-                new Message(new Timestamp().getTimestamp(),
-                        database.getUserById().getNickname(),
-                        input)
-        );
+private Enum handleMessage() {
+        MessageService messageService = new MessageService(database);
+        messageService.saveMessageToDatabase(input, user, CurrentRoom.getRoom());
         return userActions.PRINT_MESSAGE;
-    }*//*
-
+    }
 }
-*/

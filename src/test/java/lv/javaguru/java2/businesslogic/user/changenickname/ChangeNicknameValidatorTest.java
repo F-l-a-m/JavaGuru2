@@ -1,6 +1,7 @@
 package lv.javaguru.java2.businesslogic.user.changenickname;
 
 import lv.javaguru.java2.businesslogic.Error;
+import lv.javaguru.java2.businesslogic.user.ChangeNicknameValidator;
 import org.junit.Before;
 import org.junit.Test;
 import java.util.List;

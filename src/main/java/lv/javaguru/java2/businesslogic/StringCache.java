@@ -1,4 +1,4 @@
-package lv.javaguru.java2.businesslogic.chat;
+package lv.javaguru.java2.businesslogic;
 
 public class StringCache {
 

@@ -1,18 +1,16 @@
 package lv.javaguru.java2;
 
+import lv.javaguru.java2.businesslogic.StringCache;
 import lv.javaguru.java2.businesslogic.chat.*;
 import lv.javaguru.java2.businesslogic.room.ChatRoom;
 import lv.javaguru.java2.businesslogic.room.ChatRoomService;
-import lv.javaguru.java2.businesslogic.user.CurrentUser;
+import lv.javaguru.java2.businesslogic.room.CurrentRoom;
 import lv.javaguru.java2.businesslogic.user.User;
 import lv.javaguru.java2.businesslogic.user.UserService;
 import lv.javaguru.java2.database.*;
 import lv.javaguru.java2.views.*;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 
 public class ChatApplication {
 
@@ -27,7 +25,7 @@ class Launcher implements Constants {
 
     private Database database;
     private StringCache stringCache;
-    //private HandleChatInputService handleChatInputService;
+    private HandleChatInputService handleChatInputService;
     private UserService userService;
     private Map<Enum, View> actionMap;
     private ChatRoomService chatRoomService;
@@ -38,80 +36,29 @@ class Launcher implements Constants {
 
         // user service creates new user, saves it to db
         userService = new UserService(database);
-        //userService.createNewUser();
+        User guestUser = userService.createNewGuest();
 
         // room service creates / opens guest room
         chatRoomService = new ChatRoomService(database);
-        chatRoomService.initializeGuestRoom();
+        CurrentRoom.setRoom(chatRoomService.initializeGuestRoom());
 
+        stringCache = new StringCache(); // temporary data for views
 
+        // handles all user input
+        handleChatInputService = new HandleChatInputService(database, guestUser, stringCache);
 
-        Optional<User> userById = database.getUserById(Integer.toUnsignedLong(3));
-        if(userById.isPresent()){
-            User u = userById.get();
-            System.out.println(u.getNickname() + ";  id: " + u.getId());
-
-            userService.addUserToChatRoom(u,"Guest room");
-
-
-            userService.removeUserFromChatRoom(u,"Guest room");
-
-
-            MessageService messageService = new MessageService(database);
-            ChatRoom r = chatRoomService.findChatRoomByName("Guest room");
-            messageService.saveMessageToDatabase("Hello world!", u, r);
-
-            Message msg = messageService.getLastChatMessageInARoom(r);
-            System.out.println(msg.getTimestamp() + msg.getMessage_body());
-        }
-
-
-        List<ChatRoom> rooms = chatRoomService.getListOfAllChatRooms();
-        System.out.println("All available rooms");
-        for(ChatRoom r : rooms){
-            System.out.print(r.getName() + " ");
-        }
-
-
-        /*Optional<User> user4 = database.getUserById(Integer.toUnsignedLong(4));
-        if(user4.isPresent()){
-            User user = user4.get();
-            System.out.println(user.getNickname() + ";  id: " + user.getId());
-        }
-
-
-        Optional<User> userFromDB = database.getUserByNickname("guest6");
-        if(userFromDB.isPresent()){
-            User user = userFromDB.get();
-            System.out.println(user.getNickname() + ";  id: " + user.getId());
-        }*/
-
-
-
-
-
-
-
-
-
-
-
-
-        stringCache = new StringCache(); // data for views
-        //handleChatInputService = new HandleChatInputService(database, stringCache);
-
-        /*View chatCommandsPrintView = new PrintAvailableChatCommandsView();
-        View printLastChatLineView = new PrintLastChatLineView(database);
-        View changeNicknameView = new ChangeNicknameView(database, stringCache);
+        View chatCommandsPrintView = new PrintAvailableChatCommandsView();
+        View printMessageView = new PrintMessageView(database);
+        View changeNicknameView = new ChangeNicknameView(database, guestUser, stringCache);
         View programExitView = new ProgramExitView();
         View badCommandView = new BadCommandView();
         View refreshConsoleView = new RefreshConsoleView(database);
-        View emptyMessageView = new EmptyMessageView(database);
-        View joinChatRoomView = new JoinChatRoomView(database, stringCache);
+        View emptyMessageView = new EmptyMessageView(guestUser);
+        View joinChatRoomView = new JoinChatRoomView(database, guestUser, stringCache);
 
         // All available actions depending on user input
         actionMap = new HashMap<>();
-        actionMap.put(userActions.PRINT_MESSAGE, printLastChatLineView);
+        actionMap.put(userActions.PRINT_MESSAGE, printMessageView);
         actionMap.put(userActions.EMPTY_MESSAGE, emptyMessageView);
         actionMap.put(userActions.CHANGE_NICK, changeNicknameView);
         actionMap.put(userActions.REFRESH_CONSOLE, refreshConsoleView);
@@ -120,19 +67,19 @@ class Launcher implements Constants {
         actionMap.put(userActions.JOIN_CHAT_ROOM, joinChatRoomView);
 
         // Print available chat commands
-        chatCommandsPrintView.execute();*/
+        chatCommandsPrintView.execute();
 
     }
 
     public void start() {
 
-        /*// Get message from user
+        // Get message from user
         while (true) {
             String userInput = readLine();
             Enum action = handleChatInputService.handle(userInput);
             View view = actionMap.get(action);
             view.execute();
-        }*/
+        }
 
     }
 

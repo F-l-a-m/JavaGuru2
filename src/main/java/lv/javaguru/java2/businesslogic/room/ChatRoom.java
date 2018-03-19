@@ -1,9 +1,5 @@
 package lv.javaguru.java2.businesslogic.room;
 
-import lv.javaguru.java2.businesslogic.user.User;
-import java.util.ArrayList;
-import java.util.List;
-
 public class ChatRoom {
 
     private Long id;

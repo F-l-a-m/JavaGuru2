@@ -1,28 +1,20 @@
-/*
 package lv.javaguru.java2.views;
 
-import lv.javaguru.java2.businesslogic.chat.Message;
 import lv.javaguru.java2.businesslogic.chat.Timestamp;
-import lv.javaguru.java2.database.Database;
+import lv.javaguru.java2.businesslogic.user.User;
 
 public class EmptyMessageView implements View {
 
-    private Database database;
-    private Timestamp timestamp = new Timestamp();
+    private User user;
 
-    public EmptyMessageView(Database database) {
-        this.database = database;
+    public EmptyMessageView(User user) {
+        this.user = user;
     }
 
     @Override
     public void execute() {
-        Message emptyLine = new Message(
-                timestamp.getTimestamp(),
-                database.getCurrentUser().getNickname(),
-                ""
-                );
 
-        System.out.println(emptyLine);
+        Timestamp t = new Timestamp();
+        System.out.println(t.getTimestamp() + ' ' + user.getNickname() + ':');
     }
 }
-*/

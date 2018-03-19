@@ -2,7 +2,6 @@ package lv.javaguru.java2.database;
 
 import lv.javaguru.java2.businesslogic.chat.Message;
 import lv.javaguru.java2.businesslogic.room.ChatRoom;
-import lv.javaguru.java2.businesslogic.user.CurrentUser;
 import lv.javaguru.java2.businesslogic.user.User;
 
 import java.sql.Connection;
@@ -16,7 +15,7 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
 
     // user management
     @Override
-    public void addNewUser(User user) {
+    public User addNewUser(User user) {
         Connection connection = null;
         try {
             connection = getConnection();
@@ -29,8 +28,9 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
             preparedStatement.executeUpdate();
             ResultSet rs = preparedStatement.getGeneratedKeys();
             if (rs.next()){
-                CurrentUser.id = (rs.getLong(1));
+                user.setId(rs.getLong(1));
             }
+            return user;
         } catch (Throwable e) {
             System.out.println("Exception while execute database.addNewUser()");
             e.printStackTrace();
@@ -95,6 +95,26 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
     }
 
     @Override
+    public void changeUserNickname(Long userId, String nickname) {
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            // UPDATE `chat`.`user` SET `nickname`='newNickname' WHERE `id`='8';
+            String sql = "update user set nickname = ? where id = ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, nickname);
+            preparedStatement.setLong(2, userId);
+            preparedStatement.executeUpdate();
+        } catch (Throwable e) {
+            System.out.println("Exception while execute database.changeUserNickname()");
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } finally {
+            closeConnection(connection);
+        }
+    }
+
+    @Override
     public void addUserToRoom(Long userId, Long roomId) {
         Connection connection = null;
         try {
@@ -105,6 +125,12 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
             preparedStatement.setLong(1, userId);
             preparedStatement.setLong(2, roomId);
             preparedStatement.executeUpdate();
+            /*ResultSet rs = preparedStatement.getGeneratedKeys();
+            ChatRoom room = new ChatRoom();
+            if (rs.next()){
+                room.setId(rs.getLong(1));
+            }
+            return room;*/
         } catch (Throwable e) {
             System.out.println("Exception while execute database.addUserToRoom()");
             e.printStackTrace();
@@ -134,7 +160,7 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
     }
 
     @Override
-    public boolean findUserInARoom(Long userId, String roomName) {
+    public boolean findUserInRoomById(Long userId, String roomName) {
         Connection connection = null;
         try {
             connection = getConnection();
@@ -153,7 +179,7 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
             else
                 return false;
         } catch (Throwable e) {
-            System.out.println("Exception while execute database.findUserInARoom()");
+            System.out.println("Exception while execute database.findUserInRoomById()");
             e.printStackTrace();
             throw new RuntimeException(e);
         } finally {
@@ -161,10 +187,39 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
         }
     }
 
+    /*@Override
+    public boolean findUserInRoomByNickname(String nickname, String roomName) {
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            String sql =
+                    "select * " +
+                            "from user_in_room " +
+                            "join chat_room on user_in_room.room_id = chat_room.id " +
+                            "join user on user_in_room.user.id = user.id" +
+                            "where  user.nickname = ? and chat_room.name = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setLong(1, userId);
+            preparedStatement.setString(2, roomName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next())
+                return true;
+            else
+                return false;
+        } catch (Throwable e) {
+            System.out.println("Exception while execute database.findUserInRoomById()");
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } finally {
+            closeConnection(connection);
+        }
+    }*/
+
 
     // room management
     @Override
-    public void createNewChatRoom(String roomName) {
+    public Optional<ChatRoom> createNewChatRoom(String roomName) {
         Connection connection = null;
         try {
             connection = getConnection();
@@ -173,8 +228,16 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
                     connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, roomName);
             preparedStatement.executeUpdate();
+            ResultSet rs = preparedStatement.getGeneratedKeys();
+            ChatRoom room = null;
+            if (rs.next()){
+                room = new ChatRoom();
+                room.setId(rs.getLong(1));
+                room.setName(roomName);
+            }
+            return Optional.ofNullable(room);
         } catch (Throwable e) {
-            System.out.println("Exception while execute database.addNewUser()");
+            System.out.println("Exception while execute database.createNewChatRoom()");
             e.printStackTrace();
             throw new RuntimeException(e);
         } finally {
@@ -183,7 +246,32 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
     }
 
     @Override
-    public Optional<ChatRoom> findChatRoom(String roomName) {
+    public Optional<ChatRoom> findChatRoomByRoomId(Long roomId) {
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            String sql = "select * from chat_room where id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setLong(1, roomId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            ChatRoom room = null;
+            if (resultSet.next()) {
+                room = new ChatRoom();
+                room.setId(resultSet.getLong("id"));
+                room.setName(resultSet.getString("name"));
+            }
+            return Optional.ofNullable(room);
+        } catch (Throwable e) {
+            System.out.println("Exception while execute database.findChatRoomByRoomId()");
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } finally {
+            closeConnection(connection);
+        }
+    }
+
+    @Override
+    public Optional<ChatRoom> findChatRoomByRoomName(String roomName) {
         Connection connection = null;
         try {
             connection = getConnection();
@@ -199,7 +287,7 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
             }
             return Optional.ofNullable(room);
         } catch (Throwable e) {
-            System.out.println("Exception while execute database.findChatRoom()");
+            System.out.println("Exception while execute database.findChatRoomByRoomId()");
             e.printStackTrace();
             throw new RuntimeException(e);
         } finally {
@@ -210,14 +298,14 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
     @Override
     public List<ChatRoom> getListOfAllRooms() {
         Connection connection = null;
-        List listOfAllChatRooms = new ArrayList();
         try {
             connection = getConnection();
             String sql = "select * from chat_room";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
-            ChatRoom room = null;
-            if (resultSet.next()) {
+            List<ChatRoom> listOfAllChatRooms = new ArrayList();
+            ChatRoom room;
+            while (resultSet.next()) {
                 room = new ChatRoom();
                 room.setId(resultSet.getLong("id"));
                 room.setName(resultSet.getString("name"));
@@ -240,13 +328,13 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
         Connection connection = null;
         try {
             connection = getConnection();
-            String sql = "insert into message(id, timestamp, message_body, user_id, room_id) " +
+            String sql = "insert into message(id, timestamp, user_nickname, message_body, room_id) " +
                     "values(default, ?, ?, ?, ?)";
             PreparedStatement preparedStatement =
                     connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, message.getTimestamp());
-            preparedStatement.setString(2, message.getMessage_body());
-            preparedStatement.setLong(3, message.getUser_id());
+            preparedStatement.setString(2, message.getUser_nickname());
+            preparedStatement.setString(3, message.getMessage_body());
             preparedStatement.setLong(4, message.getRoom_id());
             preparedStatement.executeUpdate();
         } catch (Throwable e) {
@@ -266,16 +354,16 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
             String sql = "select * from message order by id desc limit 1";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
-            Message message = null;
+            Message msg = null;
             if (resultSet.next()) {
-                message = new Message();
-                message.setId(resultSet.getLong("id"));
-                message.setTimestamp(resultSet.getString("timestamp"));
-                message.setMessage_body(resultSet.getString("message_body"));
-                message.setUser_id(resultSet.getLong("user_id"));
-                message.setRoom_id(resultSet.getLong("room_id"));
+                msg = new Message();
+                msg.setId(resultSet.getLong("id"));
+                msg.setTimestamp(resultSet.getString("timestamp"));
+                msg.setUser_nickname(resultSet.getString("user_nickname"));
+                msg.setMessage_body(resultSet.getString("message_body"));
+                msg.setRoom_id(resultSet.getLong("room_id"));
             }
-            return Optional.ofNullable(message);
+            return Optional.ofNullable(msg);
         } catch (Throwable e) {
             System.out.println("Exception while execute database.getLastChatMessageInRoom()");
             e.printStackTrace();
@@ -286,8 +374,34 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
     }
 
     @Override
-    public List<Message> getAllChatHistoryInRoom(String roomName) {
-        return null;
+    public List<Message> getAllChatHistoryInRoom(Long roomId) {
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            String sql = "select * from message where room_id = ?";
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            preparedStatement.setLong(1, roomId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Message> messages = new ArrayList<>();
+            Message msg;
+            while (resultSet.next()) {
+                msg = new Message();
+                msg.setId(resultSet.getLong("id"));
+                msg.setTimestamp(resultSet.getString("timestamp"));
+                msg.setUser_nickname(resultSet.getString("user_nickname"));
+                msg.setMessage_body(resultSet.getString("message_body"));
+                msg.setRoom_id(resultSet.getLong("room_id"));
+                messages.add(msg);
+            }
+            return messages;
+        } catch (Throwable e) {
+            System.out.println("Exception while execute database.getAllChatHistoryInRoom()");
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } finally {
+            closeConnection(connection);
+        }
     }
 
 }
