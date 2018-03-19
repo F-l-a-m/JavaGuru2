@@ -1,7 +1,6 @@
 package lv.javaguru.java2.views;
 
 import lv.javaguru.java2.businesslogic.chat.MessageService;
-import lv.javaguru.java2.businesslogic.room.ChatRoom;
 import lv.javaguru.java2.businesslogic.room.CurrentRoom;
 import lv.javaguru.java2.database.Database;
 import lv.javaguru.java2.businesslogic.chat.Message;
@@ -10,7 +9,7 @@ import java.util.List;
 
 public class RefreshConsoleView implements View {
 
-    private MessageService messageService;
+    private final MessageService messageService;
 
     public RefreshConsoleView(Database database) {
         this.messageService = new MessageService(database);

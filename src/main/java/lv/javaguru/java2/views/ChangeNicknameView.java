@@ -8,9 +8,9 @@ import lv.javaguru.java2.businesslogic.StringCache;
 
 public class ChangeNicknameView implements View {
 
-    private StringCache stringCache;
-    private UserService userService;
-    private User user;
+    private final StringCache stringCache;
+    private final UserService userService;
+    private final User user;
 
     public ChangeNicknameView(Database database, User user, StringCache stringCache) {
         this.stringCache = stringCache;

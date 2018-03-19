@@ -4,13 +4,12 @@ import lv.javaguru.java2.businesslogic.room.ChatRoom;
 import lv.javaguru.java2.businesslogic.user.User;
 import lv.javaguru.java2.database.Database;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class MessageService {
 
-    private Database database;
+    private final Database database;
 
     public MessageService(Database database) {
         this.database = database;
@@ -40,10 +39,8 @@ public class MessageService {
 
     public List<Message> getAllChatHistoryInRoom(ChatRoom room) {
         // Check if room with given id exists
-        Optional<ChatRoom> foundRoom = database.findChatRoomByRoomId(room.getId());
-        if(foundRoom.isPresent()) {
-            return database.getAllChatHistoryInRoom(room.getId());
-        }
-        return null;
+        Long id = room.getId();
+        Optional<ChatRoom> foundRoom = database.findChatRoomByRoomId(id);
+        return foundRoom.map(chatRoom -> database.getAllChatHistoryInRoom(id)).orElse(null);
     }
 }

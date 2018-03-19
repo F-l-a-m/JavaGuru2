@@ -6,7 +6,7 @@ import lv.javaguru.java2.database.Database;
 
 public class PrintMessageView implements View {
 
-    private MessageService messageService;
+    private final MessageService messageService;
 
     public PrintMessageView(Database database) {
         messageService = new MessageService(database);

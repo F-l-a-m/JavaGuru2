@@ -10,10 +10,10 @@ import lv.javaguru.java2.database.Database;
 
 public class JoinChatRoomView implements View {
 
-    private ChatRoomService chatRoomService;
-    private UserService userService;
-    private StringCache stringCache;
-    private User user;
+    private final ChatRoomService chatRoomService;
+    private final UserService userService;
+    private final StringCache stringCache;
+    private final User user;
 
     public JoinChatRoomView(Database database, User user, StringCache stringCache) {
         this.stringCache = stringCache;

@@ -6,17 +6,17 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class JDBCDatabase {
+class JDBCDatabase {
 
     private static final String DB_CONFIG_FILE = "database.properties";
 
-    protected String jdbcUrl = null;
-    protected String driverClass = null;
-    protected String userName = null;
-    protected String password = null;
+    private String jdbcUrl = null;
+    private String driverClass = null;
+    private String userName = null;
+    private String password = null;
 
 
-    public JDBCDatabase() {
+    JDBCDatabase( ) {
         initDatabaseConnectionProperties();
         registerJDBCDriver();
     }
@@ -47,7 +47,7 @@ public class JDBCDatabase {
         }
     }
 
-    protected Connection getConnection() {
+    Connection getConnection( ) {
         try{
             return DriverManager.getConnection(jdbcUrl, userName, password);
         } catch (SQLException e) {
@@ -57,7 +57,7 @@ public class JDBCDatabase {
         }
     }
 
-    protected void closeConnection(Connection connection) {
+    void closeConnection(Connection connection) {
         try {
             if(connection != null) {
                 connection.close();

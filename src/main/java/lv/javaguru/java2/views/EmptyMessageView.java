@@ -5,7 +5,7 @@ import lv.javaguru.java2.businesslogic.user.User;
 
 public class EmptyMessageView implements View {
 
-    private User user;
+    private final User user;
 
     public EmptyMessageView(User user) {
         this.user = user;

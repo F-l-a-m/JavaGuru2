@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public class ChatRoomService {
 
-    private Database database;
+    private final Database database;
 
     public ChatRoomService(Database database) {
         this.database = database;
@@ -31,9 +31,7 @@ public class ChatRoomService {
 
     public ChatRoom createNewChatRoom(String roomName) {
         Optional<ChatRoom> room = database.createNewChatRoom(roomName);
-        if(room.isPresent())
-            return room.get();
-        return null;
+        return room.orElse(null);
     }
 
     public ChatRoom findChatRoomByName(String roomName){

@@ -10,27 +10,11 @@ import java.util.Optional;
 
 public class UserService {
 
-    private Database database;
+    private final Database database;
 
     public UserService(Database database) {
         this.database = database;
     }
-
-    /*public void setCurrentUser(User user) {
-        CurrentUser.id = user.getId();
-        CurrentUser.login = user.getLogin();
-        CurrentUser.nickname = user.getNickname();
-        CurrentUser.password = user.getPassword();
-    }
-
-    public User getCurrentUser() {
-        User u = new User();
-        u.setId(CurrentUser.id);
-        u.setLogin(CurrentUser.login);
-        u.setNickname(getCurrentUser().getNickname());
-        u.setNickname(getCurrentUser().getPassword());
-        return u;
-    }*/
 
     public User createNewGuest() {
         // Generate guest and add it to database

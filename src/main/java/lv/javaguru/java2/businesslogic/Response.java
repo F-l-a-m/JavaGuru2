@@ -4,8 +4,8 @@ import java.util.List;
 
 public class Response {
 
-    private boolean success;
-    private List<Error> errors;
+    private final boolean success;
+    private final List<Error> errors;
 
     public Response(boolean success, List<Error> errors) {
         this.success = success;

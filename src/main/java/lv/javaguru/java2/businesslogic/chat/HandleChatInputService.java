@@ -2,18 +2,17 @@ package lv.javaguru.java2.businesslogic.chat;
 
 import lv.javaguru.java2.Constants;
 import lv.javaguru.java2.businesslogic.StringCache;
-import lv.javaguru.java2.businesslogic.room.ChatRoom;
 import lv.javaguru.java2.businesslogic.room.CurrentRoom;
 import lv.javaguru.java2.businesslogic.user.User;
 import lv.javaguru.java2.database.Database;
 
 public class HandleChatInputService implements Constants {
 
-    private Database database;
-    private StringCache stringCache;
-    private int maxCommandLength;
+    private final Database database;
+    private final StringCache stringCache;
+    private final int maxCommandLength;
     private String input;
-    private User user;
+    private final User user;
 
     public HandleChatInputService(Database database, User user, StringCache stringCache) {
         this.database = database;
@@ -31,7 +30,10 @@ public class HandleChatInputService implements Constants {
         else if(input.charAt(0) == '/')
            return handleChatCommand();
         // Handle as usual message
-        else return handleMessage();
+        else {
+            handleInputAsMessage();
+            return userActions.PRINT_MESSAGE;
+        }
     }
 
     private Enum handleChatCommand() {
@@ -68,9 +70,8 @@ public class HandleChatInputService implements Constants {
         return userActions.BAD_COMMAND;
     }
 
-private Enum handleMessage() {
+private void handleInputAsMessage() {
         MessageService messageService = new MessageService(database);
         messageService.saveMessageToDatabase(input, user, CurrentRoom.getRoom());
-        return userActions.PRINT_MESSAGE;
     }
 }

@@ -173,11 +173,7 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
             preparedStatement.setLong(1, userId);
             preparedStatement.setString(2, roomName);
             ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next())
-                return true;
-            else
-                return false;
+            return resultSet.next( );
         } catch (Throwable e) {
             System.out.println("Exception while execute database.findUserInRoomById()");
             e.printStackTrace();
@@ -298,12 +294,12 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
     @Override
     public List<ChatRoom> getListOfAllRooms() {
         Connection connection = null;
+        List<ChatRoom> listOfAllChatRooms = new ArrayList<>();
         try {
             connection = getConnection();
             String sql = "select * from chat_room";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
-            List<ChatRoom> listOfAllChatRooms = new ArrayList();
             ChatRoom room;
             while (resultSet.next()) {
                 room = new ChatRoom();
@@ -351,7 +347,7 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
         Connection connection = null;
         try {
             connection = getConnection();
-            String sql = "select * from message order by id desc limit 1";
+            String sql = "select * from message order by id desc limit 1"; // where room_id = ?
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
             Message msg = null;
