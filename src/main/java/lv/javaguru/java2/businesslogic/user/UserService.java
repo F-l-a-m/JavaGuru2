@@ -17,11 +17,39 @@ public class UserService {
         this.database = database;
     }
 
-    public User createNewGuest() {
-        // Generate guest and add it to database
-        User guest = new User();
-        //CurrentUser.login = guest.getLogin();
-        return database.addNewUser(guest);
+    public User initializeNewGuest() {
+        User guest = null;
+        boolean success = false;
+        // generate random guest and check if record exists in db
+        while (!success) {
+            int rand = (int) (Math.random( ) * 100);
+            String nickname = "guest" + Integer.toString(rand);
+            Optional<User> search = database.getUserByNickname(nickname);
+            if (search.isPresent( )) {
+                User foundUser = search.get();
+                // check if guest account is active
+                if (foundUser.isActive( )) {
+                    System.out.println("User " + nickname + " is already active");
+                    continue;
+                }
+                else {
+                    // set that account active and use it
+                    database.updateUserActiveStatus(foundUser, true);
+                    guest = foundUser;
+                    success = true;
+                    System.out.println("Activating account " + nickname);
+                }
+            }
+            else {
+                guest = new User(nickname);
+                guest.setActive(true);
+                database.addNewUser(guest);
+                success = true;
+                System.out.println("Created new user " + nickname);
+            }
+        }
+        System.out.println("Hello " + guest.getNickname());
+        return guest;
     }
 
     public ChatRoom addUserToChatRoom(User user, String roomName) {

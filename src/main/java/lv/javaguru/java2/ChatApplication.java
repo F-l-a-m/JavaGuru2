@@ -48,7 +48,7 @@ class ChatApplication implements Constants {
         StringCache stringCache = new StringCache( );
         
         // user service creates new user, saves it to db
-        CurrentUser.setUser(userService.createNewGuest( ));
+        CurrentUser.setUser(userService.initializeNewGuest( ));
         
         // room service creates / opens guest room
         CurrentRoom.setRoom(chatRoomService.initializeGuestRoom( ));

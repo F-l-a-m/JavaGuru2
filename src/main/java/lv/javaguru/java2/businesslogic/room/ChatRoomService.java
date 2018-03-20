@@ -21,10 +21,12 @@ public class ChatRoomService {
             Optional<ChatRoom> newRoom;
             newRoom = database.createNewChatRoom("Guest room");
             System.out.println("Guest room created");
+            System.out.println("Now chatting in \'Guest room\'");
             return newRoom.get();
         }
         else {
             System.out.println("Guest room is already created");
+            System.out.println("Now chatting in \'Guest room\'");
             return foundRoom.get();
         }
     }

@@ -6,10 +6,10 @@ public class User {
     private String login;
     private String password;
     private String nickname;
-
-    public User(){
-        int rand = (int)(Math.random() * 100);
-        this.nickname = "guest" + Integer.toString(rand);
+    private boolean isActive;
+    
+    public User() {
+    
     }
 
     public User(String nickname){
@@ -47,7 +47,15 @@ public class User {
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
-
+    
+    public boolean isActive( ) {
+        return isActive;
+    }
+    
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+    
     @Override
     public boolean equals(Object o){
         if (this == o) return true;

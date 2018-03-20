@@ -10,9 +10,12 @@ public interface Database {
 
     // User management
     User addNewUser(User user);
+    void updateUserActiveStatus(User user, boolean activeStatus);
     Optional<User> getUserById(Long userId);
     Optional<User> getUserByNickname(String nickname);
     void changeUserNickname(Long userId, String nickname);
+    
+    // user in room management
     void addUserToRoom(Long userId, Long roomId);
     void removeUserFromRoom(Long userId, Long roomId);
     boolean findUserInRoomById(Long userId, String roomName);

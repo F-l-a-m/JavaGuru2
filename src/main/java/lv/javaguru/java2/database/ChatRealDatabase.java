@@ -20,7 +20,7 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
         Connection connection = null;
         try {
             connection = getConnection();
-            String sql = "insert into user(id, login, password, nickname) values(default, ?, ?, ?)";
+            String sql = "insert into user(id, login, password, nickname, is_active) values(default, ?, ?, ?, false)";
             PreparedStatement preparedStatement =
                     connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, user.getLogin());
@@ -34,6 +34,25 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
             return user;
         } catch (Throwable e) {
             System.out.println("Exception while execute database.addNewUser()");
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } finally {
+            closeConnection(connection);
+        }
+    }
+    
+    @Override
+    public void updateUserActiveStatus(User user, boolean activeStatus) {
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            String sql = "update user set is_active = ? where id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setBoolean(1, activeStatus);
+            preparedStatement.setLong(2, user.getId());
+            preparedStatement.executeUpdate();
+        } catch (Throwable e) {
+            System.out.println("Exception while execute database.updateUserActiveStatus()");
             e.printStackTrace();
             throw new RuntimeException(e);
         } finally {
@@ -57,6 +76,7 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
                 user.setLogin(resultSet.getString("login"));
                 user.setPassword(resultSet.getString("password"));
                 user.setNickname(resultSet.getString("nickname"));
+                user.setActive(resultSet.getBoolean("is_active"));
             }
             return Optional.ofNullable(user);
         } catch (Throwable e) {
@@ -84,6 +104,7 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
                 user.setLogin(resultSet.getString("login"));
                 user.setPassword(resultSet.getString("password"));
                 user.setNickname(resultSet.getString("nickname"));
+                user.setActive(resultSet.getBoolean("is_active"));
             }
             return Optional.ofNullable(user);
         } catch (Throwable e) {
