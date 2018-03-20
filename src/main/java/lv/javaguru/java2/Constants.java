@@ -8,6 +8,8 @@ public interface Constants {
         BAD_COMMAND,
         REFRESH_CONSOLE,
         QUIT,
-        JOIN_CHAT_ROOM
+        JOIN_CHAT_ROOM,
+        LIST_CHAT_ROOMS,
+        LEAVE_CHAT_ROOM
     }
 }

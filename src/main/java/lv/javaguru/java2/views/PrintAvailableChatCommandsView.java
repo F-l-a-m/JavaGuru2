@@ -10,7 +10,8 @@ public class PrintAvailableChatCommandsView implements View {
         List<String> commands = new ArrayList<>();
         commands.add("Available chat commands");
         commands.add("/quit - quit application, /nick - set nickname");
-        commands.add("/r - refresh view");
+        commands.add("/r - refresh view, /list - show all rooms");
+        commands.add("/join - join or create new chat room");
 
         // calculate the longest string
         int longestString = 0;

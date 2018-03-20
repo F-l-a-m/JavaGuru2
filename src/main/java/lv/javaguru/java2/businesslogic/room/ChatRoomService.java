@@ -34,7 +34,7 @@ public class ChatRoomService {
         return room.orElse(null);
     }
 
-    public ChatRoom findChatRoomByName(String roomName){
+    public ChatRoom findChatRoomByName(String roomName) {
         Optional<ChatRoom> foundRoom = database.findChatRoomByRoomName(roomName);
         if(foundRoom.isPresent()){
             return foundRoom.get();
@@ -45,7 +45,7 @@ public class ChatRoomService {
         return null;
     }
 
-    public List<ChatRoom> getListOfAllChatRooms(){
+    public List<ChatRoom> getListOfAllChatRooms() {
         List<ChatRoom> chatRooms = database.getListOfAllRooms();
         if(chatRooms.isEmpty()){
             System.out.println("No chat rooms found in database");

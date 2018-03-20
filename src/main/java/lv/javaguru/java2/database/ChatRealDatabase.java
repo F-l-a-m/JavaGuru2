@@ -7,6 +7,7 @@ import lv.javaguru.java2.businesslogic.user.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -100,7 +101,7 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
         try {
             connection = getConnection();
             // UPDATE `chat`.`user` SET `nickname`='newNickname' WHERE `id`='8';
-            String sql = "update user set nickname = ? where id = ?)";
+            String sql = "update user set nickname = ? where id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, nickname);
             preparedStatement.setLong(2, userId);
@@ -297,9 +298,11 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
         List<ChatRoom> listOfAllChatRooms = new ArrayList<>();
         try {
             connection = getConnection();
-            String sql = "select * from chat_room";
+            /*String sql = "select * from chat_room";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            ResultSet resultSet = preparedStatement.executeQuery();*/
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select * from chat_room");
             ChatRoom room;
             while (resultSet.next()) {
                 room = new ChatRoom();

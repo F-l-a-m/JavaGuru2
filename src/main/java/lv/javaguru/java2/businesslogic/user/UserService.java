@@ -3,6 +3,7 @@ package lv.javaguru.java2.businesslogic.user;
 import lv.javaguru.java2.businesslogic.Error;
 import lv.javaguru.java2.businesslogic.Response;
 import lv.javaguru.java2.businesslogic.room.ChatRoom;
+import lv.javaguru.java2.businesslogic.room.CurrentRoom;
 import lv.javaguru.java2.database.Database;
 
 import java.util.List;
@@ -41,14 +42,25 @@ public class UserService {
     }
 
     public void removeUserFromChatRoom(User user, String roomName) {
-        Optional<ChatRoom> foundRoom = database.findChatRoomByRoomName(roomName);
-        if(foundRoom.isPresent()) {
-            ChatRoom room = foundRoom.get();
-            database.removeUserFromRoom(user.getId(), room.getId());
-            System.out.println("User '" + user.getNickname() + "' has left" + " " + roomName);
+        // check if user is already in default guest room
+        if(roomName.equals("Guest room")) {
+            System.out.println("Cant leave default room. You are now chatting in \'Guest room'\'");
         }
         else {
-            System.out.println("Room " +roomName + " not found");
+            // leave current chat room
+            Optional<ChatRoom> foundRoom = database.findChatRoomByRoomName(roomName);
+            if (foundRoom.isPresent( )) {
+                ChatRoom room = foundRoom.get( );
+                database.removeUserFromRoom(user.getId( ), room.getId( ));
+                System.out.println("User '" + user.getNickname( ) + "' has left" + " " + roomName);
+        
+                // and join default guest room
+                Optional<ChatRoom> guestRoom = database.findChatRoomByRoomName("Guest room");
+                CurrentRoom.setRoom(guestRoom.get( ));
+                System.out.println("Now chatting in \'Guest room'\'");
+            } else {
+                System.out.println("Room " + roomName + " not found");
+            }
         }
     }
 

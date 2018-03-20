@@ -50,6 +50,10 @@ public class HandleChatInputService implements Constants {
                         return userActions.QUIT;
                     case "/r":
                         return userActions.REFRESH_CONSOLE;
+                    case "/list":
+                        return userActions.LIST_CHAT_ROOMS;
+                    case "/leave":
+                        return userActions.LEAVE_CHAT_ROOM;
                 }
             }
 
@@ -57,9 +61,7 @@ public class HandleChatInputService implements Constants {
             else if (splitStr.length == 2) {
                 switch (splitStr[0]) {
                     case "/nick":
-                        // write nick to db? temp variable ?
-                        // need later in view
-                        stringCache.setTemporaryString(splitStr[1]);
+                        stringCache.setTemporaryString(splitStr[1]); // need later in view
                         return userActions.CHANGE_NICK;
                     case "/join":
                         stringCache.setTemporaryString(splitStr[1]);
