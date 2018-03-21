@@ -13,11 +13,13 @@ public class HandleChatInputService implements Constants {
     private final int maxCommandLength;
     private String input;
     private final User user;
+    private final MessageService messageService;
 
-    public HandleChatInputService(Database database, User user, StringCache stringCache) {
+    public HandleChatInputService(Database database, User user, StringCache stringCache, MessageService messageService) {
         this.database = database;
         this.stringCache = stringCache;
         this.user = user;
+        this.messageService = messageService;
         maxCommandLength = 40;
     }
 
@@ -73,7 +75,6 @@ public class HandleChatInputService implements Constants {
     }
 
 private void handleInputAsMessage() {
-        MessageService messageService = new MessageService(database);
         messageService.saveMessageToDatabase(input, user, CurrentRoom.getRoom());
     }
 }

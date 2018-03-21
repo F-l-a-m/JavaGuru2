@@ -12,9 +12,9 @@ public class ChangeNicknameView implements View {
     private final UserService userService;
     private final User user;
 
-    public ChangeNicknameView(Database database, User user, StringCache stringCache) {
+    public ChangeNicknameView(Database database, User user, StringCache stringCache, UserService userService) {
         this.stringCache = stringCache;
-        this.userService = new UserService(database);
+        this.userService = userService;
         this.user = user;
     }
 

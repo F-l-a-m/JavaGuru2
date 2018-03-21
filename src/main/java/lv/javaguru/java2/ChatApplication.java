@@ -4,6 +4,7 @@ import lv.javaguru.java2.businesslogic.StringCache;
 import lv.javaguru.java2.businesslogic.chat.*;
 import lv.javaguru.java2.businesslogic.room.ChatRoomService;
 import lv.javaguru.java2.businesslogic.room.CurrentRoom;
+import lv.javaguru.java2.businesslogic.user.ChangeNicknameValidator;
 import lv.javaguru.java2.businesslogic.user.CurrentUser;
 import lv.javaguru.java2.businesslogic.user.UserService;
 import lv.javaguru.java2.database.*;
@@ -41,8 +42,10 @@ class ChatApplication implements Constants {
     private static void initialize( ) {
         
         final Database database = new ChatRealDatabase( );
-        final UserService userService = new UserService(database);
+        final ChangeNicknameValidator validator = new ChangeNicknameValidator();
+        final UserService userService = new UserService(database, validator);
         final ChatRoomService chatRoomService = new ChatRoomService(database);
+        final MessageService messageService = new MessageService(database);
     
         // global string for usage in views
         StringCache stringCache = new StringCache( );
@@ -53,21 +56,24 @@ class ChatApplication implements Constants {
         // room service creates / opens guest room
         CurrentRoom.setRoom(chatRoomService.initializeGuestRoom( ));
         
+        // add user to guest room
+        userService.addUserToChatRoom(CurrentUser.getUser(), "Guest room");
+        
         
         // handles all user input
-        handleChatInputService = new HandleChatInputService(database, CurrentUser.getUser(), stringCache);
+        handleChatInputService = new HandleChatInputService(database, CurrentUser.getUser(), stringCache, messageService);
         
         // all views
         View chatCommandsPrintView = new PrintAvailableChatCommandsView( );
         View printMessageView = new PrintMessageView(database);
-        View changeNicknameView = new ChangeNicknameView(database, CurrentUser.getUser(), stringCache);
+        View changeNicknameView = new ChangeNicknameView(database, CurrentUser.getUser(), stringCache, userService);
         View programExitView = new ProgramExitView( );
         View badCommandView = new BadCommandView( );
         View refreshConsoleView = new RefreshConsoleView(database);
         View emptyMessageView = new EmptyMessageView(CurrentUser.getUser());
-        View joinChatRoomView = new JoinChatRoomView(database, CurrentUser.getUser(), stringCache);
+        View joinChatRoomView = new JoinChatRoomView(database, CurrentUser.getUser(), stringCache, userService);
         View listAllRoomsView = new ListAllRoomsView(database);
-        View leaveChatRoomView = new LeaveChatRoomView(database, CurrentUser.getUser());
+        View leaveChatRoomView = new LeaveChatRoomView(database, CurrentUser.getUser(), userService);
         
         // all available actions depending on user input
         actionMap = new HashMap<>( );

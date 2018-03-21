@@ -12,9 +12,11 @@ import java.util.Optional;
 public class UserService {
 
     private final Database database;
+    private ChangeNicknameValidator validator;
 
-    public UserService(Database database) {
+    public UserService(Database database, ChangeNicknameValidator validator) {
         this.database = database;
+        this.validator = validator;
     }
 
     public User initializeNewGuest() {
@@ -93,9 +95,8 @@ public class UserService {
     }
 
     public Response changeUserNickname(User user, String nickname) {
-        ChangeNicknameValidator validator = new ChangeNicknameValidator();
         List<Error> errors = validator.validate(nickname);
-        if(!errors.isEmpty()){
+        if(!errors.isEmpty()) {
             return new Response(false, errors);
         }
         else {

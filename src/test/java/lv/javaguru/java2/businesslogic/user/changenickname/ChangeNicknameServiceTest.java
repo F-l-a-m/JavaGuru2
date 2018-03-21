@@ -1,9 +1,10 @@
-/*
 package lv.javaguru.java2.businesslogic.user.changenickname;
 
 import lv.javaguru.java2.businesslogic.Error;
 import lv.javaguru.java2.businesslogic.Response;
+import lv.javaguru.java2.businesslogic.user.ChangeNicknameValidator;
 import lv.javaguru.java2.businesslogic.user.User;
+import lv.javaguru.java2.businesslogic.user.UserService;
 import lv.javaguru.java2.database.Database;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,27 +17,27 @@ import static org.junit.Assert.*;
 
 public class ChangeNicknameServiceTest {
 
-    private ChangeNicknameValidator changeNicknameValidator;
-    private ChangeNicknameService changeNicknameService;
+    private ChangeNicknameValidator validator;
+    private UserService userService;
     private Database database;
 
     @Before
     public void init() {
-        changeNicknameValidator = Mockito.mock(ChangeNicknameValidator.class);
+        validator = Mockito.mock(ChangeNicknameValidator.class);
         database = Mockito.mock(Database.class);
-        changeNicknameService = new ChangeNicknameService(database, changeNicknameValidator);
+        userService = new UserService(database, validator);
     }
 
     @Test
     public void shouldReturnSuccess() {
         List<Error> errors = new ArrayList<>();
-        Mockito.when(changeNicknameValidator.validate("nickname"))
+        Mockito.when(validator.validate("nickname"))
                 .thenReturn(errors);
         User user = Mockito.mock(User.class);
-        Mockito.when(database.getLastUser())
-                .thenReturn(user);
+        /*Mockito.when(database.getUserByNickname(" "))
+                .thenReturn(Optional.of(user));*/
 
-        Response response = changeNicknameService.changeUserNickname("nickname");
+        Response response = userService.changeUserNickname(user, "nickname");
 
         assertEquals(response.isSuccess(), true);
         assertEquals(response.getErrors(), null);
@@ -46,12 +47,13 @@ public class ChangeNicknameServiceTest {
     public void shouldReturnFail() {
         List<Error> errors = new ArrayList<>();
         errors.add(new Error("error message"));
-        Mockito.when(changeNicknameValidator.validate("nickname"))
+        Mockito.when(validator.validate("nickname"))
                 .thenReturn(errors);
+        User user = Mockito.mock(User.class);
 
-        Response response = changeNicknameService.changeUserNickname("nickname");
+        Response response = userService.changeUserNickname(user, "nickname");
 
         assertEquals(response.isSuccess(), false);
         assertEquals(response.getErrors(), errors);
     }
-}*/
+}

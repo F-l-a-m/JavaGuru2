@@ -15,10 +15,10 @@ public class JoinChatRoomView implements View {
     private final StringCache stringCache;
     private final User user;
 
-    public JoinChatRoomView(Database database, User user, StringCache stringCache) {
+    public JoinChatRoomView(Database database, User user, StringCache stringCache, UserService userService) {
         this.stringCache = stringCache;
         this.chatRoomService = new ChatRoomService(database);
-        this.userService = new UserService(database);
+        this.userService = userService;
         this.user = user;
     }
 

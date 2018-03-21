@@ -1,7 +1,9 @@
-/*
 package lv.javaguru.java2.businesslogic.chat;
 
 import lv.javaguru.java2.Constants;
+import lv.javaguru.java2.businesslogic.StringCache;
+import lv.javaguru.java2.businesslogic.user.User;
+import lv.javaguru.java2.businesslogic.user.UserService;
 import lv.javaguru.java2.database.Database;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,11 +19,13 @@ public class HandleChatInputServiceTest implements Constants {
     public void init() {
         Database database = Mockito.mock(Database.class);
         StringCache stringCache = Mockito.mock(StringCache.class);
-        handleChatInputService = new HandleChatInputService(database, stringCache);
+        User user = Mockito.mock(User.class);
+        MessageService messageService = Mockito.mock(MessageService.class);
+        handleChatInputService = new HandleChatInputService(database, user, stringCache, messageService);
     }
 
     @Test
-    public void shouldReturnEmptyConstant(){
+    public void shouldReturnEmptyConstant() {
         Enum result1 = handleChatInputService.handle("");
         Enum result2 = handleChatInputService.handle(" ");
         Enum result3 = handleChatInputService.handle("  ");
@@ -32,26 +36,23 @@ public class HandleChatInputServiceTest implements Constants {
     }
 
     @Test
-    public void shouldReturnBadCommandConstant(){
+    public void shouldReturnBadCommandConstant() {
         Enum result = handleChatInputService.handle("/");
 
         assertEquals(result, userActions.BAD_COMMAND);
     }
 
     @Test
-    public void shouldReturnRefreshConstant(){
+    public void shouldReturnRefreshConstant() {
         Enum result = handleChatInputService.handle("/r");
 
         assertEquals(result, userActions.REFRESH_CONSOLE);
     }
 
-@Test
-    public void shouldReturnPrintMessageConstant(){
-        UserService UserService = Mockito.mock(UserService.class);
-        Mockito.when(UserService.getCurrentUser().getNickname()).thenReturn("nickname");
+    @Test
+    public void shouldReturnPrintMessageConstant() {
         Enum result = handleChatInputService.handle("Hello");
+        
         assertEquals(result, userActions.PRINT_MESSAGE);
     }
-
 }
-*/

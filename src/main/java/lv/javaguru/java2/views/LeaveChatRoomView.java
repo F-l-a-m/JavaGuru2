@@ -10,8 +10,8 @@ public class LeaveChatRoomView implements View {
     private final UserService userService;
     private final User user;
     
-    public LeaveChatRoomView(Database database, User user) {
-        this.userService = new UserService(database);
+    public LeaveChatRoomView(Database database, User user, UserService userService) {
+        this.userService = userService;
         this.user = user;
     }
     
