@@ -82,7 +82,7 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
             if (resultSet.next()) {
                 user = new User();
                 user.setId(resultSet.getLong("id"));
-                user.setLogin(resultSet.getString("login"));
+                user.setLogin(resultSet.getString("logIn"));
                 user.setPassword(resultSet.getString("password"));
                 user.setNickname(resultSet.getString("nickname"));
                 user.setCreationTime(resultSet.getTimestamp("creationTime"));
@@ -111,7 +111,7 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
             if (resultSet.next()) {
                 user = new User();
                 user.setId(resultSet.getLong("id"));
-                user.setLogin(resultSet.getString("login"));
+                user.setLogin(resultSet.getString("logIn"));
                 user.setPassword(resultSet.getString("password"));
                 user.setNickname(resultSet.getString("nickname"));
                 user.setCreationTime(resultSet.getTimestamp("creationTime"));

@@ -87,14 +87,19 @@ public class UserService {
         return user.getInputString();
     }
     
-    public User login(String nickname) {
+    public User logIn( String nickname) {
         Optional<User> user = database.getUserByNickname(nickname);
         if(user.isPresent()) {
+            database.updateUserActiveStatus(user.get(), true);
             return user.get();
         }
         else {
             // create new
             return createNewGuest(nickname);
         }
+    }
+    
+    public void logOut(User user) {
+        database.updateUserActiveStatus(user, false);
     }
 }

@@ -41,7 +41,7 @@ class ChatApplication implements Constants {
         // ask for user nickname
         System.out.print("Please enter your nickname: ");
         String nickname = readLine( );
-        user = userService.login(nickname);
+        user = userService.logIn(nickname);
         
         // room service creates / opens guest room
         room = chatRoomService.initializeGuestRoom(user.getNickname( ));
@@ -57,7 +57,7 @@ class ChatApplication implements Constants {
         // all views
         View printMessageView = new PrintMessageView(user, userService, activeRoom, messageService);
         View changeNicknameView = new ChangeNicknameView(user, userService);
-        View programExitView = new ProgramExitView( );
+        View programExitView = new ProgramExitView(user, userService);
         View badCommandView = new BadCommandView( );
         View refreshConsoleView = new RefreshConsoleView(messageService, activeRoom);
         View emptyMessageView = new EmptyMessageView(user);
