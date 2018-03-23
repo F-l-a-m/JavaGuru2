@@ -2,6 +2,7 @@ package lv.javaguru.java2.businesslogic.user;
 
 import lv.javaguru.java2.businesslogic.Error;
 import lv.javaguru.java2.businesslogic.Response;
+import lv.javaguru.java2.businesslogic.room.ActiveRoom;
 import lv.javaguru.java2.domain.ChatRoom;
 import lv.javaguru.java2.database.Database;
 import lv.javaguru.java2.domain.User;
@@ -24,30 +25,28 @@ public class UserService {
         return database.addNewGuest(userName);
     }
     
-    public ChatRoom addUserToChatRoom( User user, String roomName ) {
+    public void addUserToChatRoom( User user, String roomName ) {
         // check if user is already in that room
         if (database.findUserInRoomById(user.getId( ), roomName)) {
             System.out.println("User '" + user.getNickname( ) + "' is already in room '" + roomName + "'");
-            return null;
         } else {
             Optional<ChatRoom> foundRoom = database.findChatRoomByRoomName(roomName);
             if(foundRoom.isPresent()) {
                 ChatRoom room = foundRoom.get( );
                 database.addUserToRoom(user.getId( ), room.getId( ));
                 System.out.println("Successfully added '" + user.getNickname( ) + "' to chat room '" + roomName + "'");
-                return room;
             }
             else {
                 System.out.println("Room " + roomName + " not found.");
-                return null;
             }
         }
     }
     
-    public void removeUserFromChatRoom( User user, String roomName ) {
+    public void removeUserFromChatRoom( User user, ActiveRoom activeRoom ) {
         // check if user is already in default guest room
+        String roomName = activeRoom.getRoom().getName();
         if (roomName.equals("Guest room")) {
-            System.out.println("Cant leave default room. You are now chatting in \'Guest room'\'");
+            System.out.println("Cant leave default room. You are now chatting in 'Guest room'");
         } else {
             // leave current chat room
             Optional<ChatRoom> foundRoom = database.findChatRoomByRoomName(roomName);
@@ -55,10 +54,15 @@ public class UserService {
                 ChatRoom room = foundRoom.get( );
                 database.removeUserFromRoom(user.getId( ), room.getId( ));
                 System.out.println("User '" + user.getNickname( ) + "' has left" + " " + roomName);
-                
                 // and join default guest room
                 Optional<ChatRoom> guestRoom = database.findChatRoomByRoomName("Guest room");
-                System.out.println("Now chatting in \'Guest room'\'");
+                if(guestRoom.isPresent()) {
+                    activeRoom.setRoom(guestRoom.get());
+                }
+                else {
+                    System.out.println("Error, guest room not found in DB!");
+                }
+                System.out.println("Now chatting in 'Guest room'");
             } else {
                 System.out.println("Room " + roomName + " not found");
             }

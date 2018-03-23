@@ -401,7 +401,7 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
                 msg = new Message();
                 msg.setId(resultSet.getLong("id"));
                 msg.setRoom_id(resultSet.getLong("room_id"));
-                msg.setCreationTime(resultSet.getTimestamp("timestamp"));
+                msg.setCreationTime(resultSet.getTimestamp("creationTime"));
                 msg.setUser_nickname(resultSet.getString("user_nickname"));
                 msg.setMessage_body(resultSet.getString("message_body"));
                 messages.add(msg);

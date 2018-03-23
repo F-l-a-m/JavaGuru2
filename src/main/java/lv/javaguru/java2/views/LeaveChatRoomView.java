@@ -1,21 +1,27 @@
 package lv.javaguru.java2.views;
 
+import lv.javaguru.java2.businesslogic.room.ActiveRoom;
 import lv.javaguru.java2.domain.User;
 import lv.javaguru.java2.businesslogic.user.UserService;
-import lv.javaguru.java2.database.Database;
 
 public class LeaveChatRoomView implements View {
     
-    private final UserService userService;
-    private final User user;
+    private UserService userService;
+    private User user;
+    private ActiveRoom activeRoom;
     
-    public LeaveChatRoomView(Database database, User user, UserService userService) {
+    public LeaveChatRoomView(
+            User user,
+            UserService userService,
+            ActiveRoom activeRoom
+    ) {
         this.userService = userService;
         this.user = user;
+        this.activeRoom = activeRoom;
     }
     
     @Override
     public void execute( ) {
-        //userService.removeUserFromChatRoom(user, );
+        userService.removeUserFromChatRoom(user, activeRoom);
     }
 }

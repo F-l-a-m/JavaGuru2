@@ -38,15 +38,15 @@ public class ChatRoomService {
         return room.orElse(null);
     }
 
-    public ChatRoom findChatRoomByName(String roomName) {
-        Optional<ChatRoom> foundRoom = database.findChatRoomByRoomName(roomName);
-        if(foundRoom.isPresent()){
-            return foundRoom.get();
+    public Optional<ChatRoom> findChatRoomByName(String roomName) {
+        Optional<ChatRoom> room = database.findChatRoomByRoomName(roomName);
+        if(room.isPresent()){
+            return room;
         }
         else {
             System.out.println("Room " + roomName + " not found");
+            return Optional.empty();
         }
-        return null;
     }
 
     public List<ChatRoom> getListOfAllChatRooms() {

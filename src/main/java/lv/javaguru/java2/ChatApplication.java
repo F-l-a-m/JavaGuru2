@@ -45,6 +45,8 @@ class ChatApplication implements Constants {
         
         // room service creates / opens guest room
         room = chatRoomService.initializeGuestRoom(user.getNickname( ));
+        ActiveRoom activeRoom = new ActiveRoom();
+        activeRoom.setRoom(room);
         
         // add user to default chat room
         userService.addUserToChatRoom(user, "Guest room");
@@ -53,15 +55,15 @@ class ChatApplication implements Constants {
         handleChatInputService = new HandleChatInputService(userService);
         
         // all views
-        View printMessageView = new PrintMessageView(user, userService, room, messageService);
+        View printMessageView = new PrintMessageView(user, userService, activeRoom, messageService);
         View changeNicknameView = new ChangeNicknameView(user, userService);
         View programExitView = new ProgramExitView( );
         View badCommandView = new BadCommandView( );
-        View refreshConsoleView = new RefreshConsoleView(messageService, room.getName());
+        View refreshConsoleView = new RefreshConsoleView(messageService, activeRoom);
         View emptyMessageView = new EmptyMessageView(user);
-        View joinChatRoomView = new JoinChatRoomView(user, userService, chatRoomService);
+        View joinChatRoomView = new JoinChatRoomView(user, userService, chatRoomService, activeRoom);
         View listAllRoomsView = new ListAllRoomsView(database);
-        View leaveChatRoomView = new LeaveChatRoomView(database, user, userService);
+        View leaveChatRoomView = new LeaveChatRoomView(user, userService, activeRoom);
         
         // all available actions depending on user input
         actionMap = new HashMap<>( );
