@@ -1,6 +1,6 @@
 package lv.javaguru.java2.views;
 
-import lv.javaguru.java2.businesslogic.room.ChatRoom;
+import lv.javaguru.java2.domain.ChatRoom;
 import lv.javaguru.java2.businesslogic.room.ChatRoomService;
 import lv.javaguru.java2.database.Database;
 

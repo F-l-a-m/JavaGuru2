@@ -1,4 +1,7 @@
-package lv.javaguru.java2.businesslogic.user;
+package lv.javaguru.java2.domain;
+
+import java.util.Date;
+import java.util.Objects;
 
 public class User {
 
@@ -6,7 +9,9 @@ public class User {
     private String login;
     private String password;
     private String nickname;
+    private Date creationTime;
     private boolean isActive;
+    private String inputString;
     
     public User() {
     
@@ -48,6 +53,14 @@ public class User {
         this.nickname = nickname;
     }
     
+    public Date getCreationTime( ) {
+        return creationTime;
+    }
+    
+    public void setCreationTime(Date creationTime) {
+        this.creationTime = creationTime;
+    }
+    
     public boolean isActive( ) {
         return isActive;
     }
@@ -56,12 +69,25 @@ public class User {
         isActive = active;
     }
     
+    public String getInputString( ) {
+        return inputString;
+    }
+    
+    public void setInputString( String inputString ) {
+        this.inputString = inputString;
+    }
+    
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        final User user = (User) o;
-        return this.nickname.equals(user.nickname);
+        if (o == null || getClass( ) != o.getClass( )) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id);
+    }
+    
+    @Override
+    public int hashCode( ) {
+        
+        return Objects.hash(id);
     }
 }

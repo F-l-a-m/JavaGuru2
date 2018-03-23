@@ -1,9 +1,9 @@
 /*
 package lv.javaguru.java2.database;
 
-import lv.javaguru.java2.businesslogic.chat.Message;
-import lv.javaguru.java2.businesslogic.room.ChatRoom;
-import lv.javaguru.java2.businesslogic.user.User;
+import lv.javaguru.java2.domain.Message;
+import lv.javaguru.java2.domain.ChatRoom;
+import lv.javaguru.java2.domain.User;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Optional;

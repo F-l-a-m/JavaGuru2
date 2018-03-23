@@ -1,18 +1,18 @@
 package lv.javaguru.java2.views;
 
 import lv.javaguru.java2.businesslogic.chat.MessageService;
-import lv.javaguru.java2.businesslogic.room.CurrentRoom;
-import lv.javaguru.java2.database.Database;
-import lv.javaguru.java2.businesslogic.chat.Message;
+import lv.javaguru.java2.domain.Message;
 
 import java.util.List;
 
 public class RefreshConsoleView implements View {
 
     private final MessageService messageService;
+    private final String roomName;
 
-    public RefreshConsoleView(Database database) {
-        this.messageService = new MessageService(database);
+    public RefreshConsoleView(MessageService messageService, String roomName) {
+        this.messageService = messageService;
+        this.roomName = roomName;
     }
 
     @Override
@@ -21,7 +21,7 @@ public class RefreshConsoleView implements View {
         System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 
         // Print whole chat history in current chat room
-        List<Message> messages = messageService.getAllChatHistoryInRoom(CurrentRoom.getRoom());
+        List<Message> messages = messageService.getAllChatHistoryInRoom(roomName);
         for(Message m : messages){
             System.out.println(m);
         }

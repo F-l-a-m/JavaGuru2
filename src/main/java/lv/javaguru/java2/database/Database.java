@@ -1,19 +1,19 @@
 package lv.javaguru.java2.database;
 
-import lv.javaguru.java2.businesslogic.chat.Message;
-import lv.javaguru.java2.businesslogic.room.ChatRoom;
-import lv.javaguru.java2.businesslogic.user.User;
+import lv.javaguru.java2.domain.Message;
+import lv.javaguru.java2.domain.ChatRoom;
+import lv.javaguru.java2.domain.User;
 import java.util.List;
 import java.util.Optional;
 
 public interface Database {
 
     // User management
-    User addNewUser(User user);
+    User addNewGuest(String nickname);
     void updateUserActiveStatus(User user, boolean activeStatus);
     Optional<User> getUserById(Long userId);
     Optional<User> getUserByNickname(String nickname);
-    void changeUserNickname(Long userId, String nickname);
+    void changeUserNickname(String oldNickname, String newNickname);
     
     // user in room management
     void addUserToRoom(Long userId, Long roomId);
@@ -23,14 +23,14 @@ public interface Database {
 
 
     // Chat room management
-    Optional<ChatRoom> createNewChatRoom(String roomName);
+    Optional<ChatRoom> createNewChatRoom(String roomName, String creatorNickname);
     Optional<ChatRoom> findChatRoomByRoomId(Long roomId);
     Optional<ChatRoom> findChatRoomByRoomName(String roomName);
     List<ChatRoom> getListOfAllRooms();
 
 
     // Message management
-    void addChatMessage(Message message);
+    Message addChatMessage(String message, String nickname, Long roomId);
     Optional<Message> getLastChatMessageInRoom(Long roomId);
     List<Message> getAllChatHistoryInRoom(Long roomId);
 }

@@ -1,41 +1,38 @@
 package lv.javaguru.java2.views;
 
-import lv.javaguru.java2.businesslogic.StringCache;
-import lv.javaguru.java2.businesslogic.room.ChatRoom;
+import lv.javaguru.java2.domain.ChatRoom;
 import lv.javaguru.java2.businesslogic.room.ChatRoomService;
-import lv.javaguru.java2.businesslogic.room.CurrentRoom;
-import lv.javaguru.java2.businesslogic.user.User;
+import lv.javaguru.java2.domain.User;
 import lv.javaguru.java2.businesslogic.user.UserService;
-import lv.javaguru.java2.database.Database;
 
 public class JoinChatRoomView implements View {
+    
+    private User user;
+    private UserService userService;
+    private ChatRoomService chatRoomService;
 
-    private final ChatRoomService chatRoomService;
-    private final UserService userService;
-    private final StringCache stringCache;
-    private final User user;
-
-    public JoinChatRoomView(Database database, User user, StringCache stringCache, UserService userService) {
-        this.stringCache = stringCache;
-        this.chatRoomService = new ChatRoomService(database);
-        this.userService = userService;
+    public JoinChatRoomView(
+            User user,
+            UserService userService,
+            ChatRoomService chatRoomService
+    ) {
         this.user = user;
+        this.userService = userService;
+        this.chatRoomService = chatRoomService;
     }
 
     @Override
     public void execute() {
-        String roomName = stringCache.getTemporaryString();
+        String roomName = userService.getUserInput(user);
         ChatRoom room = chatRoomService.findChatRoomByName(roomName);
         if(room != null) {
             // join
             userService.addUserToChatRoom(user, roomName);
-            CurrentRoom.setRoom(room);
         }
         else {
             // create new room and add user to it
-            chatRoomService.createNewChatRoom(roomName);
+            chatRoomService.createNewChatRoom(roomName, user.getNickname() );
             room = userService.addUserToChatRoom(user, roomName);
-            CurrentRoom.setRoom(room);
             System.out.println("Successfully joined " + roomName);
         }
     }

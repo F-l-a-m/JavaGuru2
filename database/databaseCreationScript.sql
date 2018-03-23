@@ -18,14 +18,16 @@ USE `chat` ;
 -- Table `chat`.`user`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `chat`.`user` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `login` VARCHAR(45) NULL,
-  `password` VARCHAR(45) NULL,
-  `nickname` VARCHAR(45) NULL,
-  `is_active` TINYINT(1) NOT NULL,
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `login` VARCHAR(16) NULL,
+  `password` VARCHAR(128) NULL,
+  `nickname` VARCHAR(16) NOT NULL,
+  `creationTime` DATETIME NOT NULL,
+  `isActive` TINYINT(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `user_id_UNIQUE` (`id` ASC),
-  UNIQUE INDEX `login_UNIQUE` (`login` ASC))
+  UNIQUE INDEX `login_UNIQUE` (`login` ASC),
+  UNIQUE INDEX `nickname_UNIQUE` (`nickname` ASC))
 ENGINE = InnoDB;
 
 
@@ -33,8 +35,10 @@ ENGINE = InnoDB;
 -- Table `chat`.`chat_room`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `chat`.`chat_room` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
+  `creatorNickname` VARCHAR(16) NOT NULL,
+  `creationTime` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `room_id_UNIQUE` (`id` ASC),
   UNIQUE INDEX `name_UNIQUE` (`name` ASC))
@@ -45,10 +49,10 @@ ENGINE = InnoDB;
 -- Table `chat`.`message`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `chat`.`message` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `room_id` INT NOT NULL,
-  `timestamp` VARCHAR(45) NOT NULL,
-  `user_nickname` VARCHAR(45) NOT NULL,
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `room_id` BIGINT UNSIGNED NOT NULL,
+  `creationTime` DATETIME NOT NULL,
+  `user_nickname` VARCHAR(16) NOT NULL,
   `message_body` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `message_id_UNIQUE` (`id` ASC),
@@ -63,8 +67,8 @@ ENGINE = InnoDB;
 -- Table `chat`.`user_in_room`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `chat`.`user_in_room` (
-  `user_id` INT NOT NULL,
-  `room_id` INT NOT NULL,
+  `user_id` BIGINT UNSIGNED NOT NULL,
+  `room_id` BIGINT UNSIGNED NOT NULL,
   PRIMARY KEY (`user_id`, `room_id`),
   INDEX `fk_user_has_chat_room_1_idx` (`user_id` ASC),
   CONSTRAINT `fk_user`

@@ -1,6 +1,8 @@
 package lv.javaguru.java2.businesslogic.room;
 
 import lv.javaguru.java2.database.Database;
+import lv.javaguru.java2.domain.ChatRoom;
+import lv.javaguru.java2.domain.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,13 +15,13 @@ public class ChatRoomService {
         this.database = database;
     }
 
-    public ChatRoom initializeGuestRoom() {
+    public ChatRoom initializeGuestRoom(String nickname) {
         // if not found in database, then create new row
         Optional<ChatRoom> foundRoom;
         foundRoom = database.findChatRoomByRoomName("Guest room");
         if(!foundRoom.isPresent()) {
             Optional<ChatRoom> newRoom;
-            newRoom = database.createNewChatRoom("Guest room");
+            newRoom = database.createNewChatRoom("Guest room", nickname);
             System.out.println("Guest room created");
             System.out.println("Now chatting in \'Guest room\'");
             return newRoom.get();
@@ -31,8 +33,8 @@ public class ChatRoomService {
         }
     }
 
-    public ChatRoom createNewChatRoom(String roomName) {
-        Optional<ChatRoom> room = database.createNewChatRoom(roomName);
+    public ChatRoom createNewChatRoom(String roomName, String creatorNickname) {
+        Optional<ChatRoom> room = database.createNewChatRoom(roomName, creatorNickname);
         return room.orElse(null);
     }
 

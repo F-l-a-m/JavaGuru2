@@ -1,53 +1,46 @@
 package lv.javaguru.java2.businesslogic.chat;
 
 import lv.javaguru.java2.Constants;
-import lv.javaguru.java2.businesslogic.StringCache;
-import lv.javaguru.java2.businesslogic.room.CurrentRoom;
-import lv.javaguru.java2.businesslogic.user.User;
-import lv.javaguru.java2.database.Database;
+import lv.javaguru.java2.businesslogic.user.UserService;
+import lv.javaguru.java2.domain.User;
 
 public class HandleChatInputService implements Constants {
-
-    private final Database database;
-    private final StringCache stringCache;
-    private final int maxCommandLength;
+    
+    private UserService userService;
     private String input;
-    private final User user;
-    private final MessageService messageService;
+    private final int maxCommandLength;
 
-    public HandleChatInputService(Database database, User user, StringCache stringCache, MessageService messageService) {
-        this.database = database;
-        this.stringCache = stringCache;
-        this.user = user;
-        this.messageService = messageService;
+    public HandleChatInputService(UserService userService) {
+        this.userService = userService;
         maxCommandLength = 40;
     }
 
-    public Enum handle(String userInput) {
+    public Enum handle(User user, String userInput) {
         input = userInput;
         // Empty message
         if(input.isEmpty() || userInput.trim().isEmpty())
             return userActions.EMPTY_MESSAGE;
         // Check if user entered a command and handle it
         else if(input.charAt(0) == '/')
-           return handleChatCommand();
+           return handleChatCommand(user);
         // Handle as usual message
         else {
-            handleInputAsMessage();
+            userService.setUserInput(user, userInput);
             return userActions.PRINT_MESSAGE;
         }
     }
 
-    private Enum handleChatCommand() {
+    private Enum handleChatCommand(User user) {
         if(input.length() > maxCommandLength)
             return userActions.BAD_COMMAND;
         else {
             input = input.trim();
             String[] splitStr = input.split("\\s+");
+            String command = splitStr[0];
 
             // One word commands
             if(splitStr.length == 1) {
-                switch (splitStr[0]) {
+                switch (command) {
                     case "/quit":
                         return userActions.QUIT;
                     case "/r":
@@ -61,20 +54,17 @@ public class HandleChatInputService implements Constants {
 
             // Two word commands
             else if (splitStr.length == 2) {
-                switch (splitStr[0]) {
+                String userData = splitStr[1];
+                switch (command) {
                     case "/nick":
-                        stringCache.setTemporaryString(splitStr[1]); // need later in view
+                        userService.setUserInput(user, userData);
                         return userActions.CHANGE_NICK;
                     case "/join":
-                        stringCache.setTemporaryString(splitStr[1]);
+                        userService.setUserInput(user, userData);
                         return userActions.JOIN_CHAT_ROOM;
                 }
             }
         }
         return userActions.BAD_COMMAND;
-    }
-
-private void handleInputAsMessage() {
-        messageService.saveMessageToDatabase(input, user, CurrentRoom.getRoom());
     }
 }

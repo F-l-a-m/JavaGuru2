@@ -1,7 +1,6 @@
 package lv.javaguru.java2.views;
 
-import lv.javaguru.java2.businesslogic.room.CurrentRoom;
-import lv.javaguru.java2.businesslogic.user.User;
+import lv.javaguru.java2.domain.User;
 import lv.javaguru.java2.businesslogic.user.UserService;
 import lv.javaguru.java2.database.Database;
 
@@ -17,6 +16,6 @@ public class LeaveChatRoomView implements View {
     
     @Override
     public void execute( ) {
-        userService.removeUserFromChatRoom(user, CurrentRoom.getRoom().getName());
+        //userService.removeUserFromChatRoom(user, );
     }
 }

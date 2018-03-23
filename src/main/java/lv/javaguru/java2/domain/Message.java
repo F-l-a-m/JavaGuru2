@@ -1,23 +1,28 @@
-package lv.javaguru.java2.businesslogic.chat;
+package lv.javaguru.java2.domain;
+
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Message {
 
     private Long id;
-    private String timestamp;
+    private Long room_id;
+    private Date creationTime;
     private String user_nickname;
     private String message_body;
-    private Long room_id;
-    // [2018.03.01] Flam: Hello chat!
-
+    // [2018/03/01 12:12:12] Flam: Hello chat!
+    
     public Message(){
 
     }
 
-    public Message(String timestamp, String user_nickname, String message_body, Long room_id) {
-        this.timestamp = timestamp;
+    public Message( Timestamp creationTime, String user_nickname, String message_body, Long room_id) {
+        this.room_id = room_id;
+        this.creationTime = creationTime;
         this.user_nickname = user_nickname;
         this.message_body = message_body;
-        this.room_id = room_id;
     }
 
     public Long getId() {
@@ -27,15 +32,15 @@ public class Message {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public String getTimestamp() {
-        return timestamp;
+    
+    public Date getCreationTime( ) {
+        return creationTime;
     }
-
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
+    
+    public void setCreationTime( Date creationTime ) {
+        this.creationTime = creationTime;
     }
-
+    
     public String getUser_nickname() {
         return user_nickname;
     }
@@ -62,6 +67,8 @@ public class Message {
 
     @Override
     public String toString() {
-        return timestamp + ' ' + user_nickname + ": " + message_body;
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        String dateTime = '[' + dateFormat.format(creationTime) + ']';
+        return dateTime + ' ' + user_nickname + ": " + message_body;
     }
 }

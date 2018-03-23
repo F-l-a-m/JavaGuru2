@@ -1,7 +1,8 @@
 package lv.javaguru.java2.businesslogic.chat;
 
-import lv.javaguru.java2.businesslogic.room.ChatRoom;
-import lv.javaguru.java2.businesslogic.user.User;
+import lv.javaguru.java2.domain.ChatRoom;
+import lv.javaguru.java2.domain.Message;
+import lv.javaguru.java2.domain.User;
 import lv.javaguru.java2.database.Database;
 
 import java.util.List;
@@ -15,15 +16,9 @@ public class MessageService {
         this.database = database;
     }
 
-    public void saveMessageToDatabase(String message, User user, ChatRoom room) {
-        Timestamp timestamp = new Timestamp();
-        Message msg = new Message(
-                timestamp.getTimestamp(),
-                user.getNickname(),
-                message,
-                room.getId()
-        );
-        database.addChatMessage(msg);
+    public Message saveMessageToDatabase(String message, User user, ChatRoom room) {
+        MyTimestamp myTimestamp = new MyTimestamp();
+        return database.addChatMessage(message, user.getNickname(), room.getId());
     }
 
     public Message getLastChatMessageInARoom(ChatRoom room) {
@@ -37,10 +32,12 @@ public class MessageService {
         }
     }
 
-    public List<Message> getAllChatHistoryInRoom(ChatRoom room) {
-        // Check if room with given id exists
-        Long id = room.getId();
-        Optional<ChatRoom> foundRoom = database.findChatRoomByRoomId(id);
-        return foundRoom.map(chatRoom -> database.getAllChatHistoryInRoom(id)).orElse(null);
+    public List<Message> getAllChatHistoryInRoom(String roomName) {
+        // Check if room with given name exists
+        Optional<ChatRoom> foundRoom = database.findChatRoomByRoomName(roomName);
+        if(foundRoom.isPresent()) {
+            return database.getAllChatHistoryInRoom(foundRoom.get().getId());
+        }
+        return null;
     }
 }
