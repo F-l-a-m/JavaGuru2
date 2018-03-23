@@ -2,18 +2,18 @@ package lv.javaguru.java2.domain;
 
 import java.util.Date;
 
-public class ChatRoom {
+public class Room {
 
     private Long id;
     private String name;
     private String creatorNickname;
     private Date creationTime;
 
-    public ChatRoom(){
+    public Room(){
 
     }
 
-    public ChatRoom(String name) {
+    public Room(String name) {
         this.name = name;
     }
 

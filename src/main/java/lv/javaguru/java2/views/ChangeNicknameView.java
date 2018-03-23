@@ -1,17 +1,20 @@
+/*
 package lv.javaguru.java2.views;
 
 import lv.javaguru.java2.businesslogic.Response;
 import lv.javaguru.java2.businesslogic.user.UserService;
 import lv.javaguru.java2.domain.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ChangeNicknameView implements View {
     
     private User user;
-    private UserService userService;
+    @Autowired private UserService userService;
 
-    public ChangeNicknameView(User user, UserService userService) {
+    public ChangeNicknameView(User user) {
         this.user = user;
-        this.userService = userService;
     }
 
     @Override
@@ -28,3 +31,4 @@ public class ChangeNicknameView implements View {
         System.out.println();
     }
 }
+*/

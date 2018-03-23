@@ -1,24 +1,24 @@
+/*
 package lv.javaguru.java2.views;
 
-import lv.javaguru.java2.domain.ChatRoom;
+import lv.javaguru.java2.domain.Room;
 import lv.javaguru.java2.businesslogic.room.ChatRoomService;
-import lv.javaguru.java2.database.Database;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class ListAllRoomsView implements View {
     
-    private final ChatRoomService chatRoomService;
-    
-    public ListAllRoomsView(Database database) {
-        chatRoomService = new ChatRoomService(database);
-    }
-    
+    @Autowired private ChatRoomService chatRoomService;
+
     @Override
     public void execute( ) {
-        List<ChatRoom> rooms = chatRoomService.getListOfAllChatRooms();
-        for(ChatRoom r : rooms) {
+        List<Room> rooms = chatRoomService.getListOfAllChatRooms();
+        for(Room r : rooms) {
             System.out.print(r + ", ");
         }
     }
 }
+*/

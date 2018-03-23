@@ -12,7 +12,7 @@ public class Message {
     private Date creationTime;
     private String user_nickname;
     private String message_body;
-    // [2018/03/01 12:12:12] Flam: Hello chat!
+    // [2018/03/01 12:12:12] Flam: Hello message!
     
     public Message(){
 

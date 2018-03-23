@@ -1,24 +1,23 @@
+/*
 package lv.javaguru.java2.businesslogic.user;
 
 import lv.javaguru.java2.businesslogic.Error;
 import lv.javaguru.java2.businesslogic.Response;
 import lv.javaguru.java2.businesslogic.room.ActiveRoom;
-import lv.javaguru.java2.domain.ChatRoom;
+import lv.javaguru.java2.domain.Room;
 import lv.javaguru.java2.database.Database;
 import lv.javaguru.java2.domain.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
+@Component
 public class UserService {
     
-    private final Database database;
-    private final ChangeNicknameValidator validator;
-    
-    public UserService( Database database, ChangeNicknameValidator validator ) {
-        this.database = database;
-        this.validator = validator;
-    }
+    @Autowired private Database database;
+    @Autowired private ChangeNicknameValidator validator;
     
     public User createNewGuest( String userName ) {
         // validate here
@@ -30,11 +29,11 @@ public class UserService {
         if (database.findUserInRoomById(user.getId( ), roomName)) {
             System.out.println("User '" + user.getNickname( ) + "' is already in room '" + roomName + "'");
         } else {
-            Optional<ChatRoom> foundRoom = database.findChatRoomByRoomName(roomName);
+            Optional<Room> foundRoom = database.findChatRoomByRoomName(roomName);
             if(foundRoom.isPresent()) {
-                ChatRoom room = foundRoom.get( );
+                Room room = foundRoom.get( );
                 database.addUserToRoom(user.getId( ), room.getId( ));
-                System.out.println("Successfully added '" + user.getNickname( ) + "' to chat room '" + roomName + "'");
+                System.out.println("Successfully added '" + user.getNickname( ) + "' to message room '" + roomName + "'");
             }
             else {
                 System.out.println("Room " + roomName + " not found.");
@@ -48,14 +47,14 @@ public class UserService {
         if (roomName.equals("Guest room")) {
             System.out.println("Cant leave default room. You are now chatting in 'Guest room'");
         } else {
-            // leave current chat room
-            Optional<ChatRoom> foundRoom = database.findChatRoomByRoomName(roomName);
+            // leave current message room
+            Optional<Room> foundRoom = database.findChatRoomByRoomName(roomName);
             if (foundRoom.isPresent( )) {
-                ChatRoom room = foundRoom.get( );
+                Room room = foundRoom.get( );
                 database.removeUserFromRoom(user.getId( ), room.getId( ));
                 System.out.println("User '" + user.getNickname( ) + "' has left" + " " + roomName);
                 // and join default guest room
-                Optional<ChatRoom> guestRoom = database.findChatRoomByRoomName("Guest room");
+                Optional<Room> guestRoom = database.findChatRoomByRoomName("Guest room");
                 if(guestRoom.isPresent()) {
                     activeRoom.setRoom(guestRoom.get());
                 }
@@ -103,3 +102,4 @@ public class UserService {
         database.updateUserActiveStatus(user, false);
     }
 }
+*/

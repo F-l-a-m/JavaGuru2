@@ -1,6 +1,7 @@
+/*
 package lv.javaguru.java2.views;
 
-import lv.javaguru.java2.businesslogic.chat.MyTimestamp;
+import lv.javaguru.java2.businesslogic.message.MyTimestamp;
 import lv.javaguru.java2.domain.User;
 
 public class EmptyMessageView implements View {
@@ -18,3 +19,4 @@ public class EmptyMessageView implements View {
         System.out.println(timestamp.toString() + ' ' + user.getNickname() + ':');
     }
 }
+*/

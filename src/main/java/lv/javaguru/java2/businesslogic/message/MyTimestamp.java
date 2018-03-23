@@ -1,10 +1,14 @@
-package lv.javaguru.java2.businesslogic.chat;
+/*
+package lv.javaguru.java2.businesslogic.message;
+
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.sql.Timestamp;
 
+@Component
 public class MyTimestamp {
     
     public String getStringTimestamp() {
@@ -24,3 +28,4 @@ public class MyTimestamp {
         return getStringTimestamp();
     }
 }
+*/

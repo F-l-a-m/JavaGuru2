@@ -11,7 +11,6 @@ public class User {
     private String nickname;
     private Date creationTime;
     private boolean isActive;
-    private String inputString;
     
     public User() {
     
@@ -67,14 +66,6 @@ public class User {
     
     public void setActive(boolean active) {
         isActive = active;
-    }
-    
-    public String getInputString( ) {
-        return inputString;
-    }
-    
-    public void setInputString( String inputString ) {
-        this.inputString = inputString;
     }
     
     @Override

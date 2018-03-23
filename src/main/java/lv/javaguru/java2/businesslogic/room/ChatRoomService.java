@@ -1,12 +1,14 @@
+/*
 package lv.javaguru.java2.businesslogic.room;
 
 import lv.javaguru.java2.database.Database;
-import lv.javaguru.java2.domain.ChatRoom;
-import lv.javaguru.java2.domain.User;
+import lv.javaguru.java2.domain.Room;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
+@Component
 public class ChatRoomService {
 
     private final Database database;
@@ -15,12 +17,12 @@ public class ChatRoomService {
         this.database = database;
     }
 
-    public ChatRoom initializeGuestRoom(String nickname) {
+    public Room initializeGuestRoom(String nickname) {
         // if not found in database, then create new row
-        Optional<ChatRoom> foundRoom;
+        Optional<Room> foundRoom;
         foundRoom = database.findChatRoomByRoomName("Guest room");
         if(!foundRoom.isPresent()) {
-            Optional<ChatRoom> newRoom;
+            Optional<Room> newRoom;
             newRoom = database.createNewChatRoom("Guest room", nickname);
             System.out.println("Guest room created");
             System.out.println("Now chatting in \'Guest room\'");
@@ -33,13 +35,13 @@ public class ChatRoomService {
         }
     }
 
-    public ChatRoom createNewChatRoom(String roomName, String creatorNickname) {
-        Optional<ChatRoom> room = database.createNewChatRoom(roomName, creatorNickname);
+    public Room createNewChatRoom(String roomName, String creatorNickname) {
+        Optional<Room> room = database.createNewChatRoom(roomName, creatorNickname);
         return room.orElse(null);
     }
 
-    public Optional<ChatRoom> findChatRoomByName(String roomName) {
-        Optional<ChatRoom> room = database.findChatRoomByRoomName(roomName);
+    public Optional<Room> findChatRoomByName(String roomName) {
+        Optional<Room> room = database.findChatRoomByRoomName(roomName);
         if(room.isPresent()){
             return room;
         }
@@ -49,14 +51,15 @@ public class ChatRoomService {
         }
     }
 
-    public List<ChatRoom> getListOfAllChatRooms() {
-        List<ChatRoom> chatRooms = database.getListOfAllRooms();
-        if(chatRooms.isEmpty()){
-            System.out.println("No chat rooms found in database");
+    public List<Room> getListOfAllChatRooms() {
+        List<Room> rooms = database.getListOfAllRooms();
+        if(rooms.isEmpty()){
+            System.out.println("No message rooms found in database");
             return null;
         }
         else {
-            return chatRooms;
+            return rooms;
         }
     }
 }
+*/

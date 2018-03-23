@@ -1,22 +1,17 @@
 package lv.javaguru.java2.database;
 
-import lv.javaguru.java2.businesslogic.chat.MyTimestamp;
 import lv.javaguru.java2.domain.Message;
-import lv.javaguru.java2.domain.ChatRoom;
+import lv.javaguru.java2.domain.Room;
 import lv.javaguru.java2.domain.User;
+import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Component
 public class ChatRealDatabase extends JDBCDatabase implements Database {
-    
-    MyTimestamp timestamp;
-    
-    public ChatRealDatabase() {
-        timestamp = new MyTimestamp();
-    }
 
     // user management
     @Override
@@ -29,8 +24,8 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
             PreparedStatement preparedStatement =
                     connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, nickname);
-            Timestamp now = timestamp.getSQLTimestamp();
-            preparedStatement.setTimestamp(2, now);
+            Timestamp timestamp = getSQLTimestamp();
+            preparedStatement.setTimestamp(2, timestamp);
             preparedStatement.executeUpdate();
             ResultSet rs = preparedStatement.getGeneratedKeys();
             User user = null;
@@ -38,7 +33,7 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
                 user = new User();
                 user.setId(rs.getLong(1));
                 user.setNickname(nickname);
-                user.setCreationTime(now);
+                user.setCreationTime(timestamp);
             }
             return user;
         } catch (Throwable e) {
@@ -211,7 +206,7 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
 
     // room management
     @Override
-    public Optional<ChatRoom> createNewChatRoom(String roomName, String creatorNickname) {
+    public Optional<Room> createNewChatRoom(String roomName, String creatorNickname) {
         Connection connection = null;
         try {
             connection = getConnection();
@@ -220,17 +215,17 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
                     connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, roomName);
             preparedStatement.setString(2, creatorNickname);
-            Timestamp now = timestamp.getSQLTimestamp();
-            preparedStatement.setTimestamp(3, now);
+            Timestamp timestamp = getSQLTimestamp();
+            preparedStatement.setTimestamp(3, timestamp);
             preparedStatement.executeUpdate();
             ResultSet rs = preparedStatement.getGeneratedKeys();
-            ChatRoom room = null;
+            Room room = null;
             if (rs.next()){
-                room = new ChatRoom();
+                room = new Room();
                 room.setId(rs.getLong(1));
                 room.setName(roomName);
                 room.setCreatorNickname(creatorNickname);
-                room.setCreationTime(now);
+                room.setCreationTime(timestamp);
             }
             return Optional.ofNullable(room);
         } catch (Throwable e) {
@@ -243,7 +238,7 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
     }
 
     @Override
-    public Optional<ChatRoom> findChatRoomByRoomId(Long roomId) {
+    public Optional<Room> findChatRoomByRoomId(Long roomId) {
         Connection connection = null;
         try {
             connection = getConnection();
@@ -251,9 +246,9 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setLong(1, roomId);
             ResultSet resultSet = preparedStatement.executeQuery();
-            ChatRoom room = null;
+            Room room = null;
             if (resultSet.next()) {
-                room = new ChatRoom();
+                room = new Room();
                 room.setId(resultSet.getLong("id"));
                 room.setName(resultSet.getString("name"));
             }
@@ -268,7 +263,7 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
     }
 
     @Override
-    public Optional<ChatRoom> findChatRoomByRoomName(String roomName) {
+    public Optional<Room> findChatRoomByRoomName(String roomName) {
         Connection connection = null;
         try {
             connection = getConnection();
@@ -276,9 +271,9 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, roomName);
             ResultSet resultSet = preparedStatement.executeQuery();
-            ChatRoom room = null;
+            Room room = null;
             if (resultSet.next()) {
-                room = new ChatRoom();
+                room = new Room();
                 room.setId(resultSet.getLong("id"));
                 room.setName(resultSet.getString("name"));
                 room.setCreatorNickname(resultSet.getString("creatorNickname"));
@@ -295,23 +290,23 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
     }
 
     @Override
-    public List<ChatRoom> getListOfAllRooms() {
+    public List<Room> getListOfAllRooms() {
         Connection connection = null;
-        List<ChatRoom> listOfAllChatRooms = new ArrayList<>();
+        List<Room> listOfAllRooms = new ArrayList<>();
         try {
             connection = getConnection();
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select * from chat_room");
-            ChatRoom room;
+            Room room;
             while (resultSet.next()) {
-                room = new ChatRoom();
+                room = new Room();
                 room.setId(resultSet.getLong("id"));
                 room.setName(resultSet.getString("name"));
                 room.setCreatorNickname(resultSet.getString("creatorNickname"));
                 room.setCreationTime(resultSet.getTimestamp("creationTime"));
-                listOfAllChatRooms.add(room);
+                listOfAllRooms.add(room);
             }
-            return listOfAllChatRooms;
+            return listOfAllRooms;
         } catch (Throwable e) {
             System.out.println("Exception while execute database.getListOfAllRooms()");
             e.printStackTrace();
@@ -333,8 +328,8 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
             PreparedStatement preparedStatement =
                     connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1, roomId);
-            Timestamp now = timestamp.getSQLTimestamp();
-            preparedStatement.setTimestamp(2, now);
+            Timestamp timestamp = getSQLTimestamp();
+            preparedStatement.setTimestamp(2, timestamp);
             preparedStatement.setString(3, nickname);
             preparedStatement.setString(4, message);
             preparedStatement.executeUpdate();
@@ -344,7 +339,7 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
                 msg = new Message();
                 msg.setId(rs.getLong(1));
                 msg.setRoom_id(roomId);
-                msg.setCreationTime(now);
+                msg.setCreationTime(timestamp);
                 msg.setUser_nickname(nickname);
                 msg.setMessage_body(message);
             }
@@ -414,6 +409,12 @@ public class ChatRealDatabase extends JDBCDatabase implements Database {
         } finally {
             closeConnection(connection);
         }
+    }
+
+    private Timestamp getSQLTimestamp() {
+        java.util.Date now = new java.util.Date();
+        java.sql.Timestamp timestamp = new java.sql.Timestamp(now.getTime());
+        return timestamp;
     }
 
 }

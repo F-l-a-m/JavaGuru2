@@ -1,7 +1,7 @@
 package lv.javaguru.java2.database;
 
 import lv.javaguru.java2.domain.Message;
-import lv.javaguru.java2.domain.ChatRoom;
+import lv.javaguru.java2.domain.Room;
 import lv.javaguru.java2.domain.User;
 import java.util.List;
 import java.util.Optional;
@@ -23,10 +23,10 @@ public interface Database {
 
 
     // Chat room management
-    Optional<ChatRoom> createNewChatRoom(String roomName, String creatorNickname);
-    Optional<ChatRoom> findChatRoomByRoomId(Long roomId);
-    Optional<ChatRoom> findChatRoomByRoomName(String roomName);
-    List<ChatRoom> getListOfAllRooms();
+    Optional<Room> createNewChatRoom(String roomName, String creatorNickname);
+    Optional<Room> findChatRoomByRoomId(Long roomId);
+    Optional<Room> findChatRoomByRoomName(String roomName);
+    List<Room> getListOfAllRooms();
 
 
     // Message management

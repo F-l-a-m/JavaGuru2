@@ -1,96 +1,44 @@
 package lv.javaguru.java2;
 
-import lv.javaguru.java2.businesslogic.StringCache;
-import lv.javaguru.java2.businesslogic.chat.*;
-import lv.javaguru.java2.businesslogic.room.*;
-import lv.javaguru.java2.businesslogic.user.*;
-import lv.javaguru.java2.database.*;
-import lv.javaguru.java2.domain.ChatRoom;
-import lv.javaguru.java2.domain.User;
+import lv.javaguru.java2.configs.SpringAppConfig;
 import lv.javaguru.java2.views.*;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.*;
 
-class ChatApplication implements Constants {
-    
-    private static HandleChatInputService handleChatInputService;
-    private static Map<Enum, View> actionMap;
-    private static User user;
-    private static ChatRoom room;
-    
+class ChatApplication {
+
     public static void main( String[] args ) {
-        initialize( );
-        start( );
-    }
-    
-    private static void initialize( ) {
-        
-        final Database database = new ChatRealDatabase( );
-        final ChangeNicknameValidator validator = new ChangeNicknameValidator( );
-        final UserService userService = new UserService(database, validator);
-        final ChatRoomService chatRoomService = new ChatRoomService(database);
-        final MessageService messageService = new MessageService(database);
-        
-        // global string for usage in views
-        StringCache stringCache = new StringCache( );
-        
-        // print all available chat commands once
-        View chatCommandsPrintView = new PrintAvailableChatCommandsView( );
-        chatCommandsPrintView.execute( );
-        
-        // ask for user nickname
-        System.out.print("Please enter your nickname: ");
-        String nickname = readLine( );
-        user = userService.logIn(nickname);
-        
-        // room service creates / opens guest room
-        room = chatRoomService.initializeGuestRoom(user.getNickname( ));
-        ActiveRoom activeRoom = new ActiveRoom();
-        activeRoom.setRoom(room);
-        
-        // add user to default chat room
-        userService.addUserToChatRoom(user, "Guest room");
-        
-        // handles all user input
-        handleChatInputService = new HandleChatInputService(userService);
-        
-        // all views
-        View printMessageView = new PrintMessageView(user, userService, activeRoom, messageService);
-        View changeNicknameView = new ChangeNicknameView(user, userService);
-        View programExitView = new ProgramExitView(user, userService);
-        View badCommandView = new BadCommandView( );
-        View refreshConsoleView = new RefreshConsoleView(messageService, activeRoom);
-        View emptyMessageView = new EmptyMessageView(user);
-        View joinChatRoomView = new JoinChatRoomView(user, userService, chatRoomService, activeRoom);
-        View listAllRoomsView = new ListAllRoomsView(database);
-        View leaveChatRoomView = new LeaveChatRoomView(user, userService, activeRoom);
-        
-        // all available actions depending on user input
-        actionMap = new HashMap<>( );
-        actionMap.put(userActions.PRINT_MESSAGE, printMessageView);
-        actionMap.put(userActions.EMPTY_MESSAGE, emptyMessageView);
-        actionMap.put(userActions.CHANGE_NICK, changeNicknameView);
-        actionMap.put(userActions.REFRESH_CONSOLE, refreshConsoleView);
-        actionMap.put(userActions.BAD_COMMAND, badCommandView);
-        actionMap.put(userActions.QUIT, programExitView);
-        actionMap.put(userActions.JOIN_CHAT_ROOM, joinChatRoomView);
-        actionMap.put(userActions.LIST_CHAT_ROOMS, listAllRoomsView);
-        actionMap.put(userActions.LEAVE_CHAT_ROOM, leaveChatRoomView);
-    }
-    
-    private static void start( ) {
-        
-        // Get message from user
+
+        ApplicationContext applicationContext
+                = new AnnotationConfigApplicationContext(SpringAppConfig.class);
+
+        Map<Integer, View> actionMap = new HashMap<>();
+        actionMap.put(1, applicationContext.getBean(NewMessageView.class));
+        //actionMap.put(2, applicationContext.getBean(JoinChatRoomView.class));
+        //actionMap.put(3, applicationContext.getBean(ListAllRoomsView.class));
+        actionMap.put(4, applicationContext.getBean(ProgramExitView.class));
+
         while (true) {
-            String userInput = readLine( );
-            Enum action = handleChatInputService.handle(user, userInput);
-            View view = actionMap.get(action);
-            view.execute( );
+            printProgramMenu();
+            int menuItem = getFromUserMenuItemToExecute();
+            View view = actionMap.get(menuItem);
+            view.execute();
         }
     }
-    
-    private static String readLine( ) {
+
+    private static void printProgramMenu() {
+        System.out.println("Program Menu:");
+        System.out.println("1. New message");
+        System.out.println("2. Enter room");
+        System.out.println("3. Print all rooms");
+        System.out.println("4. Exit");
+    }
+
+    private static int getFromUserMenuItemToExecute() {
+        System.out.print("Please enter menu item number to execute:");
         Scanner sc = new Scanner(System.in);
-        return sc.nextLine( );
+        return Integer.parseInt(sc.nextLine());
     }
 }

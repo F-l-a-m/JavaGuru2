@@ -1,19 +1,18 @@
-package lv.javaguru.java2.businesslogic.chat;
+/*
+package lv.javaguru.java2.businesslogic.message;
 
 import lv.javaguru.java2.Constants;
 import lv.javaguru.java2.businesslogic.user.UserService;
 import lv.javaguru.java2.domain.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class HandleChatInputService implements Constants {
     
-    private UserService userService;
+    @Autowired private UserService userService;
     private String input;
-    private final int maxCommandLength;
-
-    public HandleChatInputService(UserService userService) {
-        this.userService = userService;
-        maxCommandLength = 40;
-    }
+    private final int maxCommandLength = 40;
 
     public Enum handle(User user, String userInput) {
         input = userInput;
@@ -68,3 +67,4 @@ public class HandleChatInputService implements Constants {
         return userActions.BAD_COMMAND;
     }
 }
+*/

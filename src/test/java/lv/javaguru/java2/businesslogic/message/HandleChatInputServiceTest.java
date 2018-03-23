@@ -1,15 +1,12 @@
-package lv.javaguru.java2.businesslogic.chat;
+/*
+package lv.javaguru.java2.businesslogic.message;
 
 import lv.javaguru.java2.Constants;
-import lv.javaguru.java2.businesslogic.StringCache;
 import lv.javaguru.java2.businesslogic.user.UserService;
 import lv.javaguru.java2.domain.User;
-import lv.javaguru.java2.database.Database;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-
-import static org.junit.Assert.*;
 
 public class HandleChatInputServiceTest implements Constants {
 
@@ -20,7 +17,7 @@ public class HandleChatInputServiceTest implements Constants {
     public void init() {
         UserService userService = Mockito.mock(UserService.class);
         user = Mockito.mock(User.class);
-        handleChatInputService = new HandleChatInputService(userService);
+        handleChatInputService = new HandleChatInputService();
     }
 
     @Test
@@ -55,3 +52,4 @@ public class HandleChatInputServiceTest implements Constants {
         assertEquals(result, userActions.PRINT_MESSAGE);
     }
 }
+*/

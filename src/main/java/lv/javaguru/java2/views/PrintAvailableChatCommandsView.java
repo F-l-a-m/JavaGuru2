@@ -1,3 +1,4 @@
+/*
 package lv.javaguru.java2.views;
 
 import java.util.ArrayList;
@@ -8,11 +9,11 @@ public class PrintAvailableChatCommandsView implements View {
     @Override
     public void execute() {
         List<String> commands = new ArrayList<>();
-        commands.add("Available chat commands");
+        commands.add("Available message commands");
         commands.add("/quit - quit application, /nick - set nickname");
         commands.add("/r - refresh view, /list - show all rooms");
-        commands.add("/join - join or create new chat room");
-        commands.add("/leave - leave current active chat room");
+        commands.add("/join - join or create new message room");
+        commands.add("/leave - leave current active message room");
 
         // calculate the longest string
         int longestString = 0;
@@ -47,3 +48,4 @@ public class PrintAvailableChatCommandsView implements View {
         System.out.println('╝');
     }
 }
+*/

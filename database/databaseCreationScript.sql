@@ -5,17 +5,17 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
--- Schema chat
+-- Schema message
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema chat
+-- Schema message
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `chat` DEFAULT CHARACTER SET utf8 ;
 USE `chat` ;
 
 -- -----------------------------------------------------
--- Table `chat`.`user`
+-- Table `message`.`user`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `chat`.`user` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -32,7 +32,7 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `chat`.`chat_room`
+-- Table `message`.`chat_room`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `chat`.`chat_room` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -46,7 +46,7 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `chat`.`message`
+-- Table `message`.`message`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `chat`.`message` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -64,7 +64,7 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `chat`.`user_in_room`
+-- Table `message`.`user_in_room`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `chat`.`user_in_room` (
   `user_id` BIGINT UNSIGNED NOT NULL,

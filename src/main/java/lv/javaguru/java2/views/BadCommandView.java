@@ -1,3 +1,4 @@
+/*
 package lv.javaguru.java2.views;
 
 public class BadCommandView implements View {
@@ -7,3 +8,4 @@ public class BadCommandView implements View {
         System.out.println("Command syntax error");
     }
 }
+*/

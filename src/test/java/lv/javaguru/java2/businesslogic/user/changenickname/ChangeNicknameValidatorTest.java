@@ -1,3 +1,4 @@
+/*
 package lv.javaguru.java2.businesslogic.user.changenickname;
 
 import lv.javaguru.java2.businesslogic.Error;
@@ -46,3 +47,4 @@ public class ChangeNicknameValidatorTest {
     }
 
 }
+*/
