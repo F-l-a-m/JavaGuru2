@@ -7,20 +7,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
-public class AddUserService {
+public class FindUserService {
 
     @Autowired private Database database;
     @Autowired private NicknameValidator validator;
 
-    public AddUserResponse addUser(String nickname) {
+    public FindUserResponse findUserByNickname(String nickname) {
         List<Error> errors = validator.validate(nickname);
-        if( errors.isEmpty() ) {
-            User user = database.addNewGuest(nickname);
-            return new AddUserResponse(user, null, true);
+        Optional<User> search = database.getUserByNickname(nickname);
+        if( search.isPresent() ) {
+            return new FindUserResponse(search.get(), null, true);
         } else {
-            return new AddUserResponse(null, errors, false);
+            errors.add(new Error("User with " + nickname + " not found"));
+            return new FindUserResponse(null, errors, false);
         }
     }
 }

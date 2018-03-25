@@ -5,13 +5,13 @@ import lv.javaguru.java2.domain.User;
 
 import java.util.List;
 
-public class AddUserResponse {
+public class FindUserResponse {
 
     private User user;
     private List<Error> errors;
     private boolean success;
 
-    public AddUserResponse(User user, List<Error> errors, boolean success) {
+    public FindUserResponse(User user, List<Error> errors, boolean success) {
         this.user = user;
         this.errors = errors;
         this.success = success;

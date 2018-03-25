@@ -1,28 +1,27 @@
-package lv.javaguru.java2.businesslogic.user;
+package lv.javaguru.java2.businesslogic.room;
 
 import lv.javaguru.java2.businesslogic.Error;
-import lv.javaguru.java2.domain.User;
+import lv.javaguru.java2.domain.Room;
 
 import java.util.List;
 
-public class AddUserResponse {
-
-    private User user;
+public class FindRoomResponse {
+    private Room room;
     private List<Error> errors;
     private boolean success;
 
-    public AddUserResponse(User user, List<Error> errors, boolean success) {
-        this.user = user;
+    public FindRoomResponse(Room room, List<Error> errors, boolean success) {
+        this.room = room;
         this.errors = errors;
         this.success = success;
     }
 
-    public User getUser() {
-        return user;
+    public Room getRoom() {
+        return room;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setRoom(Room room) {
+        this.room = room;
     }
 
     public List<Error> getErrors() {

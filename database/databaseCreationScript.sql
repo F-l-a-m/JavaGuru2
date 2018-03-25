@@ -1,22 +1,11 @@
--- MySQL Workbench Forward Engineering
-
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
--- -----------------------------------------------------
--- Schema message
--- -----------------------------------------------------
-
--- -----------------------------------------------------
--- Schema message
--- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `chat` DEFAULT CHARACTER SET utf8 ;
 USE `chat` ;
 
--- -----------------------------------------------------
--- Table `message`.`user`
--- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `chat`.`user` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `login` VARCHAR(16) NULL,
@@ -31,9 +20,6 @@ CREATE TABLE IF NOT EXISTS `chat`.`user` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `message`.`chat_room`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `chat`.`chat_room` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
@@ -45,9 +31,6 @@ CREATE TABLE IF NOT EXISTS `chat`.`chat_room` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `message`.`message`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `chat`.`message` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `room_id` BIGINT UNSIGNED NOT NULL,
@@ -63,9 +46,6 @@ CREATE TABLE IF NOT EXISTS `chat`.`message` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `message`.`user_in_room`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `chat`.`user_in_room` (
   `user_id` BIGINT UNSIGNED NOT NULL,
   `room_id` BIGINT UNSIGNED NOT NULL,

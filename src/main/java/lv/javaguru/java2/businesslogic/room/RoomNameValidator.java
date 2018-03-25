@@ -1,4 +1,4 @@
-package lv.javaguru.java2.businesslogic.user;
+package lv.javaguru.java2.businesslogic.room;
 
 import lv.javaguru.java2.businesslogic.Error;
 import org.springframework.stereotype.Component;
@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class ChangeNicknameValidator {
+public class RoomNameValidator {
 
-    private String nickname;
+    private String roomName;
     private boolean isEmpty;
 
-    public List<Error> validate(String nickname) {
-        this.nickname = nickname;
+    public List<Error> validate(String roomName) {
+        this.roomName = roomName;
         isEmpty = false;
         List<Error> errors = new ArrayList<>();
         validateEmpty().ifPresent(errors::add);
@@ -24,22 +24,23 @@ public class ChangeNicknameValidator {
     }
 
     private Optional<Error> validateEmpty() {
-        if (nickname == null || nickname.isEmpty()) {
+        if (roomName == null || roomName.isEmpty()) {
             isEmpty = true;
-            return Optional.of(new Error("Nickname must not be empty"));
+            return Optional.of(new Error("Room name must not be empty"));
         }
         return Optional.empty();
     }
 
     private Optional<Error> validateLength() {
-        if (nickname.length() > 16 || nickname.length() < 2)
-            return Optional.of(new Error("Nickname length should be 2 to 16 symbols"));
+        if (roomName.length() > 16 || roomName.length() < 2)
+            return Optional.of(new Error("Room name length should be 2 to 16 symbols"));
         return Optional.empty();
     }
 
     private Optional<Error> validateAllowedSymbols() {
-        if (!nickname.matches("[0-9A-Za-z]+"))
-            return Optional.of(new Error("Nickname contains illegal characters (letters and numbers only please)"));
+        if (!roomName.matches("[0-9A-Za-z]+"))
+            return Optional.of(new Error("Room name contains illegal characters " +
+                    "(letters and numbers only please)"));
         return Optional.empty();
     }
 }
