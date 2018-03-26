@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProgramExitView implements View {
     @Override
-    public void execute() {
-        System.out.println("Good by!");
-        System.exit(0);
+    public void execute( ) {
+        System.out.println( "Good bye!" );
+        System.exit( 0 );
     }
 }
