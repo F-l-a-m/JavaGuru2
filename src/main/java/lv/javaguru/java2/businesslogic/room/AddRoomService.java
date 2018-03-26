@@ -9,11 +9,16 @@ import java.util.Optional;
 
 @Component
 public class AddRoomService {
-
+    
     @Autowired private Database database;
-
-    public AddRoomResponse addRoom(String roomName, String creatorNickname) {
-        Optional<Room> room = database.createNewChatRoom(roomName, creatorNickname);
-        return new AddRoomResponse(true, room.get(), null);
+    
+    public AddRoomResponse addRoom( String roomName, String creatorNickname ) {
+        
+        Optional<Room> room = database.createNewChatRoom( roomName, creatorNickname );
+        
+        if ( room.isPresent( ) )
+            return new AddRoomResponse( room.get( ), true );
+        else
+            return new AddRoomResponse( null, false );
     }
 }
