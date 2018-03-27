@@ -59,6 +59,7 @@ public class HandleUserInputService implements Constants {
         switch (command) {
             case "/nick":
                 //
+                break;
             case "/join":
                 return Constants.JOIN_ROOM;
         }

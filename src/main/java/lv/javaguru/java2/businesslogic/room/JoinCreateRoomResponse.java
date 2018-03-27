@@ -5,13 +5,14 @@ import lv.javaguru.java2.domain.Room;
 
 import java.util.List;
 
-public class InitializeRoomResponse {
+public class JoinCreateRoomResponse {
     
     Room room;
     List<Error> errors;
+    List<String> info;
     boolean isSuccess;
     
-    public InitializeRoomResponse( Room room, List<Error> errors, boolean isSuccess ) {
+    public JoinCreateRoomResponse( Room room, List<Error> errors, boolean isSuccess ) {
         this.room = room;
         this.errors = errors;
         this.isSuccess = isSuccess;
@@ -39,5 +40,13 @@ public class InitializeRoomResponse {
     
     public void setSuccess( boolean success ) {
         isSuccess = success;
+    }
+    
+    public List<String> getInfo( ) {
+        return info;
+    }
+    
+    public void setInfo( List<String> info ) {
+        this.info = info;
     }
 }

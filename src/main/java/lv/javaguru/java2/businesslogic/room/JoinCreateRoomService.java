@@ -7,13 +7,16 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class InitializeRoomService {
+public class JoinCreateRoomService {
     
     @Autowired private FindRoomService findRoomService;
     @Autowired private AddRoomService addRoomService;
     @Autowired private RoomNameValidator validator;
     
-    public InitializeRoomResponse init( String roomName, String nickname ) {
+    public JoinCreateRoomResponse init( String roomName, String nickname ) {
+        
+        // check if user is already in that room
+        
         
         List<Error> errors = validator.validate( roomName );
         if ( errors.isEmpty( ) ) {
@@ -21,16 +24,16 @@ public class InitializeRoomService {
             FindRoomResponse findRoomResponse = findRoomService.findRoomByName( roomName );
             if ( findRoomResponse.isSuccess( ) ) {
                 // use found room
-                return new InitializeRoomResponse( findRoomResponse.getRoom( ), errors, true );
+                return new JoinCreateRoomResponse( findRoomResponse.getRoom( ), errors, true );
             } else {
                 // add new room
                 AddRoomResponse addRoomResponse = addRoomService.addRoom( roomName, nickname );
                 if ( addRoomResponse.isSuccess( ) ) {
-                    return new InitializeRoomResponse( addRoomResponse.getRoom( ), errors, true );
+                    return new JoinCreateRoomResponse( addRoomResponse.getRoom( ), errors, true );
                 } else
-                    return new InitializeRoomResponse( null, errors, false );
+                    return new JoinCreateRoomResponse( null, errors, false );
             }
         } else
-            return new InitializeRoomResponse( null, errors, false );
+            return new JoinCreateRoomResponse( null, errors, false );
     }
 }

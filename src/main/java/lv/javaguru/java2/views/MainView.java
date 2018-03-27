@@ -23,7 +23,7 @@ public class MainView implements View, Constants {
     @Autowired private FindUserInRoomService findUserInRoomService;
     @Autowired private HandleUserInputService handleUserInputService;
     @Autowired private InitializeUserService initializeUserService;
-    @Autowired private InitializeRoomService initializeRoomService;
+    @Autowired private JoinCreateRoomService joinCreateRoomService;
     
     @Override
     public void execute( ) {
@@ -54,12 +54,12 @@ public class MainView implements View, Constants {
             System.out.println( );
             System.out.print( "Please enter room name: " );
             roomName = sc.nextLine( );
-            InitializeRoomResponse initializeRoomResponse = initializeRoomService.init( roomName, nickname );
-            if ( initializeRoomResponse.isSuccess( ) ) {
-                room = initializeRoomResponse.getRoom( );
+            JoinCreateRoomResponse joinCreateRoomResponse = joinCreateRoomService.init( roomName, nickname );
+            if ( joinCreateRoomResponse.isSuccess( ) ) {
+                room = joinCreateRoomResponse.getRoom( );
                 success = true;
             } else
-                printErrors( initializeRoomResponse.getErrors( ) );
+                printErrors( joinCreateRoomResponse.getErrors( ) );
         }
         
         // check if user is already in that room
@@ -77,13 +77,12 @@ public class MainView implements View, Constants {
             UserInputResponse userInputResponse = handleUserInputService.handle( input );
             switch ( userInputResponse.getCommand( ) ) {
                 case Constants.QUIT_APP:
-                    ProgramExitView programExitView = new ProgramExitView( );
-                    programExitView.execute( );
+                    new ProgramExitView( ).execute( );
                     break;
                 case Constants.EMPTY_MESSAGE:
                     // [2018/03/26 12:12] username:
-                    System.out.println( MyTimestamp.getStringTimestamp( )
-                            + user.getNickname( ) + ": " );
+                    View emptyMessageView = new EmptyMessageView( nickname );
+                    emptyMessageView.execute( );
                     break;
                 case Constants.NORMAL_MESSAGE:
                     AddMessageResponse addMessageResponse = addMessageService.addMessage(
@@ -92,7 +91,7 @@ public class MainView implements View, Constants {
                             room.getId( )
                     );
                     if ( addMessageResponse.isSuccess( ) ) {
-                        System.out.println( MyTimestamp.getStringTimestamp( )
+                        System.out.println( MyTimestamp.getStringTimestamp( ) + ' '
                                 + user.getNickname( ) + ": "
                                 + userInputResponse.getData( )
                         );
@@ -100,7 +99,18 @@ public class MainView implements View, Constants {
                         printErrors( addMessageResponse.getErrors( ) );
                     break;
                 case Constants.JOIN_ROOM:
-                    //
+                    // validate and join/create
+                    JoinCreateRoomResponse joinCreateRoomResponse =
+                            joinCreateRoomService.init( userInputResponse.getData(), nickname );
+                    if ( joinCreateRoomResponse.isSuccess( ) ) {
+                        room = joinCreateRoomResponse.getRoom( );
+                        System.out.println( "User '" + nickname + "' joined room '" + room.getName() + "'." );
+                    }
+                    else
+                        printErrors( joinCreateRoomResponse.getErrors( ) );
+                    break;
+                case Constants.BAD_COMMAND:
+                    new BadCommandView( ).execute( );
                     break;
             }
         }
