@@ -42,14 +42,10 @@ public class HandleUserInputService implements Constants {
     private byte oneWordCommand( String command ) {
         // One word commands
         switch (command) {
-            case "/quit":
-                return Constants.QUIT_APP;
-            case "/r":
-                //
-            case "/list":
-                //
-            case "/leave":
-                //
+            case "/quit":   return Constants.QUIT_APP;
+            case "/r":      break;
+            case "/list":   return Constants.LIST;
+            case "/leave":  break;
         }
         return Constants.BAD_COMMAND;
     }
@@ -57,12 +53,9 @@ public class HandleUserInputService implements Constants {
     private byte twoWordCommand( String command ) {
         // Two word commands
         switch (command) {
-            case "/nick":
-                //
-                break;
-            case "/join":
-                return Constants.JOIN_ROOM;
+            case "/nick":   break;
+            case "/join":   return Constants.JOIN_ROOM;
         }
-        return Constants.BAD_COMMAND;
+         return Constants.BAD_COMMAND;
     }
 }

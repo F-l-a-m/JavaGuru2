@@ -6,4 +6,5 @@ public interface Constants {
     byte NORMAL_MESSAGE = 2;
     byte JOIN_ROOM = 3;
     byte BAD_COMMAND = 4;
+    byte LIST = 5;
 }

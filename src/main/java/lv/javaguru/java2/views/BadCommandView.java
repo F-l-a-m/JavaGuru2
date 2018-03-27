@@ -1,5 +1,8 @@
 package lv.javaguru.java2.views;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class BadCommandView implements View {
     
     @Override

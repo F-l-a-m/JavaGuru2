@@ -1,4 +1,3 @@
-/*
 package lv.javaguru.java2.views;
 
 import java.util.ArrayList;
@@ -9,7 +8,7 @@ public class PrintAvailableChatCommandsView implements View {
     @Override
     public void execute() {
         List<String> commands = new ArrayList<>();
-        commands.add("Available message commands");
+        commands.add("Available chat commands");
         commands.add("/quit - quit application, /nick - set nickname");
         commands.add("/r - refresh view, /list - show all rooms");
         commands.add("/join - join or create new message room");
@@ -48,4 +47,3 @@ public class PrintAvailableChatCommandsView implements View {
         System.out.println('╝');
     }
 }
-*/
