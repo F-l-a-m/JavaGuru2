@@ -34,14 +34,11 @@ public class MainView implements View, Constants {
     
     @Override
     public void execute( ) {
-        
+        // initialize user
         Scanner sc = new Scanner( System.in );
         User user = null;
         String nickname = null;
         boolean success = false;
-        
-        new PrintAvailableChatCommandsView( ).execute( );
-        
         while ( !success ) {
             System.out.println( );
             System.out.print( "Please enter your nickname: " );
@@ -55,47 +52,47 @@ public class MainView implements View, Constants {
                 printErrors( initializeUserResponse.getErrors( ) );
         }
         
-        String roomName = null;
+        // initialize guest room
+        String roomName = "GuestRoom";
         Room room = null;
-        success = false;
-        
-        while ( !success ) {
-            System.out.println( );
-            System.out.print( "Please enter room name: " );
-            roomName = sc.nextLine( );
-            JoinCreateRoomResponse joinCreateRoomResponse = joinCreateRoomService.init( roomName, nickname );
-            if ( joinCreateRoomResponse.isSuccess( ) ) {
-                room = joinCreateRoomResponse.getRoom( );
-                success = true;
-            } else
-                printErrors( joinCreateRoomResponse.getErrors( ) );
+        JoinCreateRoomResponse joinCreateRoomResponse = joinCreateRoomService.init( roomName, nickname );
+        if ( joinCreateRoomResponse.isSuccess( ) ) {
+            room = joinCreateRoomResponse.getRoom( );
+        } else {
+            printErrors( joinCreateRoomResponse.getErrors( ) );
         }
         
         // check if user is already in that room
         boolean isUserAlreadyInThatRoom = findUserInRoomService.findUserInRoom( user.getId( ), roomName );
         if ( !isUserAlreadyInThatRoom )
             addUserToRoomService.add( user, room );
+        System.out.println( "\nYou are now chatting in '" + roomName + "'" );
         
         // user and room initialized
+        // print help for users
+        applicationContext.getBean( PrintAvailableChatCommandsView.class ).execute( );
+        
         // ready to get user input
         System.out.println( "\n[info] Entering while(true) loop" ); //debug info, delete in prod
         while ( true ) {
-            System.out.println( );
-            System.out.println( "[info] Ready, waiting for your input\n" ); //debug info, delete in prod
+            System.out.println( "\n[info] Ready, waiting for your input" ); //debug info, delete in prod
+            
             String input = sc.nextLine( );
             UserInputResponse userInputResponse = handleUserInputService.handle( input );
+            
             switch ( userInputResponse.getCommand( ) ) {
                 case Constants.QUIT_APP:
                     //new ProgramExitView( ).execute( );
                     applicationContext.getBean( ProgramExitView.class ).execute( );
                     break;
+                    
                 case Constants.EMPTY_MESSAGE:
                     // [2018/03/26 12:12] username:
                     new EmptyMessageView( nickname ).execute( );
                     // Тут из-за передачи nickname не получается через getBean
                     break;
-                case Constants.NORMAL_MESSAGE:
                     
+                case Constants.NORMAL_MESSAGE:
                     // Это хотелось бы вынести в отдельный View
                     AddMessageResponse addMessageResponse = addMessageService.addMessage(
                             userInputResponse.getData( ),
@@ -107,29 +104,32 @@ public class MainView implements View, Constants {
                                 + user.getNickname( ) + ": "
                                 + userInputResponse.getData( )
                         );
-                    } else
+                    } else {
                         printErrors( addMessageResponse.getErrors( ) );
+                    }
                     break;
+                    
                 case Constants.JOIN_ROOM:
-                    
                     // Это хотелось бы вынести в отдельный View
-                    
                     // validate and join/create
-                    JoinCreateRoomResponse joinCreateRoomResponse =
-                            joinCreateRoomService.init( userInputResponse.getData( ), nickname );
+                    joinCreateRoomResponse = joinCreateRoomService.init( userInputResponse.getData( ), nickname );
                     if ( joinCreateRoomResponse.isSuccess( ) ) {
-                        room = joinCreateRoomResponse.getRoom( ); // Нужно как-то вернуть room, от него зависят
+                        room = joinCreateRoomResponse.getRoom( ); // но нужно как-то вернуть room, от него зависят
                         // другие switch case
                         System.out.println( "User '" + nickname + "' joined room '" + room.getName( ) + "'." );
-                    } else
+                    } else {
                         printErrors( joinCreateRoomResponse.getErrors( ) );
+                    }
                     break;
+                    
                 case Constants.BAD_COMMAND:
                     applicationContext.getBean( BadCommandView.class ).execute( );
                     break;
+                    
                 case Constants.LIST:
                     applicationContext.getBean( ListAllRoomsView.class ).execute( );
                     break;
+                    
                 case Constants.CHANGE_NICKNAME:
                     // тут та же проблема что и с room,
                     // user будет нужен в других местах, например для нового сообщения

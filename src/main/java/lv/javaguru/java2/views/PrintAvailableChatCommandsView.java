@@ -1,8 +1,11 @@
 package lv.javaguru.java2.views;
 
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class PrintAvailableChatCommandsView implements View {
 
     @Override
