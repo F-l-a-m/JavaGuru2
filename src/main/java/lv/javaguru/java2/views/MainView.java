@@ -18,35 +18,35 @@ import java.util.Scanner;
 
 @Component
 public class MainView implements View, Constants {
-
+    
     @Autowired private AddMessageService addMessageService;
     @Autowired private AddUserToRoomService addUserToRoomService;
     @Autowired private FindUserInRoomService findUserInRoomService;
     @Autowired private HandleUserInputService handleUserInputService;
     @Autowired private InitializeUserService initializeUserService;
     @Autowired private JoinCreateRoomService joinCreateRoomService;
-
+    
     private ApplicationContext applicationContext;
-
+    
     public MainView( ApplicationContext applicationContext ) {
         this.applicationContext = applicationContext;
     }
-
+    
     @Override
     public void execute( ) {
-
+        
         Scanner sc = new Scanner( System.in );
         User user = null;
         String nickname = null;
         boolean success = false;
-
+        
         new PrintAvailableChatCommandsView( ).execute( );
-
+        
         while ( !success ) {
             System.out.println( );
             System.out.print( "Please enter your nickname: " );
             nickname = sc.nextLine( );
-
+            
             InitializeUserResponse initializeUserResponse = initializeUserService.init( nickname );
             if ( initializeUserResponse.isSuccess( ) ) {
                 user = initializeUserResponse.getUser( );
@@ -54,11 +54,11 @@ public class MainView implements View, Constants {
             } else
                 printErrors( initializeUserResponse.getErrors( ) );
         }
-
+        
         String roomName = null;
         Room room = null;
         success = false;
-
+        
         while ( !success ) {
             System.out.println( );
             System.out.print( "Please enter room name: " );
@@ -70,12 +70,12 @@ public class MainView implements View, Constants {
             } else
                 printErrors( joinCreateRoomResponse.getErrors( ) );
         }
-
+        
         // check if user is already in that room
         boolean isUserAlreadyInThatRoom = findUserInRoomService.findUserInRoom( user.getId( ), roomName );
         if ( !isUserAlreadyInThatRoom )
             addUserToRoomService.add( user, room );
-
+        
         // user and room initialized
         // ready to get user input
         System.out.println( "\n[info] Entering while(true) loop" ); //debug info, delete in prod
@@ -86,13 +86,17 @@ public class MainView implements View, Constants {
             UserInputResponse userInputResponse = handleUserInputService.handle( input );
             switch ( userInputResponse.getCommand( ) ) {
                 case Constants.QUIT_APP:
-                    new ProgramExitView( ).execute( );
+                    //new ProgramExitView( ).execute( );
+                    applicationContext.getBean( ProgramExitView.class ).execute( );
                     break;
                 case Constants.EMPTY_MESSAGE:
                     // [2018/03/26 12:12] username:
                     new EmptyMessageView( nickname ).execute( );
+                    // Тут из-за передачи nickname не получается через getBean
                     break;
                 case Constants.NORMAL_MESSAGE:
+                    
+                    // Это хотелось бы вынести в отдельный View
                     AddMessageResponse addMessageResponse = addMessageService.addMessage(
                             userInputResponse.getData( ),
                             nickname,
@@ -107,26 +111,33 @@ public class MainView implements View, Constants {
                         printErrors( addMessageResponse.getErrors( ) );
                     break;
                 case Constants.JOIN_ROOM:
+                    
+                    // Это хотелось бы вынести в отдельный View
+                    
                     // validate and join/create
                     JoinCreateRoomResponse joinCreateRoomResponse =
-                            joinCreateRoomService.init( userInputResponse.getData(), nickname );
+                            joinCreateRoomService.init( userInputResponse.getData( ), nickname );
                     if ( joinCreateRoomResponse.isSuccess( ) ) {
-                        room = joinCreateRoomResponse.getRoom( );
-                        System.out.println( "User '" + nickname + "' joined room '" + room.getName() + "'." );
-                    }
-                    else
+                        room = joinCreateRoomResponse.getRoom( ); // Нужно как-то вернуть room, от него зависят
+                        // другие switch case
+                        System.out.println( "User '" + nickname + "' joined room '" + room.getName( ) + "'." );
+                    } else
                         printErrors( joinCreateRoomResponse.getErrors( ) );
                     break;
                 case Constants.BAD_COMMAND:
-                    applicationContext.getBean(BadCommandView.class).execute( );
+                    applicationContext.getBean( BadCommandView.class ).execute( );
                     break;
                 case Constants.LIST:
-                    applicationContext.getBean(ListAllRoomsView.class).execute( );
+                    applicationContext.getBean( ListAllRoomsView.class ).execute( );
+                    break;
+                case Constants.CHANGE_NICKNAME:
+                    // тут та же проблема что и с room,
+                    // user будет нужен в других местах, например для нового сообщения
                     break;
             }
         }
     }
-
+    
     private void printErrors( List<Error> errors ) {
         errors.forEach( error -> {
             System.out.println( "Error message = " + error.getErrorMessage( ) );

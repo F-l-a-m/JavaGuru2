@@ -7,4 +7,5 @@ public interface Constants {
     byte JOIN_ROOM = 3;
     byte BAD_COMMAND = 4;
     byte LIST = 5;
+    byte CHANGE_NICKNAME = 6;
 }
