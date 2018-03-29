@@ -13,6 +13,7 @@ public class FindUserInRoomService {
     }
     
     public boolean findUserInRoom(String nickname, String roomName) {
+        // make database method
         return false;
     }
 }

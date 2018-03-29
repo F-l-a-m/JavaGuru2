@@ -6,29 +6,26 @@ import org.springframework.stereotype.Component;
 @Component
 public class HandleUserInputService implements Constants {
     
-    private String input;
-    private final int maxCommandLength = 40;
-    
     public UserInputResponse handle( String userInput ) {
-        input = userInput;
+        String input = userInput;
         
         // Empty message
-        if (input.isEmpty( ) || userInput.trim( ).isEmpty( ))
+        if ( input.isEmpty( ) || userInput.trim( ).isEmpty( ) )
             return new UserInputResponse( Constants.EMPTY_MESSAGE, null );
             
-        // Check if user entered a command and handle it
-        else if (input.charAt( 0 ) == '/') {
-            if (input.length( ) > maxCommandLength)
+            // Check if user entered a command and handle it
+        else if ( input.charAt( 0 ) == '/' ) {
+            final int maxCommandLength = 40;
+            if ( input.length( ) > maxCommandLength )
                 return new UserInputResponse( Constants.BAD_COMMAND, null );
             input = input.trim( );
             String[] splitStr = input.split( "\\s+" );
-    
+            
             byte result;
-            if (splitStr.length == 1) {
+            if ( splitStr.length == 1 ) {
                 result = oneWordCommand( splitStr[0] );
-                return new UserInputResponse( result,  null);
-            }
-            else if (splitStr.length == 2) {
+                return new UserInputResponse( result, null );
+            } else if ( splitStr.length == 2 ) {
                 result = twoWordCommand( splitStr[0] );
                 return new UserInputResponse( result, splitStr[1] );
             }
@@ -41,7 +38,7 @@ public class HandleUserInputService implements Constants {
     
     private byte oneWordCommand( String command ) {
         // One word commands
-        switch (command) {
+        switch ( command ) {
             case "/quit":   return Constants.QUIT_APP;
             case "/r":      return Constants.GET_CHAT_HISTORY;
             case "/list":   return Constants.LIST;
@@ -52,10 +49,10 @@ public class HandleUserInputService implements Constants {
     
     private byte twoWordCommand( String command ) {
         // Two word commands
-        switch (command) {
+        switch ( command ) {
             case "/nick":   break;
             case "/join":   return Constants.JOIN_ROOM;
         }
-         return Constants.BAD_COMMAND;
+        return Constants.BAD_COMMAND;
     }
 }

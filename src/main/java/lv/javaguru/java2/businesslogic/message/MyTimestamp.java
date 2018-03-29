@@ -10,15 +10,14 @@ import java.sql.Timestamp;
 @Component
 public final class MyTimestamp {
     
-    public static String getStringTimestamp() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        Date date = new Date();
-        return '[' + dateFormat.format(date) + ']';
+    public static String getStringTimestamp( ) {
+        DateFormat dateFormat = new SimpleDateFormat( "yyyy/MM/dd HH:mm:ss" );
+        Date date = new Date( );
+        return '[' + dateFormat.format( date ) + ']';
     }
     
-    public static Timestamp getSQLTimestamp() {
-        java.util.Date now = new java.util.Date();
-        java.sql.Timestamp timestamp = new java.sql.Timestamp(now.getTime());
-        return timestamp;
+    public static Timestamp getSQLTimestamp( ) {
+        java.util.Date now = new java.util.Date( );
+        return new Timestamp( now.getTime( ) );
     }
 }

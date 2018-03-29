@@ -9,7 +9,7 @@ public class InitializeUserResponse {
     
     private User user;
     private List<Error> errors;
-    private boolean isSuccess = false;
+    private boolean isSuccess;
     
     public InitializeUserResponse( User user, List<Error> errors, boolean isSuccess ) {
         this.user = user;

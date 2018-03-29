@@ -9,16 +9,14 @@ import java.util.List;
 
 @Component
 public class ListAllRoomsService {
-
-    @Autowired Database database;
-
-    public ListAllRoomsResponse list( ){
+    
+    @Autowired private Database database;
+    
+    public ListAllRoomsResponse list( ) {
         List<String> listOfAllRooms = new ArrayList<>( );
-        database.getListOfAllRooms( ).forEach(x -> {
-            listOfAllRooms.add( x.getName( ) );
-        });
-        if(!listOfAllRooms.isEmpty())
-            return new ListAllRoomsResponse(listOfAllRooms, true);
-        return new ListAllRoomsResponse(null, false);
+        database.getListOfAllRooms( ).forEach( x -> listOfAllRooms.add( x.getName( ) ) );
+        if ( !listOfAllRooms.isEmpty( ) )
+            return new ListAllRoomsResponse( listOfAllRooms, true );
+        return new ListAllRoomsResponse( null, false );
     }
 }
