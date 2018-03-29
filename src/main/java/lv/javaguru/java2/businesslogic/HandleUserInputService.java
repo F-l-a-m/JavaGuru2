@@ -23,7 +23,7 @@ public class HandleUserInputService implements Constants {
             input = input.trim( );
             String[] splitStr = input.split( "\\s+" );
     
-            byte result = 0;
+            byte result;
             if (splitStr.length == 1) {
                 result = oneWordCommand( splitStr[0] );
                 return new UserInputResponse( result,  null);
@@ -43,7 +43,7 @@ public class HandleUserInputService implements Constants {
         // One word commands
         switch (command) {
             case "/quit":   return Constants.QUIT_APP;
-            case "/r":      break;
+            case "/r":      return Constants.GET_CHAT_HISTORY;
             case "/list":   return Constants.LIST;
             case "/leave":  break;
         }

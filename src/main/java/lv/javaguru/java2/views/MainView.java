@@ -7,6 +7,7 @@ import lv.javaguru.java2.businesslogic.HandleUserInputService;
 import lv.javaguru.java2.businesslogic.message.*;
 import lv.javaguru.java2.businesslogic.room.*;
 import lv.javaguru.java2.businesslogic.user.*;
+import lv.javaguru.java2.domain.Message;
 import lv.javaguru.java2.domain.Room;
 import lv.javaguru.java2.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ public class MainView implements View, Constants {
     @Autowired private HandleUserInputService handleUserInputService;
     @Autowired private InitializeUserService initializeUserService;
     @Autowired private JoinCreateRoomService joinCreateRoomService;
+    @Autowired private GetAllChatHistoryService getAllChatHistoryService;
     
     private ApplicationContext applicationContext;
     
@@ -100,10 +102,7 @@ public class MainView implements View, Constants {
                             room.getId( )
                     );
                     if ( addMessageResponse.isSuccess( ) ) {
-                        System.out.println( MyTimestamp.getStringTimestamp( ) + ' '
-                                + user.getNickname( ) + ": "
-                                + userInputResponse.getData( )
-                        );
+                        System.out.println( addMessageResponse.getMessage( ) );
                     } else {
                         printErrors( addMessageResponse.getErrors( ) );
                     }
@@ -134,13 +133,26 @@ public class MainView implements View, Constants {
                     // тут та же проблема что и с room,
                     // user будет нужен в других местах, например для нового сообщения
                     break;
+                
+                case Constants.GET_CHAT_HISTORY:
+                    // new PrintChatHistoryInRoomView( room ).execute( );
+                    // applicationContext.getBean( PrintChatHistoryInRoomView.class ).execute( );
+                    // No qualifying bean of type 'lv.javaguru.java2.domain.Room' available
+                    // :(
+                    // И как тут быть, если код ниже хочеться вынести отдельно ?
+    
+                    // Clear console
+                    System.out.println( "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" );
+                    // Print whole message history in given chat room
+                    GetAllChatHistoryResponse response = getAllChatHistoryService.go( room );
+                    List<Message> messages = response.getChatHistory( );
+                    messages.forEach( System.out::println );
+                    break;
             }
         }
     }
     
     private void printErrors( List<Error> errors ) {
-        errors.forEach( error -> {
-            System.out.println( "Error message = " + error.getErrorMessage( ) );
-        } );
+        errors.forEach( error -> System.out.println( "Error message = " + error.getErrorMessage( ) ) );
     }
 }
