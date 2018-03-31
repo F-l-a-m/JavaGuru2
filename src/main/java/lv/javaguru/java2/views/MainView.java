@@ -87,13 +87,13 @@ public class MainView implements View, Constants {
                     //new ProgramExitView( ).execute( );
                     applicationContext.getBean( ProgramExitView.class ).execute( );
                     break;
-                    
+                
                 case Constants.EMPTY_MESSAGE:
                     // [2018/03/26 12:12] username:
                     new EmptyMessageView( nickname ).execute( );
                     // Тут из-за передачи nickname не получается через getBean
                     break;
-                    
+                
                 case Constants.NORMAL_MESSAGE:
                     // Это хотелось бы вынести в отдельный View
                     AddMessageResponse addMessageResponse = addMessageService.addMessage(
@@ -107,7 +107,7 @@ public class MainView implements View, Constants {
                         printErrors( addMessageResponse.getErrors( ) );
                     }
                     break;
-                    
+                
                 case Constants.JOIN_ROOM:
                     // Это хотелось бы вынести в отдельный View
                     // validate and join/create
@@ -120,15 +120,15 @@ public class MainView implements View, Constants {
                         printErrors( joinCreateRoomResponse.getErrors( ) );
                     }
                     break;
-                    
+                
                 case Constants.BAD_COMMAND:
                     applicationContext.getBean( BadCommandView.class ).execute( );
                     break;
-                    
+                
                 case Constants.LIST:
                     applicationContext.getBean( ListAllRoomsView.class ).execute( );
                     break;
-                    
+                
                 case Constants.CHANGE_NICKNAME:
                     // тут та же проблема что и с room,
                     // user будет нужен в других местах, например для нового сообщения
@@ -140,7 +140,7 @@ public class MainView implements View, Constants {
                     // No qualifying bean of type 'lv.javaguru.java2.domain.Room' available
                     // :(
                     // И как тут быть, если код ниже хочеться вынести отдельно ?
-    
+                    
                     // Clear console
                     System.out.println( "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" );
                     // Print whole message history in given chat room

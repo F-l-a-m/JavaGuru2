@@ -17,10 +17,7 @@ public class FindUserService {
     @Transactional
     public FindUserResponse findUserByNickname( String nickname ) {
         Optional<User> search = database.findUser( nickname );
-        if ( search.isPresent( ) ) {
-            return new FindUserResponse( search.get( ), true );
-        } else {
-            return new FindUserResponse( null, false );
-        }
+        return search.map( user -> new FindUserResponse( user, true ) )
+                .orElseGet( ( ) -> new FindUserResponse( null, false ) );
     }
 }

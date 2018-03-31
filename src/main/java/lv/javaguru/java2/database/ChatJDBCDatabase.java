@@ -355,7 +355,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
     }
 
     @Override
-    public List<Message> getAllChatHistoryInRoom( Long roomId ) {
+    public List getAllChatHistoryInRoom( Long roomId ) {
         Connection connection = null;
         try {
             connection = getConnection( );

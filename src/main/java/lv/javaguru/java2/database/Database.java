@@ -33,5 +33,5 @@ public interface Database {
     
     // Message management
     Message addChatMessage( String message, String nickname, Long roomId );
-    List<Message> getAllChatHistoryInRoom( Long roomId );
+    List getAllChatHistoryInRoom( Long roomId );
 }

@@ -68,10 +68,7 @@ public class ChatORMDatabase implements Database {
         User user = (User) session( ).createCriteria( User.class )
                 .add( Restrictions.eq( "id", userId ) )
                 .uniqueResult( );
-        if ( user == null ) {
-            return false;
-        }
-        return true;
+        return user != null;
     }
     
     @Override
@@ -96,10 +93,10 @@ public class ChatORMDatabase implements Database {
     }
     
     @Override
-    public List<Room> getListOfAllRooms( ) {
-        return session()
+    public List getListOfAllRooms( ) {
+        return session( )
                 .createCriteria( Room.class )
-                .list();
+                .list( );
     }
     
     @Override
@@ -111,7 +108,7 @@ public class ChatORMDatabase implements Database {
     }
     
     @Override
-    public List<Message> getAllChatHistoryInRoom( Long roomId ) {
+    public List getAllChatHistoryInRoom( Long roomId ) {
         return session( )
                 .createCriteria( Message.class )
                 .list( );

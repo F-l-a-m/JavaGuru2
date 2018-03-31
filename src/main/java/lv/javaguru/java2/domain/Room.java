@@ -1,7 +1,5 @@
 package lv.javaguru.java2.domain;
 
-import lv.javaguru.java2.businesslogic.message.MyTimestamp;
-
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;

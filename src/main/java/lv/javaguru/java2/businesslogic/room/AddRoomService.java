@@ -16,11 +16,9 @@ public class AddRoomService {
     @Transactional
     public AddRoomResponse addRoom( String roomName, String creatorNickname ) {
         
-        Optional<Room> room = database.createNewChatRoom( roomName, creatorNickname );
-        
-        if ( room.isPresent( ) )
-            return new AddRoomResponse( room.get( ), true );
-        else
-            return new AddRoomResponse( null, false );
+        Optional<Room> roomOpt = database.createNewChatRoom( roomName, creatorNickname );
+    
+        return roomOpt.map( room -> new AddRoomResponse( room, true ) )
+                .orElseGet( ( ) -> new AddRoomResponse( null, false ) );
     }
 }

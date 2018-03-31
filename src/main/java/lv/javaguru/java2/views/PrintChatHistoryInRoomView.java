@@ -9,12 +9,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-/*
-@Component
+//
 public class PrintChatHistoryInRoomView implements View {
     
     private Room room;
-    @Autowired private GetAllChatHistoryService getAllChatHistoryService;
+    //@Autowired private GetAllChatHistoryService getAllChatHistoryService;
     
     public PrintChatHistoryInRoomView( Room room ) {
         this.room = room;
@@ -26,9 +25,8 @@ public class PrintChatHistoryInRoomView implements View {
         System.out.println( "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" );
         
         // Print whole message history in given chat room
-        GetAllChatHistoryResponse response = getAllChatHistoryService.go( room );
-        List<Message> messages = response.getChatHistory( );
-        messages.forEach( System.out::println );
+        //GetAllChatHistoryResponse response = getAllChatHistoryService.go( room );
+        //List<Message> messages = response.getChatHistory( );
+        //messages.forEach( System.out::println );
     }
 }
-*/

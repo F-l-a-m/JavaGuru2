@@ -16,11 +16,9 @@ public class FindRoomService {
     @Transactional
     public FindRoomResponse findRoomByName( String roomName ) {
         
-        Optional<Room> room = database.findChatRoom( roomName );
-        
-        if ( room.isPresent( ) ) {
-            return new FindRoomResponse( room.get( ), true );
-        } else
-            return new FindRoomResponse( null, false );
+        Optional<Room> search = database.findChatRoom( roomName );
+    
+        return search.map( room -> new FindRoomResponse( room, true ) )
+                .orElseGet( ( ) -> new FindRoomResponse( null, false ) );
     }
 }

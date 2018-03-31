@@ -14,9 +14,4 @@ public class FindUserInRoomService {
     public boolean findUserInRoom( Long userId, String roomName ) {
         return database.findUserInRoom( userId, roomName );
     }
-    
-    public boolean findUserInRoom( String nickname, String roomName ) {
-        // make database method
-        return false;
-    }
 }

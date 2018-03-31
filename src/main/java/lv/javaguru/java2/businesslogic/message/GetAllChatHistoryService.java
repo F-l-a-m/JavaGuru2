@@ -16,6 +16,7 @@ public class GetAllChatHistoryService {
     
     @Transactional
     public GetAllChatHistoryResponse go( Room room ) {
+        @SuppressWarnings (value="unchecked")
         List<Message> chatHistory = database.getAllChatHistoryInRoom( room.getId( ) );
         return new GetAllChatHistoryResponse( chatHistory );
     }
