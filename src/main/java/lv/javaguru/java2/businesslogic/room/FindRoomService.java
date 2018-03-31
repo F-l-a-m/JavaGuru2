@@ -4,6 +4,7 @@ import lv.javaguru.java2.database.Database;
 import lv.javaguru.java2.domain.Room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -12,9 +13,10 @@ public class FindRoomService {
     
     @Autowired private Database database;
     
+    @Transactional
     public FindRoomResponse findRoomByName( String roomName ) {
         
-        Optional<Room> room = database.findChatRoomByRoomName( roomName );
+        Optional<Room> room = database.findChatRoom( roomName );
         
         if ( room.isPresent( ) ) {
             return new FindRoomResponse( room.get( ), true );

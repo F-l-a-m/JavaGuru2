@@ -34,7 +34,7 @@ public class ChangeNicknameServiceTest {
                 .thenReturn(errors);
         User user = Mockito.mock(User.class);
         */
-/*Mockito.when(database.getUserByNickname(" "))
+/*Mockito.when(database.findUser(" "))
                 .thenReturn(Optional.of(user));*//*
 
 

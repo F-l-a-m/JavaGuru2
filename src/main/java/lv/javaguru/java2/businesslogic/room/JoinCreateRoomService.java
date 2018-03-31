@@ -3,6 +3,7 @@ package lv.javaguru.java2.businesslogic.room;
 import lv.javaguru.java2.businesslogic.Error;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ public class JoinCreateRoomService {
     @Autowired private AddRoomService addRoomService;
     @Autowired private RoomNameValidator validator;
     
+    @Transactional
     public JoinCreateRoomResponse init( String roomName, String nickname ) {
         
         // check if user is already in that room
@@ -31,6 +33,7 @@ public class JoinCreateRoomService {
                 if ( addRoomResponse.isSuccess( ) ) {
                     return new JoinCreateRoomResponse( addRoomResponse.getRoom( ), errors, true );
                 } else
+                    errors.add( new Error( "Failed to create new room" ) );
                     return new JoinCreateRoomResponse( null, errors, false );
             }
         } else

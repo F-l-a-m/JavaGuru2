@@ -4,19 +4,19 @@ import lv.javaguru.java2.businesslogic.message.MyTimestamp;
 import lv.javaguru.java2.domain.Message;
 import lv.javaguru.java2.domain.Room;
 import lv.javaguru.java2.domain.User;
-import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+//@Component
+@SuppressWarnings("SyntaxError")
 public class ChatJDBCDatabase extends JDBCDatabase implements Database {
     
     // user management
     @Override
-    public User addNewGuest( String nickname ) {
+    public User addUser( String nickname ) {
         Connection connection = null;
         try {
             connection = getConnection( );
@@ -66,7 +66,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
     }
     
     @Override
-    public Optional<User> getUserById( Long userId ) {
+    public Optional<User> findUser( Long userId ) {
         Connection connection = null;
         try {
             connection = getConnection( );
@@ -86,7 +86,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
             }
             return Optional.ofNullable( user );
         } catch (Throwable e) {
-            System.out.println( "Exception while execute database.getUserById()" );
+            System.out.println( "Exception while execute database.findUser()" );
             e.printStackTrace( );
             throw new RuntimeException( e );
         } finally {
@@ -95,7 +95,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
     }
     
     @Override
-    public Optional<User> getUserByNickname( String nickname ) {
+    public Optional<User> findUser( String nickname ) {
         Connection connection = null;
         try {
             connection = getConnection( );
@@ -115,7 +115,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
             }
             return Optional.ofNullable( user );
         } catch (Throwable e) {
-            System.out.println( "Exception while execute database.getUserByNickname()" );
+            System.out.println( "Exception while execute database.findUser()" );
             e.printStackTrace( );
             throw new RuntimeException( e );
         } finally {
@@ -182,7 +182,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
     }
     
     @Override
-    public boolean findUserInRoomById( Long userId, String roomName ) {
+    public boolean findUserInRoom( Long userId, String roomName ) {
         Connection connection = null;
         try {
             connection = getConnection( );
@@ -197,7 +197,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
             ResultSet resultSet = preparedStatement.executeQuery( );
             return resultSet.next( );
         } catch (Throwable e) {
-            System.out.println( "Exception while execute database.findUserInRoomById()" );
+            System.out.println( "Exception while execute database.findUserInRoom()" );
             e.printStackTrace( );
             throw new RuntimeException( e );
         } finally {
@@ -239,7 +239,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
     }
     
     @Override
-    public Optional<Room> findChatRoomByRoomId( Long roomId ) {
+    public Optional<Room> findChatRoom( Long roomId ) {
         Connection connection = null;
         try {
             connection = getConnection( );
@@ -255,7 +255,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
             }
             return Optional.ofNullable( room );
         } catch (Throwable e) {
-            System.out.println( "Exception while execute database.findChatRoomByRoomId()" );
+            System.out.println( "Exception while execute database.findChatRoom()" );
             e.printStackTrace( );
             throw new RuntimeException( e );
         } finally {
@@ -264,7 +264,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
     }
     
     @Override
-    public Optional<Room> findChatRoomByRoomName( String roomName ) {
+    public Optional<Room> findChatRoom( String roomName ) {
         Connection connection = null;
         try {
             connection = getConnection( );
@@ -282,7 +282,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
             }
             return Optional.ofNullable( room );
         } catch (Throwable e) {
-            System.out.println( "Exception while execute database.findChatRoomByRoomId()" );
+            System.out.println( "Exception while execute database.findChatRoom()" );
             e.printStackTrace( );
             throw new RuntimeException( e );
         } finally {
@@ -353,34 +353,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
             closeConnection( connection );
         }
     }
-    
-    @Override
-    public Optional<Message> getLastChatMessageInRoom( Long roomId ) {
-        Connection connection = null;
-        try {
-            connection = getConnection( );
-            String sql = "select * from message order by id desc limit 1"; // where room_id = ?
-            PreparedStatement preparedStatement = connection.prepareStatement( sql );
-            ResultSet resultSet = preparedStatement.executeQuery( );
-            Message msg = null;
-            if ( resultSet.next( ) ) {
-                msg = new Message( );
-                msg.setId( resultSet.getLong( "id" ) );
-                msg.setRoom_id( resultSet.getLong( "room_id" ) );
-                msg.setCreationTime( resultSet.getTimestamp( "creationTime" ) );
-                msg.setUser_nickname( resultSet.getString( "user_nickname" ) );
-                msg.setMessage_body( resultSet.getString( "message_body" ) );
-            }
-            return Optional.ofNullable( msg );
-        } catch (Throwable e) {
-            System.out.println( "Exception while execute database.getLastChatMessageInRoom()" );
-            e.printStackTrace( );
-            throw new RuntimeException( e );
-        } finally {
-            closeConnection( connection );
-        }
-    }
-    
+
     @Override
     public List<Message> getAllChatHistoryInRoom( Long roomId ) {
         Connection connection = null;

@@ -3,6 +3,7 @@ package lv.javaguru.java2.businesslogic.user;
 import lv.javaguru.java2.businesslogic.Error;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ public class InitializeUserService {
     @Autowired private AddUserService addUserService;
     @Autowired private NicknameValidator validator;
     
+    @Transactional
     public InitializeUserResponse init( String nickname ) {
         
         List<Error> errors = validator.validate( nickname );
@@ -29,7 +31,7 @@ public class InitializeUserService {
                     return new InitializeUserResponse( addUserResponse.getUser( ), errors, true );
                 } else
                     errors.add( new Error( "Failed to add new user" ) );
-                    return new InitializeUserResponse( null, errors, false );
+                return new InitializeUserResponse( null, errors, false );
             }
         } else
             return new InitializeUserResponse( null, errors, false );
