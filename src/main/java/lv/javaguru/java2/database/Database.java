@@ -16,12 +16,14 @@ public interface Database {
     Optional<User> findUser( Long userId );
     Optional<User> findUser( String nickname );
     void changeUserNickname( String oldNickname, String newNickname );
+    void changeUserNickname( User user, String newNickname );
     
     
     // user in room management
     void addUserToRoom( Long userId, Long roomId );
     void removeUserFromRoom( Long userId, Long roomId );
-    boolean findUserInRoom( Long userId, String roomName );
+    boolean findUserInRoom( Long userId, Long roomId);
+    List<Room> getAListOfJoinedRooms( Long userId);
     
     
     // Chat room management

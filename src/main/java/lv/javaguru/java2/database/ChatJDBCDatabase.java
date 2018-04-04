@@ -1,3 +1,4 @@
+/*
 package lv.javaguru.java2.database;
 
 import lv.javaguru.java2.businesslogic.message.MyTimestamp;
@@ -205,6 +206,11 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
         }
     }
     
+    @Override
+    public List<Room> getAListOfJoinedRooms( Long userId ) {
+        return null;
+    }
+    
     // room management
     @Override
     public Optional<Room> createNewChatRoom( String roomName, String creatorNickname ) {
@@ -386,3 +392,4 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
     }
     
 }
+*/

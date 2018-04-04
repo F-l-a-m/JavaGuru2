@@ -4,12 +4,15 @@ import lv.javaguru.java2.businesslogic.message.MyTimestamp;
 import lv.javaguru.java2.domain.Message;
 import lv.javaguru.java2.domain.Room;
 import lv.javaguru.java2.domain.User;
+import lv.javaguru.java2.domain.UserInRoom;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,12 +35,16 @@ public class ChatORMDatabase implements Database {
     
     @Override
     public void updateUserActiveStatus( User user, boolean activeStatus ) {
-    
+        user.setActive( activeStatus );
+        session( ).update( user );
     }
     
     @Override
     public Optional<User> findUser( Long userId ) {
-        return Optional.empty( );
+        User user = (User) session( ).createCriteria( User.class )
+                .add( Restrictions.eq( "id", userId ) )
+                .uniqueResult( );
+        return Optional.ofNullable( user );
     }
     
     @Override
@@ -50,12 +57,23 @@ public class ChatORMDatabase implements Database {
     
     @Override
     public void changeUserNickname( String oldNickname, String newNickname ) {
+        User user = (User) session( ).createCriteria( User.class )
+                .add( Restrictions.eq( "nickname", oldNickname ) )
+                .uniqueResult( );
+        user.setNickname( newNickname );
+        session( ).update( user );
+    }
     
+    @Override
+    public void changeUserNickname( User user, String newNickname ) {
+        user.setNickname( newNickname );
+        session( ).update( user );
     }
     
     @Override
     public void addUserToRoom( Long userId, Long roomId ) {
-    
+        UserInRoom userInRoom = new UserInRoom( userId, roomId );
+        session( ).save( userInRoom );
     }
     
     @Override
@@ -64,11 +82,36 @@ public class ChatORMDatabase implements Database {
     }
     
     @Override
-    public boolean findUserInRoom( Long userId, String roomName ) {
-        User user = (User) session( ).createCriteria( User.class )
-                .add( Restrictions.eq( "id", userId ) )
+    public boolean findUserInRoom( Long userId, Long roomId ) {
+        /*User user = (User) session( ).createCriteria( User.class )
+                .add( Restrictions.eq( "id", userId) )
                 .uniqueResult( );
-        return user != null;
+        return user != null;*/
+        UserInRoom userInRoom = (UserInRoom) session( ).createCriteria( UserInRoom.class )
+                .add( Restrictions.eq( "user_id", userId ) )
+                .add( Restrictions.eq( "room_id", roomId ) )
+                .uniqueResult( );
+        if ( userInRoom == null )
+            return false;
+        else return true;
+    }
+    
+    @Override
+    public List<Room> getAListOfJoinedRooms( Long userId ) {
+        List<UserInRoom> listOfRoomIds = new ArrayList<>( );
+        
+        /*Room room;
+        Query query = session().createQuery( "select user_in_room.room_id from UserInRoom user_in_room" +
+                " where user_id = :userId" );
+        query.setParameter( "userId", userId );
+        List results = query.list();*/
+        
+        /*Query query = session( ).createQuery( "from UserInRoom where user_id = :userId" );
+        query.setParameter( "userId", userId );
+        List roomIdList = query.list( );*/
+        
+        int i = 0;
+        return null;
     }
     
     @Override

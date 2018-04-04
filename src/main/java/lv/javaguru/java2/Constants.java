@@ -9,4 +9,5 @@ public interface Constants {
     byte LIST = 5;
     byte CHANGE_NICKNAME = 6;
     byte GET_CHAT_HISTORY = 7;
+    byte LEAVE = 8;
 }
