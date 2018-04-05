@@ -26,7 +26,7 @@ public interface Database {
     
     // user in room management
     void userInRoom_addUserToRoom( Long userId, Long roomId );
-    void userInRoom_removeUserFromRoom( Long userId, Long roomId );
+    boolean userInRoom_removeUserFromRoom( Long userId, Long roomId );
     boolean userInRoom_findUserInRoom( Long userId, Long roomId);
     List<Room> userInRoom_getAListOfJoinedRooms( Long userId );
     

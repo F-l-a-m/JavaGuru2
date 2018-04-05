@@ -166,7 +166,8 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
     }
     
     @Override
-    public void userInRoom_removeUserFromRoom( Long userId, Long roomId ) {
+    public boolean userInRoom_removeUserFromRoom( Long userId, Long roomId ) {
+        boolean success;
         Connection connection = null;
         try {
             connection = getConnection( );
@@ -175,6 +176,8 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
             preparedStatement.setLong( 1, userId );
             preparedStatement.setLong( 2, roomId );
             preparedStatement.executeUpdate( );
+            success = true;
+            return success;
         } catch (Throwable e) {
             System.out.println( "Exception while execute database.userInRoom_removeUserFromRoom()" );
             e.printStackTrace( );

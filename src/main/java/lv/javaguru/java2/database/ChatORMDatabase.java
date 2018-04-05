@@ -109,7 +109,7 @@ public class ChatORMDatabase implements Database {
     }
     
     @Override
-    public void userInRoom_removeUserFromRoom( Long userId, Long roomId ) {
+    public boolean userInRoom_removeUserFromRoom( Long userId, Long roomId ) {
         
         //UserInRoom userInRoom = new UserInRoom( userId, roomId );
         // С таким вариантом
@@ -120,8 +120,10 @@ public class ChatORMDatabase implements Database {
                 .add( Restrictions.eq( "user_id", userId ) )
                 .add( Restrictions.eq( "room_id", roomId ) )
                 .uniqueResult( );
-        
+        if ( userInRoom == null )
+            return false;
         session( ).delete( userInRoom );
+        return true;
     }
     
     @Override
