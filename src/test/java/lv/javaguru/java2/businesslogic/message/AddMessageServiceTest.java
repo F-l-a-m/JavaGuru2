@@ -4,7 +4,6 @@ import lv.javaguru.java2.configs.SpringAppConfig;
 import lv.javaguru.java2.database.Database;
 import lv.javaguru.java2.domain.Room;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,14 +29,14 @@ public class AddMessageServiceTest {
     @Before
     public void init( ) {
         // Setup room in database
-        Optional<Room> search = database.findChatRoom( roomName );
+        Optional<Room> search = database.chatRoom_get( roomName );
         if ( search.isPresent( ) ) {
             roomId = search.get( ).getId( );
         } else {
             String creatorNickname = "TestCreatorNickname";
-            Optional<Room> roomOpt = database.createNewChatRoom( roomName, creatorNickname );
-            if ( roomOpt.isPresent( ) ) {
-                roomId = roomOpt.get( ).getId( );
+            Room room = database.chatRoom_add( roomName, creatorNickname );
+            if ( room != null ) {
+                roomId = room.getId( );
             } else {
                 System.out.println( "Cannot create chat room for test." );
                 System.exit( 0 );

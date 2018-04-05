@@ -14,7 +14,7 @@ public class AddUserService {
     // Give only valid nickname
     @Transactional
     public AddUserResponse addUser( String nickname ) {
-        User user = database.addUser( nickname );
+        User user = database.user_add( nickname );
         return new AddUserResponse( user, true );
     }
 }

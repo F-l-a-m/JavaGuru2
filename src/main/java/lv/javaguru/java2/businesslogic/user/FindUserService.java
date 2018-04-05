@@ -16,7 +16,7 @@ public class FindUserService {
     // Give only valid nickname
     @Transactional
     public FindUserResponse findUserByNickname( String nickname ) {
-        Optional<User> search = database.findUser( nickname );
+        Optional<User> search = database.user_get( nickname );
         return search.map( user -> new FindUserResponse( user, true ) )
                 .orElseGet( ( ) -> new FindUserResponse( null, false ) );
     }

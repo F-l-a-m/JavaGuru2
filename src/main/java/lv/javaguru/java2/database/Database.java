@@ -11,29 +11,26 @@ public interface Database {
     
     
     // User management
-    User addUser( String nickname );
-    void updateUserActiveStatus( User user, boolean activeStatus );
-    Optional<User> findUser( Long userId );
-    Optional<User> findUser( String nickname );
-    void changeUserNickname( String oldNickname, String newNickname );
-    void changeUserNickname( User user, String newNickname );
-    
-    
-    // user in room management
-    void addUserToRoom( Long userId, Long roomId );
-    void removeUserFromRoom( Long userId, Long roomId );
-    boolean findUserInRoom( Long userId, Long roomId);
-    List<Room> getAListOfJoinedRooms( Long userId);
-    
+    User user_add( String nickname );
+    void user_updateActiveStatus( User user, boolean activeStatus );
+    Optional<User> user_get( Long userId );
+    Optional<User> user_get( String nickname );
+    void user_changeNickname( String oldNickname, String newNickname );
+    void user_changeNickname( User user, String newNickname );
     
     // Chat room management
-    Optional<Room> createNewChatRoom( String roomName, String creatorNickname );
-    Optional<Room> findChatRoom( Long roomId );
-    Optional<Room> findChatRoom( String roomName );
-    List getListOfAllRooms( );
+    Room chatRoom_add( String roomName, String creatorNickname );
+    Optional<Room> chatRoom_get( Long roomId );
+    Optional<Room> chatRoom_get( String roomName );
+    List chatRoom_getAllRooms( );
     
+    // user in room management
+    void userInRoom_addUserToRoom( Long userId, Long roomId );
+    void userInRoom_removeUserFromRoom( Long userId, Long roomId );
+    boolean userInRoom_findUserInRoom( Long userId, Long roomId);
+    List<Room> userInRoom_getAListOfJoinedRooms( Long userId );
     
     // Message management
-    Message addChatMessage( String message, String nickname, Long roomId );
-    List getAllChatHistoryInRoom( Long roomId );
+    Message message_add( String message, String nickname, Long roomId );
+    List message_getAllMessages( Long roomId );
 }

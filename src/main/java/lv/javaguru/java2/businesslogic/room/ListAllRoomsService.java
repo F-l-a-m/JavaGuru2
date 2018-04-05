@@ -18,7 +18,7 @@ public class ListAllRoomsService {
     public ListAllRoomsResponse list( ) {
         List<String> listOfAllRooms = new ArrayList<>( );
         @SuppressWarnings (value="unchecked")
-        List<Room> roomList = database.getListOfAllRooms( );
+        List<Room> roomList = database.chatRoom_getAllRooms( );
         roomList.forEach( x -> listOfAllRooms.add( x.getName( ) ) );
         if ( !listOfAllRooms.isEmpty( ) )
             return new ListAllRoomsResponse( listOfAllRooms, true );

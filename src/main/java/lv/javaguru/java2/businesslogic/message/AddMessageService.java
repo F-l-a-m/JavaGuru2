@@ -13,7 +13,7 @@ public class AddMessageService {
     
     @Transactional
     public AddMessageResponse addMessage( String message, String nickname, Long roomId ) {
-        Message msg = database.addChatMessage( message, nickname, roomId );
+        Message msg = database.message_add( message, nickname, roomId );
         return new AddMessageResponse( true, msg, null );
     }
 }

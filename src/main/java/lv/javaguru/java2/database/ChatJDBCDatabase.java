@@ -1,4 +1,3 @@
-/*
 package lv.javaguru.java2.database;
 
 import lv.javaguru.java2.businesslogic.message.MyTimestamp;
@@ -11,13 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-//@Component
-@SuppressWarnings("SyntaxError")
 public class ChatJDBCDatabase extends JDBCDatabase implements Database {
     
     // user management
     @Override
-    public User addUser( String nickname ) {
+    public User user_add( String nickname ) {
         Connection connection = null;
         try {
             connection = getConnection( );
@@ -48,7 +45,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
     }
     
     @Override
-    public void updateUserActiveStatus( User user, boolean activeStatus ) {
+    public void user_updateActiveStatus( User user, boolean activeStatus ) {
         Connection connection = null;
         try {
             connection = getConnection( );
@@ -58,7 +55,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
             preparedStatement.setLong( 2, user.getId( ) );
             preparedStatement.executeUpdate( );
         } catch (Throwable e) {
-            System.out.println( "Exception while execute database.updateUserActiveStatus()" );
+            System.out.println( "Exception while execute database.user_updateActiveStatus()" );
             e.printStackTrace( );
             throw new RuntimeException( e );
         } finally {
@@ -67,7 +64,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
     }
     
     @Override
-    public Optional<User> findUser( Long userId ) {
+    public Optional<User> user_get( Long userId ) {
         Connection connection = null;
         try {
             connection = getConnection( );
@@ -87,7 +84,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
             }
             return Optional.ofNullable( user );
         } catch (Throwable e) {
-            System.out.println( "Exception while execute database.findUser()" );
+            System.out.println( "Exception while execute database.user_get()" );
             e.printStackTrace( );
             throw new RuntimeException( e );
         } finally {
@@ -96,7 +93,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
     }
     
     @Override
-    public Optional<User> findUser( String nickname ) {
+    public Optional<User> user_get( String nickname ) {
         Connection connection = null;
         try {
             connection = getConnection( );
@@ -116,7 +113,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
             }
             return Optional.ofNullable( user );
         } catch (Throwable e) {
-            System.out.println( "Exception while execute database.findUser()" );
+            System.out.println( "Exception while execute database.user_get()" );
             e.printStackTrace( );
             throw new RuntimeException( e );
         } finally {
@@ -125,7 +122,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
     }
     
     @Override
-    public void changeUserNickname( String oldNickname, String newNickname ) {
+    public void user_changeNickname( String oldNickname, String newNickname ) {
         Connection connection = null;
         try {
             connection = getConnection( );
@@ -135,7 +132,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
             preparedStatement.setString( 2, oldNickname );
             preparedStatement.executeUpdate( );
         } catch (Throwable e) {
-            System.out.println( "Exception while execute database.changeUserNickname()" );
+            System.out.println( "Exception while execute database.user_changeNickname()" );
             e.printStackTrace( );
             throw new RuntimeException( e );
         } finally {
@@ -144,7 +141,12 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
     }
     
     @Override
-    public void addUserToRoom( Long userId, Long roomId ) {
+    public void user_changeNickname( User user, String newNickname ) {
+    
+    }
+    
+    @Override
+    public void userInRoom_addUserToRoom( Long userId, Long roomId ) {
         Connection connection = null;
         try {
             connection = getConnection( );
@@ -155,7 +157,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
             preparedStatement.setLong( 2, roomId );
             preparedStatement.executeUpdate( );
         } catch (Throwable e) {
-            System.out.println( "Exception while execute database.addUserToRoom()" );
+            System.out.println( "Exception while execute database.userInRoom_addUserToRoom()" );
             e.printStackTrace( );
             throw new RuntimeException( e );
         } finally {
@@ -164,7 +166,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
     }
     
     @Override
-    public void removeUserFromRoom( Long userId, Long roomId ) {
+    public void userInRoom_removeUserFromRoom( Long userId, Long roomId ) {
         Connection connection = null;
         try {
             connection = getConnection( );
@@ -174,7 +176,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
             preparedStatement.setLong( 2, roomId );
             preparedStatement.executeUpdate( );
         } catch (Throwable e) {
-            System.out.println( "Exception while execute database.removeUserFromRoom()" );
+            System.out.println( "Exception while execute database.userInRoom_removeUserFromRoom()" );
             e.printStackTrace( );
             throw new RuntimeException( e );
         } finally {
@@ -183,6 +185,10 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
     }
     
     @Override
+    public boolean userInRoom_findUserInRoom( Long userId, Long roomId ) {
+        return false;
+    }
+    
     public boolean findUserInRoom( Long userId, String roomName ) {
         Connection connection = null;
         try {
@@ -198,7 +204,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
             ResultSet resultSet = preparedStatement.executeQuery( );
             return resultSet.next( );
         } catch (Throwable e) {
-            System.out.println( "Exception while execute database.findUserInRoom()" );
+            System.out.println( "Exception while execute database.userInRoom_findUserInRoom()" );
             e.printStackTrace( );
             throw new RuntimeException( e );
         } finally {
@@ -207,13 +213,13 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
     }
     
     @Override
-    public List<Room> getAListOfJoinedRooms( Long userId ) {
+    public List<Room> userInRoom_getAListOfJoinedRooms( Long userId ) {
         return null;
     }
     
     // room management
     @Override
-    public Optional<Room> createNewChatRoom( String roomName, String creatorNickname ) {
+    public Room chatRoom_add( String roomName, String creatorNickname ) {
         Connection connection = null;
         try {
             connection = getConnection( );
@@ -234,9 +240,9 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
                 room.setCreatorNickname( creatorNickname );
                 room.setCreationTime( timestamp );
             }
-            return Optional.ofNullable( room );
+            return room;
         } catch (Throwable e) {
-            System.out.println( "Exception while execute database.createNewChatRoom()" );
+            System.out.println( "Exception while execute database.chatRoom_add()" );
             e.printStackTrace( );
             throw new RuntimeException( e );
         } finally {
@@ -245,7 +251,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
     }
     
     @Override
-    public Optional<Room> findChatRoom( Long roomId ) {
+    public Optional<Room> chatRoom_get( Long roomId ) {
         Connection connection = null;
         try {
             connection = getConnection( );
@@ -261,7 +267,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
             }
             return Optional.ofNullable( room );
         } catch (Throwable e) {
-            System.out.println( "Exception while execute database.findChatRoom()" );
+            System.out.println( "Exception while execute database.chatRoom_get()" );
             e.printStackTrace( );
             throw new RuntimeException( e );
         } finally {
@@ -270,7 +276,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
     }
     
     @Override
-    public Optional<Room> findChatRoom( String roomName ) {
+    public Optional<Room> chatRoom_get( String roomName ) {
         Connection connection = null;
         try {
             connection = getConnection( );
@@ -288,7 +294,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
             }
             return Optional.ofNullable( room );
         } catch (Throwable e) {
-            System.out.println( "Exception while execute database.findChatRoom()" );
+            System.out.println( "Exception while execute database.chatRoom_get()" );
             e.printStackTrace( );
             throw new RuntimeException( e );
         } finally {
@@ -297,7 +303,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
     }
     
     @Override
-    public List<Room> getListOfAllRooms( ) {
+    public List<Room> chatRoom_getAllRooms( ) {
         Connection connection = null;
         List<Room> listOfAllRooms = new ArrayList<>( );
         try {
@@ -315,7 +321,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
             }
             return listOfAllRooms;
         } catch (Throwable e) {
-            System.out.println( "Exception while execute database.getListOfAllRooms()" );
+            System.out.println( "Exception while execute database.chatRoom_getAllRooms()" );
             e.printStackTrace( );
             throw new RuntimeException( e );
         } finally {
@@ -326,7 +332,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
     
     // message management
     @Override
-    public Message addChatMessage( String message, String nickname, Long roomId ) {
+    public Message message_add( String message, String nickname, Long roomId ) {
         Connection connection = null;
         try {
             connection = getConnection( );
@@ -352,7 +358,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
             }
             return msg;
         } catch (Throwable e) {
-            System.out.println( "Exception while execute database.addChatMessage()" );
+            System.out.println( "Exception while execute database.message_add()" );
             e.printStackTrace( );
             throw new RuntimeException( e );
         } finally {
@@ -361,7 +367,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
     }
 
     @Override
-    public List getAllChatHistoryInRoom( Long roomId ) {
+    public List message_getAllMessages( Long roomId ) {
         Connection connection = null;
         try {
             connection = getConnection( );
@@ -383,7 +389,7 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
             }
             return messages;
         } catch (Throwable e) {
-            System.out.println( "Exception while execute database.getAllChatHistoryInRoom()" );
+            System.out.println( "Exception while execute database.message_getAllMessages()" );
             e.printStackTrace( );
             throw new RuntimeException( e );
         } finally {
@@ -392,4 +398,3 @@ public class ChatJDBCDatabase extends JDBCDatabase implements Database {
     }
     
 }
-*/

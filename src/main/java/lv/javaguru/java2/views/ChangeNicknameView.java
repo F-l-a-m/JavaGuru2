@@ -20,7 +20,7 @@ public class ChangeNicknameView implements View {
     @Override
     public void execute() {
         String nickname = userService.getUserInput(user);
-        Response response = userService.changeUserNickname(user.getNickname(), nickname);
+        Response response = userService.user_changeNickname(user.getNickname(), nickname);
         if(response.isSuccess()){
             user.setNickname(nickname);
             System.out.println("User nickname set to \'" + nickname + '\'');

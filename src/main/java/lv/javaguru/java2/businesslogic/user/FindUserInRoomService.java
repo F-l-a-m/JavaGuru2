@@ -12,6 +12,6 @@ public class FindUserInRoomService {
     
     @Transactional
     public boolean findUserInRoom( Long userId, Long roomId ) {
-        return database.findUserInRoom( userId, roomId );
+        return database.userInRoom_findUserInRoom( userId, roomId );
     }
 }

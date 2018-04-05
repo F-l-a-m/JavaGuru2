@@ -16,7 +16,7 @@ public class GetAListOfJoinedRoomsService {
     
     @Transactional
     public List<Room> getList( User user ) {
-        database.getAListOfJoinedRooms( user.getId( ) );
+        database.userInRoom_getAListOfJoinedRooms( user.getId( ) );
         return null;
     }
 }

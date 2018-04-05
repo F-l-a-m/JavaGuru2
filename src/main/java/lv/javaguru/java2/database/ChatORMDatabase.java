@@ -26,7 +26,7 @@ public class ChatORMDatabase implements Database {
     }
     
     @Override
-    public User addUser( String nickname ) {
+    public User user_add( String nickname ) {
         User user = new User( nickname, MyTimestamp.getSQLTimestamp( ) );
         Long id = (Long) session( ).save( user );
         user.setId( id );
@@ -34,13 +34,13 @@ public class ChatORMDatabase implements Database {
     }
     
     @Override
-    public void updateUserActiveStatus( User user, boolean activeStatus ) {
+    public void user_updateActiveStatus( User user, boolean activeStatus ) {
         user.setActive( activeStatus );
         session( ).update( user );
     }
     
     @Override
-    public Optional<User> findUser( Long userId ) {
+    public Optional<User> user_get( Long userId ) {
         User user = (User) session( ).createCriteria( User.class )
                 .add( Restrictions.eq( "id", userId ) )
                 .uniqueResult( );
@@ -48,7 +48,7 @@ public class ChatORMDatabase implements Database {
     }
     
     @Override
-    public Optional<User> findUser( String nickname ) {
+    public Optional<User> user_get( String nickname ) {
         User user = (User) session( ).createCriteria( User.class )
                 .add( Restrictions.eq( "nickname", nickname ) )
                 .uniqueResult( );
@@ -56,7 +56,7 @@ public class ChatORMDatabase implements Database {
     }
     
     @Override
-    public void changeUserNickname( String oldNickname, String newNickname ) {
+    public void user_changeNickname( String oldNickname, String newNickname ) {
         User user = (User) session( ).createCriteria( User.class )
                 .add( Restrictions.eq( "nickname", oldNickname ) )
                 .uniqueResult( );
@@ -65,24 +65,67 @@ public class ChatORMDatabase implements Database {
     }
     
     @Override
-    public void changeUserNickname( User user, String newNickname ) {
+    public void user_changeNickname( User user, String newNickname ) {
         user.setNickname( newNickname );
         session( ).update( user );
     }
     
     @Override
-    public void addUserToRoom( Long userId, Long roomId ) {
+    public Room chatRoom_add( String roomName, String creatorNickname ) {
+        Room room = new Room( roomName, creatorNickname, MyTimestamp.getSQLTimestamp( ) );
+        Long id = (Long) session( ).save( room );
+        room.setId( id );
+        return room;
+    }
+    
+    @Override
+    public Optional<Room> chatRoom_get( Long roomId ) {
+        Room room = (Room) session( ).createCriteria( Room.class )
+                .add( Restrictions.eq( "id", roomId ) )
+                .uniqueResult( );
+        return Optional.ofNullable( room );
+    }
+    
+    @Override
+    public Optional<Room> chatRoom_get( String roomName ) {
+        Room room = (Room) session( ).createCriteria( Room.class )
+                .add( Restrictions.eq( "name", roomName ) )
+                .uniqueResult( );
+        return Optional.ofNullable( room );
+    }
+    
+    @Override
+    public List chatRoom_getAllRooms( ) {
+        return session( )
+                .createCriteria( Room.class )
+                .list( );
+    }
+    
+    @Override
+    public void userInRoom_addUserToRoom( Long userId, Long roomId ) {
         UserInRoom userInRoom = new UserInRoom( userId, roomId );
+        
         session( ).save( userInRoom );
     }
     
     @Override
-    public void removeUserFromRoom( Long userId, Long roomId ) {
-    
+    public void userInRoom_removeUserFromRoom( Long userId, Long roomId ) {
+        
+        //UserInRoom userInRoom = new UserInRoom( userId, roomId );
+        // С таким вариантом
+        // org.hibernate.NonUniqueObjectException:
+        // A different object with the same identifier value was already associated with the session :
+        
+        UserInRoom userInRoom = (UserInRoom) session( ).createCriteria( UserInRoom.class )
+                .add( Restrictions.eq( "user_id", userId ) )
+                .add( Restrictions.eq( "room_id", roomId ) )
+                .uniqueResult( );
+        
+        session( ).delete( userInRoom );
     }
     
     @Override
-    public boolean findUserInRoom( Long userId, Long roomId ) {
+    public boolean userInRoom_findUserInRoom( Long userId, Long roomId ) {
         /*User user = (User) session( ).createCriteria( User.class )
                 .add( Restrictions.eq( "id", userId) )
                 .uniqueResult( );
@@ -97,53 +140,27 @@ public class ChatORMDatabase implements Database {
     }
     
     @Override
-    public List<Room> getAListOfJoinedRooms( Long userId ) {
+    public List<Room> userInRoom_getAListOfJoinedRooms( Long userId ) {
         List<UserInRoom> listOfRoomIds = new ArrayList<>( );
         
-        /*Room room;
-        Query query = session().createQuery( "select user_in_room.room_id from UserInRoom user_in_room" +
-                " where user_id = :userId" );
-        query.setParameter( "userId", userId );
-        List results = query.list();*/
-        
-        /*Query query = session( ).createQuery( "from UserInRoom where user_id = :userId" );
-        query.setParameter( "userId", userId );
-        List roomIdList = query.list( );*/
-        
-        int i = 0;
-        return null;
-    }
-    
-    @Override
-    public Optional<Room> createNewChatRoom( String roomName, String creatorNickname ) {
-        Room room = new Room( roomName, creatorNickname, MyTimestamp.getSQLTimestamp( ) );
-        Long id = (Long) session( ).save( room );
-        room.setId( id );
-        return Optional.of( room );
-    }
-    
-    @Override
-    public Optional<Room> findChatRoom( Long roomId ) {
-        return Optional.empty( );
-    }
-    
-    @Override
-    public Optional<Room> findChatRoom( String roomName ) {
-        Room room = (Room) session( ).createCriteria( Room.class )
-                .add( Restrictions.eq( "name", roomName ) )
-                .uniqueResult( );
-        return Optional.ofNullable( room );
-    }
-    
-    @Override
-    public List getListOfAllRooms( ) {
-        return session( )
-                .createCriteria( Room.class )
+        List<UserInRoom> userInRoomList = session( ).createCriteria( UserInRoom.class )
+                .add( Restrictions.eq( "user_id", userId ) )
                 .list( );
+        
+        List<Long> roomIds = new ArrayList<>( );
+        for ( UserInRoom u : userInRoomList ) {
+            roomIds.add( u.getRoom_id( ) );
+        }
+        
+        List<Room> rooms = session( ).createCriteria( Room.class )
+                .add( Restrictions.eq( "id", roomIds ) )
+                .list( );
+        
+        return rooms;
     }
     
     @Override
-    public Message addChatMessage( String messageBody, String nickname, Long roomId ) {
+    public Message message_add( String messageBody, String nickname, Long roomId ) {
         Message message = new Message( MyTimestamp.getSQLTimestamp( ), nickname, messageBody, roomId );
         Long id = (Long) session( ).save( message );
         message.setId( id );
@@ -151,9 +168,10 @@ public class ChatORMDatabase implements Database {
     }
     
     @Override
-    public List getAllChatHistoryInRoom( Long roomId ) {
+    public List message_getAllMessages( Long roomId ) {
         return session( )
                 .createCriteria( Message.class )
+                .add( Restrictions.eq("room_id", roomId) )
                 .list( );
     }
 }

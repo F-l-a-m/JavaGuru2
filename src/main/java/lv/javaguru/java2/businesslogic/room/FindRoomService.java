@@ -16,7 +16,7 @@ public class FindRoomService {
     @Transactional
     public FindRoomResponse findRoomByName( String roomName ) {
         
-        Optional<Room> search = database.findChatRoom( roomName );
+        Optional<Room> search = database.chatRoom_get( roomName );
     
         return search.map( room -> new FindRoomResponse( room, true ) )
                 .orElseGet( ( ) -> new FindRoomResponse( null, false ) );

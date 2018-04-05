@@ -14,6 +14,6 @@ public class AddUserToRoomService {
     
     @Transactional
     public void add( User user, Room room ) {
-        database.addUserToRoom( user.getId( ), room.getId( ) );
+        database.userInRoom_addUserToRoom( user.getId( ), room.getId( ) );
     }
 }
