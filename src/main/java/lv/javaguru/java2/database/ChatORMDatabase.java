@@ -104,7 +104,6 @@ public class ChatORMDatabase implements Database {
     @Override
     public void userInRoom_addUserToRoom( Long userId, Long roomId ) {
         UserInRoom userInRoom = new UserInRoom( userId, roomId );
-        
         session( ).save( userInRoom );
     }
     
@@ -173,7 +172,7 @@ public class ChatORMDatabase implements Database {
     public List message_getAllMessages( Long roomId ) {
         return session( )
                 .createCriteria( Message.class )
-                .add( Restrictions.eq("room_id", roomId) )
+                .add( Restrictions.eq( "room_id", roomId ) )
                 .list( );
     }
 }

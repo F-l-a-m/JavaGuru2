@@ -250,6 +250,9 @@ public class ChatORMDatabaseTest {
         room2 = database.chatRoom_add( "TestRoom2", user.getNickname( ) );
         // org.hibernate.NonUniqueObjectException:
         // A different object with the same identifier value was already associated with the session :
+        
+        
+        
         Room room3 = null;
         room3 = database.chatRoom_add( "TestRoom3", user.getNickname( ) );
     

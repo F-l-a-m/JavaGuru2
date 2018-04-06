@@ -20,11 +20,11 @@ import java.util.Scanner;
 @Component
 public class MainView implements View, Constants {
     
+    @Autowired private AddUserService addUserService;
     @Autowired private AddMessageService addMessageService;
     @Autowired private AddUserToRoomService addUserToRoomService;
     @Autowired private FindUserInRoomService findUserInRoomService;
     @Autowired private HandleUserInputService handleUserInputService;
-    @Autowired private InitializeUserService initializeUserService;
     @Autowired private JoinCreateRoomService joinCreateRoomService;
     @Autowired private GetAllChatHistoryService getAllChatHistoryService;
     @Autowired private GetAListOfJoinedRoomsService getAListOfJoinedRoomsService;
@@ -48,12 +48,12 @@ public class MainView implements View, Constants {
             System.out.print( "Please enter your nickname: " );
             nickname = sc.nextLine( );
             
-            InitializeUserResponse initializeUserResponse = initializeUserService.init( nickname );
-            if ( initializeUserResponse.isSuccess( ) ) {
-                user = initializeUserResponse.getUser( );
+            AddUserResponse addUserResponse = addUserService.addUser( nickname );
+            if ( addUserResponse.isSuccess( ) ) {
+                user = addUserResponse.getUser( );
                 success = true;
             } else
-                printErrors( initializeUserResponse.getErrors( ) );
+                printErrors( addUserResponse.getErrors( ) );
         }
         
         // Initialize guest room (join or create)
