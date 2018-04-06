@@ -67,8 +67,8 @@ public class MainView implements View, Constants {
         }
         
         // Check if user is already in that room
-        boolean isUserAlreadyInThatRoom = findUserInRoomService.findUserInRoom( user.getId( ), room.getId( ) );
-        if ( !isUserAlreadyInThatRoom )
+        FindUserInRoomResponse findUserInRoomResponse = findUserInRoomService.find( user, room );
+        if ( findUserInRoomResponse.isSuccess( ) )
             addUserToRoomService.add( user, room );
         System.out.println( "\nYou are now chatting in '" + roomName + "'" );
         

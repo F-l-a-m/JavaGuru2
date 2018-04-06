@@ -27,6 +27,7 @@ public class AddUserToRoomService {
         if ( !optionalUser.isPresent( ) ) {
             errors.add( new Error( "User with nickname " + user.getNickname( ) + " not found" ) );
         }
+        // Check if room exists
         Optional<Room> optionalRoom = database.chatRoom_get( room.getId( ) );
         if ( !optionalRoom.isPresent( ) ) {
             errors.add( new Error( "Room with name " + room.getName( ) + " not found" ) );

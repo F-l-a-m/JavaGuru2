@@ -2,6 +2,7 @@ package lv.javaguru.java2.businesslogic.user;
 
 import lv.javaguru.java2.businesslogic.Error;
 import lv.javaguru.java2.database.Database;
+import lv.javaguru.java2.domain.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -11,6 +12,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.*;
 
@@ -25,13 +27,18 @@ public class AddUserServiceTest {
     
     @Test
     public void shouldAddNewUserToDatabase( ) {
+        String userNickname = "TestUser";
         List<Error> errors = new ArrayList<>( );
-        Mockito.when( validator.validate( "TestUser" ) )
+        User user = Mockito.mock( User.class );
+        Mockito.when( validator.validate( userNickname ) )
                 .thenReturn( errors );
+        Mockito.when( database.user_get( userNickname ) )
+                .thenReturn( Optional.of( user ) );
         
-        AddUserResponse addUserResponse = addUserService.addUser( "TestUser" );
+        AddUserResponse addUserResponse = addUserService.addUser( userNickname );
         
         assertTrue( addUserResponse.isSuccess( ) );
+        assertNotNull( addUserResponse.getUser( ) );
         assertNull( addUserResponse.getErrors( ) );
     }
     
@@ -46,6 +53,7 @@ public class AddUserServiceTest {
         AddUserResponse addUserResponse1 = addUserService.addUser( "$" );
         
         assertFalse( addUserResponse1.isSuccess( ) );
+        assertNull( addUserResponse1.getUser( ) );
         assertEquals( addUserResponse1.getErrors( ), errors );
         
         Mockito.when( validator.validate( "$$" ) )
@@ -56,6 +64,7 @@ public class AddUserServiceTest {
         AddUserResponse addUserResponse2 = addUserService.addUser( "$$" );
         
         assertFalse( addUserResponse2.isSuccess( ) );
+        assertNull( addUserResponse2.getUser( ) );
         assertEquals( addUserResponse2.getErrors( ), errors );
     }
 }

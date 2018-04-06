@@ -38,6 +38,7 @@ public class FindUserServiceTest {
         FindUserResponse findUserResponse = findUserService.find( nickname );
         
         assertTrue( findUserResponse.isSuccess( ) );
+        assertNotNull( findUserResponse.getUser( ) );
         assertNull( findUserResponse.getErrors( ) );
     }
     
@@ -51,6 +52,7 @@ public class FindUserServiceTest {
         FindUserResponse findUserResponse = findUserService.find( userId );
         
         assertTrue( findUserResponse.isSuccess( ) );
+        assertNotNull( findUserResponse.getUser( ) );
         assertNull( findUserResponse.getErrors( ) );
     }
     
@@ -66,6 +68,7 @@ public class FindUserServiceTest {
         
         assertFalse( findUserResponse.isSuccess( ) );
         assertNotNull( findUserResponse.getErrors( ) );
+        assertNull( findUserResponse.getUser( ) );
         assertEquals( errors.size( ), findUserResponse.getErrors( ).size( ) );
     }
     
@@ -81,6 +84,7 @@ public class FindUserServiceTest {
         
         assertFalse( findUserResponse.isSuccess( ) );
         assertNotNull( findUserResponse.getErrors( ) );
+        assertNull( findUserResponse.getUser( ) );
         assertEquals( errors.size( ), findUserResponse.getErrors( ).size( ) );
     }
 }
