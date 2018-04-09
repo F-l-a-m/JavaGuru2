@@ -26,7 +26,7 @@ public class User_FindServiceTest {
     private User_FindService userFindService = new User_FindService( );
     
     @Test
-    public void shouldReturnFoundUserByNickname( ) {
+    public void shouldFindUserByNickname( ) {
         List<Error> errors = new ArrayList<>( );
         String nickname = "TestUser";
         User user = Mockito.mock( User.class );
@@ -43,7 +43,7 @@ public class User_FindServiceTest {
     }
     
     @Test
-    public void shouldReturnFoundUserById( ) {
+    public void shouldFindUserById( ) {
         Long userId = Integer.toUnsignedLong( 1 );
         User user = Mockito.mock( User.class );
         Mockito.when( database.user_get( userId ) )
@@ -58,25 +58,24 @@ public class User_FindServiceTest {
     
     @Test
     public void shouldFailToFindUserByNickname( ) {
+        String nickname = "TestUser";
         List<Error> errors = new ArrayList<>( );
-        errors.add( new Error( "Nickname length should be 2 to 16 symbols" ) );
-        errors.add( new Error( "Nickname contains illegal characters (letters and numbers only please)" ) );
-        Mockito.when( validator.validate( "$" ) )
+        Mockito.when( validator.validate( nickname ) )
                 .thenReturn( errors );
+        Mockito.when( database.user_get( nickname ) )
+                .thenReturn( Optional.empty( ) );
         
-        User_FindResponse userFindResponse = userFindService.find( "$" );
+        User_FindResponse userFindResponse = userFindService.find( nickname );
         
         assertFalse( userFindResponse.isSuccess( ) );
         assertNotNull( userFindResponse.getErrors( ) );
         assertNull( userFindResponse.getUser( ) );
-        assertEquals( errors.size( ), userFindResponse.getErrors( ).size( ) );
     }
     
     @Test
     public void shouldFailToFindUserById( ) {
         Long userId = Integer.toUnsignedLong( 1 );
         List<Error> errors = new ArrayList<>( );
-        errors.add( new Error( "User with id " + userId + " not found" ) );
         Mockito.when( database.user_get( userId ) )
                 .thenReturn( Optional.empty( ) );
         
@@ -85,6 +84,5 @@ public class User_FindServiceTest {
         assertFalse( userFindResponse.isSuccess( ) );
         assertNotNull( userFindResponse.getErrors( ) );
         assertNull( userFindResponse.getUser( ) );
-        assertEquals( errors.size( ), userFindResponse.getErrors( ).size( ) );
     }
 }

@@ -1,24 +1,47 @@
 package lv.javaguru.java2.businesslogic.room;
 
+import lv.javaguru.java2.businesslogic.Error;
 import lv.javaguru.java2.database.Database;
 import lv.javaguru.java2.domain.Room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Component
 public class Room_FindService {
     
     @Autowired private Database database;
+    @Autowired private Room_NameValidator validator;
     
     @Transactional
-    public Room_FindResponse findRoomByName( String roomName ) {
-        
-        Optional<Room> search = database.chatRoom_get( roomName );
+    public Room_FindResponse find( String roomName ) {
+        List<Error> errors = validator.validate( roomName );
+        if ( errors.isEmpty( ) ) {
+            Optional<Room> optionalRoom = database.chatRoom_get( roomName );
+            if ( optionalRoom.isPresent( ) ) {
+                return new Room_FindResponse( optionalRoom.get( ), null, true );
+            } else {
+                errors.add( new Error( "Room with room name " + roomName + " not found" ) );
+                return new Room_FindResponse( null, errors, false );
+            }
+        } else {
+            return new Room_FindResponse( null, errors, false );
+        }
+    }
     
-        return search.map( room -> new Room_FindResponse( room, true ) )
-                .orElseGet( ( ) -> new Room_FindResponse( null, false ) );
+    @Transactional
+    public Room_FindResponse find( Long roomId ) {
+        List<Error> errors = new ArrayList<>( );
+        Optional<Room> optionalRoom = database.chatRoom_get( roomId );
+        if ( optionalRoom.isPresent( ) ) {
+            return new Room_FindResponse( optionalRoom.get( ), null, true );
+        } else {
+            errors.add( new Error( "Room with id " + roomId + " not found" ) );
+            return new Room_FindResponse( null, errors, false );
+        }
     }
 }

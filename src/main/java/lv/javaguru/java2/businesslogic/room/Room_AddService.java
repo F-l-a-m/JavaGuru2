@@ -1,23 +1,46 @@
 package lv.javaguru.java2.businesslogic.room;
 
+import lv.javaguru.java2.businesslogic.Error;
+import lv.javaguru.java2.businesslogic.user.User_AddResponse;
+import lv.javaguru.java2.businesslogic.user.User_NicknameValidator;
 import lv.javaguru.java2.database.Database;
 import lv.javaguru.java2.domain.Room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 @Component
 public class Room_AddService {
     
     @Autowired private Database database;
+    @Autowired private Room_NameValidator roomNameValidator;
+    @Autowired private User_NicknameValidator nicknameValidator;
     
     @Transactional
     public Room_AddResponse addRoom( String roomName, String creatorNickname ) {
         
-        Room room = database.chatRoom_add( roomName, creatorNickname );
-    
-        if ( room != null )
-            return new Room_AddResponse( room, true );
-        return new Room_AddResponse( null, false );
+        List<Error> roomNameErrors = roomNameValidator.validate( roomName );
+        List<Error> nicknameErrors = nicknameValidator.validate( creatorNickname );
+        List<Error> errors = new ArrayList<>( );
+        errors.forEach( error -> roomNameErrors.add( error ) );
+        errors.forEach( error -> nicknameErrors.add( error ) );
+        
+        if ( errors.isEmpty( ) ) {
+            // Search
+            Optional<Room> optionalRoom = database.chatRoom_get( roomName );
+            if ( optionalRoom.isPresent( ) ) {
+                return new Room_AddResponse( optionalRoom.get( ), null, true );
+            } else {
+                // Create new
+                Room room = database.chatRoom_add( roomName, creatorNickname );
+                return new Room_AddResponse( room, null, true );
+            }
+        } else {
+            return new Room_AddResponse( null, errors, false );
+        }
     }
 }

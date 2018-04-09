@@ -31,7 +31,7 @@ public class Room_JoinOrCreateService {
         
         Room room = null;
         // Check if room exists
-        Room_FindResponse roomFindResponse = roomFindService.findRoomByName( roomName );
+        Room_FindResponse roomFindResponse = roomFindService.find( roomName );
         if ( roomFindResponse.isSuccess( ) ) {
             // use found room
             room = roomFindResponse.getRoom( );
