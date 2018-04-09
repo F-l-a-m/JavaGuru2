@@ -1,6 +1,6 @@
 package lv.javaguru.java2.database;
 
-import lv.javaguru.java2.businesslogic.message.MyTimestamp;
+import lv.javaguru.java2.businesslogic.MyTimestamp;
 import lv.javaguru.java2.domain.Message;
 import lv.javaguru.java2.domain.Room;
 import lv.javaguru.java2.domain.User;

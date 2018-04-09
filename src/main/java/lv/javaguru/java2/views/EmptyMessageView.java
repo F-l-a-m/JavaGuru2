@@ -1,6 +1,6 @@
 package lv.javaguru.java2.views;
 
-import lv.javaguru.java2.businesslogic.message.MyTimestamp;
+import lv.javaguru.java2.businesslogic.MyTimestamp;
 
 public class EmptyMessageView implements View {
     
