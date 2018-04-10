@@ -26,9 +26,7 @@ public class ChatORMDatabaseTest {
     
     @Test
     public void shouldCreateNewUser( ) {
-        User user = null;
-        
-        user = database.user_add( "TestUser" );
+        User user = database.user_add( "TestUser" );
         
         assertEquals( user.getNickname( ), "TestUser" );
         assertNotNull( user.getId( ) );
@@ -36,9 +34,7 @@ public class ChatORMDatabaseTest {
     
     @Test
     public void shouldSetUserActiveStatus( ) {
-        // add user for test method
-        User user = null;
-        user = database.user_add( "TestUser" );
+        User user = database.user_add( "TestUser" );
         
         database.user_updateActiveStatus( user, true );
         assertEquals( user.isActive( ), true );
@@ -48,110 +44,121 @@ public class ChatORMDatabaseTest {
     }
     
     @Test
-    public void shouldReturnFoundUser( ) {
-        User user;
-        user = database.user_add( "TestUser" );
+    public void shouldReturnFoundUserById( ) {
+        User user = database.user_add( "TestUser" );
         Long id = user.getId( );
         
-        Optional<User> optionalUser;
-        optionalUser = database.user_get( id );
-        assertTrue( optionalUser.isPresent( ) );
+        Optional<User> optionalUser = database.user_get( id );
         
-        optionalUser = database.user_get( "TestUser" );
         assertTrue( optionalUser.isPresent( ) );
+        assertEquals( optionalUser.get( ).getNickname( ), "TestUser" );
     }
     
     @Test
-    public void shouldFailToReturnUser( ) {
-        Long userId = Long.MAX_VALUE;
-        Optional<User> optionalUser;
+    public void shouldReturnFoundUserByNickname( ) {
+        database.user_add( "TestUser" );
         
-        optionalUser = database.user_get( userId );
-        assertFalse( optionalUser.isPresent( ) );
+        Optional<User> optionalUser = database.user_get( "TestUser" );
         
-        optionalUser = database.user_get( "TestUser" );
+        assertTrue( optionalUser.isPresent( ) );
+        assertEquals( optionalUser.get( ).getNickname( ), "TestUser" );
+    }
+    
+    @Test
+    public void shouldFailToReturnUserById( ) {
+        Optional<User> optionalUser = database.user_get( Long.MAX_VALUE );
+        
         assertFalse( optionalUser.isPresent( ) );
     }
     
     @Test
-    public void shouldChangeUserNickname( ) {
-        User user = null;
-        user = database.user_add( "TestUser" );
+    public void shouldFailToReturnUserByNickname( ) {
+        Optional<User> optionalUser = database.user_get( "TestUser" );
         
-        database.user_changeNickname( "TestUser", "NewNickname1" );
-        assertEquals( user.getNickname( ), "NewNickname1" );
+        assertFalse( optionalUser.isPresent( ) );
+    }
+    
+    @Test
+    public void shouldChangeUserNicknameByString( ) {
+        User user = database.user_add( "TestUser" );
         
-        database.user_changeNickname( user, "NewNickname2" );
-        assertEquals( user.getNickname( ), "NewNickname2" );
+        database.user_changeNickname( "TestUser", "NewNickname" );
+        
+        assertEquals( user.getNickname( ), "NewNickname" );
+    }
+    
+    @Test
+    public void shouldChangeUserNicknameByObject( ) {
+        User user = database.user_add( "TestUser" );
+        
+        database.user_changeNickname( user, "NewNickname" );
+        
+        assertEquals( user.getNickname( ), "NewNickname" );
     }
     
     @Test
     public void shouldCreateNewRoom( ) {
-        User user = null;
-        user = database.user_add( "TestUser" );
+        User user = database.user_add( "TestUser" );
         
-        Room room = null;
-        room = database.chatRoom_add( "TestRoom", user.getNickname( ) );
+        Room room = database.chatRoom_add( "TestRoom", user.getNickname( ) );
         
         assertNotNull( room );
+        assertEquals( room.getName( ), "TestRoom" );
     }
     
     @Test
-    public void shouldReturnFoundRoom( ) {
-        User user = null;
-        user = database.user_add( "TestUser" );
-        assertNotNull( user );
+    public void shouldReturnFoundRoomById( ) {
+        User user = database.user_add( "TestUser" );
+        Room room = database.chatRoom_add( "TestRoom", user.getNickname( ) );
         
-        Room room = null;
-        room = database.chatRoom_add( "TestRoom", user.getNickname( ) );
-        assertNotNull( room );
+        Optional<Room> roomOptional = database.chatRoom_get( room.getId( ) );
         
-        Optional<Room> roomOptional = null;
-        Long id = room.getId( );
-        
-        roomOptional = database.chatRoom_get( id );
         assertTrue( roomOptional.isPresent( ) );
-        
-        roomOptional = database.chatRoom_get( "TestRoom" );
-        assertTrue( roomOptional.isPresent( ) );
+        assertEquals( roomOptional.get( ).getName( ), "TestRoom" );
     }
     
     @Test
-    public void shouldFailToFindRoom( ) {
-        Optional<Room> roomOptional;
-        Long id = Long.MAX_VALUE;
+    public void shouldReturnFoundRoomByName( ) {
+        User user = database.user_add( "TestUser" );
+        Room room = database.chatRoom_add( "TestRoom", user.getNickname( ) );
         
-        roomOptional = database.chatRoom_get( id );
+        Optional<Room> roomOptional = database.chatRoom_get( "TestRoom" );
+        
+        assertTrue( roomOptional.isPresent( ) );
+        assertEquals( roomOptional.get( ).getName( ), "TestRoom" );
+    }
+    
+    @Test
+    public void shouldFailToFindRoomById( ) {
+        Optional<Room> roomOptional = database.chatRoom_get( Long.MAX_VALUE );
+        
         assertFalse( roomOptional.isPresent( ) );
+    }
+    
+    @Test
+    public void shouldFailToFindRoomByName( ) {
+        Optional<Room> roomOptional = database.chatRoom_get( "NonExistentRoom" );
         
-        roomOptional = database.chatRoom_get( "NonExistentRoom" );
         assertFalse( roomOptional.isPresent( ) );
     }
     
     @Test
     public void shouldAddUserToRoom( ) { // Should add new record to "user_in_room" table (userId; RoomId)
-        User user = null;
-        user = database.user_add( "TestUser" );
-        
-        Room room = null;
-        room = database.chatRoom_add( "TestRoom", user.getNickname( ) );
+        User user = database.user_add( "TestUser" );
+        Room room = database.chatRoom_add( "TestRoom", user.getNickname( ) );
         
         database.userInRoom_addUserToRoom( user.getId( ), room.getId( ) );
-        
-        boolean result = false;
-        result = database.userInRoom_findUserInRoom( user.getId( ), room.getId( ) );
+        boolean result = database.userInRoom_findUserInRoom( user.getId( ), room.getId( ) );
         
         assertTrue( result );
     }
     
     @Test
     public void shouldFailToAddUserToRoom( ) {
-        
         // database.userInRoom_addUserToRoom( Long.MAX_VALUE, Long.MAX_VALUE );
-        // Does not check FK :(
+        // Does not check FK    :(
         
         // 1 case - non-existent user
-        
         
         // 2 case - non-existent room
         
@@ -159,40 +166,26 @@ public class ChatORMDatabaseTest {
     
     @Test
     public void shouldRemoveUserFromRoom( ) {// Should remove record from "user_in_room" table (userId; RoomId)
-        User user;
-        user = database.user_add( "TestUser" );
-        
-        Room room;
-        room = database.chatRoom_add( "TestRoom", user.getNickname( ) );
-        
+        User user = database.user_add( "TestUser" );
+        Room room = database.chatRoom_add( "TestRoom", user.getNickname( ) );
         database.userInRoom_addUserToRoom( user.getId( ), room.getId( ) );
         
-        // Check if test user successfully added to test room
-        boolean result;
-        result = database.userInRoom_findUserInRoom( user.getId( ), room.getId( ) );
-        assertTrue( result );
-        
         boolean isRemoved = database.userInRoom_removeUserFromRoom( user.getId( ), room.getId( ) );
-        result = database.userInRoom_findUserInRoom( user.getId( ), room.getId( ) );
-        
-        assertFalse( result );
+        boolean isFound = database.userInRoom_findUserInRoom( user.getId( ), room.getId( ) );
+    
         assertTrue( isRemoved );
+        assertFalse( isFound );
     }
     
     @Test
     public void shouldFailToRemoveUserFromRoom( ) {
-        boolean isRemoved = true;
-        
-        User user;
-        user = database.user_add( "TestUser" );
-        
         // Non-existent room
-        isRemoved = database.userInRoom_removeUserFromRoom( user.getId( ), Long.MAX_VALUE );
+        User user = database.user_add( "TestUser" );
+        boolean isRemoved = database.userInRoom_removeUserFromRoom( user.getId( ), Long.MAX_VALUE );
         assertFalse( isRemoved );
-        
-        Room room;
-        room = database.chatRoom_add( "TestRoom", user.getNickname( ) );
+    
         // Non-existent user
+        Room room = database.chatRoom_add( "TestRoom", user.getNickname( ) );
         isRemoved = database.userInRoom_removeUserFromRoom( Long.MAX_VALUE, room.getId( ) );
         assertFalse( isRemoved );
         
@@ -203,34 +196,24 @@ public class ChatORMDatabaseTest {
     
     @Test
     public void shouldFindUserInRoom( ) {
-        User user = null;
-        user = database.user_add( "TestUser" );
-        
-        Room room = null;
-        room = database.chatRoom_add( "TestRoom", user.getNickname( ) );
-        
+        User user = database.user_add( "TestUser" );
+        Room room = database.chatRoom_add( "TestRoom", user.getNickname( ) );
         database.userInRoom_addUserToRoom( user.getId( ), room.getId( ) );
         
-        boolean result = false;
-        result = database.userInRoom_findUserInRoom( user.getId( ), room.getId( ) );
+        boolean result = database.userInRoom_findUserInRoom( user.getId( ), room.getId( ) );
         
         assertTrue( result );
     }
     
     @Test
     public void shouldFailToFindUserInRoom( ) {
-        boolean isFound;
-        
-        User user;
-        user = database.user_add( "TestUser" );
-        
         // Non-existent room
-        isFound = database.userInRoom_findUserInRoom( user.getId( ), Long.MAX_VALUE );
+        User user = database.user_add( "TestUser" );
+        boolean isFound = database.userInRoom_findUserInRoom( user.getId( ), Long.MAX_VALUE );
         assertFalse( isFound );
         
-        Room room;
-        room = database.chatRoom_add( "TestRoom", user.getNickname( ) );
         // Non-existent user
+        Room room = database.chatRoom_add( "TestRoom", user.getNickname( ) );
         isFound = database.userInRoom_findUserInRoom( Long.MAX_VALUE, room.getId( ) );
         assertFalse( isFound );
         
@@ -267,63 +250,38 @@ public class ChatORMDatabaseTest {
     
     @Test
     public void shouldAddNewMessage( ) {
-        User user = null;
-        user = database.user_add( "TestUser" );
-        assertNotNull( user );
+        User user = database.user_add( "TestUser" );
+        Room room = database.chatRoom_add( "TestRoom", user.getNickname( ) );
         
-        Room room = null;
-        room = database.chatRoom_add( "TestRoom", user.getNickname( ) );
-        assertNotNull( room );
+        Message message = database.message_add( "Hello", user.getNickname( ), room.getId( ) );
         
-        String messageBody = "Hello";
-        String nickname = user.getNickname( );
-        Long roomId = room.getId( );
-        Message message = null;
-        message = database.message_add( messageBody, nickname, roomId );
         assertNotNull( message );
     }
     
     @Test
     public void shouldReturnMessageList( ) {
-        User user = null;
-        user = database.user_add( "TestUser" );
-        assertNotNull( user );
-        
-        Room room = null;
-        room = database.chatRoom_add( "TestRoom", user.getNickname( ) );
-        assertNotNull( room );
-        
+        User user = database.user_add( "TestUser" );
+        Room room = database.chatRoom_add( "TestRoom", user.getNickname( ) );
         String messageBody = "Hello";
         String nickname = user.getNickname( );
         Long roomId = room.getId( );
-        Message message = null;
-        message = database.message_add( messageBody, nickname, roomId );
-        message = database.message_add( messageBody, nickname, roomId );
-        message = database.message_add( messageBody, nickname, roomId );
-        assertNotNull( message );
+        database.message_add( messageBody, nickname, roomId );
+        database.message_add( messageBody, nickname, roomId );
+        database.message_add( messageBody, nickname, roomId );
         
-        List<Message> messageList = null;
-        messageList = database.message_getAllMessages( room.getId( ) );
+        List<Message> messageList = database.message_getAllMessages( room.getId( ) );
+        
         assertNotNull( messageList );
         assertEquals( messageList.size( ), 3 );
     }
     
     @Test
     public void shouldReturnEmptyMessageList( ) {
-        User user = null;
-        user = database.user_add( "TestUser" );
-        assertNotNull( user );
+        User user = database.user_add( "TestUser" );
+        Room room = database.chatRoom_add( "TestRoom", user.getNickname( ) );
         
-        Room room = null;
-        room = database.chatRoom_add( "TestRoom", user.getNickname( ) );
-        assertNotNull( room );
+        List<Message> messageList = database.message_getAllMessages( room.getId( ) );
         
-        String messageBody = "Hello";
-        String nickname = user.getNickname( );
-        Long roomId = room.getId( );
-        
-        List<Message> messageList = null;
-        messageList = database.message_getAllMessages( room.getId( ) );
         assertEquals( messageList.size( ), 0 );
     }
 }
