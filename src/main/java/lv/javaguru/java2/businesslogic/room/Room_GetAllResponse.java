@@ -2,17 +2,17 @@ package lv.javaguru.java2.businesslogic.room;
 
 import java.util.List;
 
-public class Room_ListAllResponse {
+public class Room_GetAllResponse {
 
-    private List<String> listOfAllRooms;
+    private List listOfAllRooms;
     boolean isSuccess;
 
-    public Room_ListAllResponse( List<String> listOfAllRooms, boolean isSuccess ) {
+    public Room_GetAllResponse( List listOfAllRooms, boolean isSuccess ) {
         this.listOfAllRooms = listOfAllRooms;
         this.isSuccess = isSuccess;
     }
 
-    public List<String> getListOfAllRooms( ) {
+    public List getListOfAllRooms( ) {
         return listOfAllRooms;
     }
 
@@ -20,4 +20,3 @@ public class Room_ListAllResponse {
         return isSuccess;
     }
 }
-
