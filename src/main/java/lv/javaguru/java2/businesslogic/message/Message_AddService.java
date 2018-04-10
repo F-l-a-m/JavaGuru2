@@ -13,6 +13,7 @@ public class Message_AddService {
     
     @Transactional
     public Message_AddResponse addMessage( String message, String nickname, Long roomId ) {
+        // Add checks for message, user, room. Only then add.
         Message msg = database.message_add( message, nickname, roomId );
         return new Message_AddResponse( true, msg, null );
     }
