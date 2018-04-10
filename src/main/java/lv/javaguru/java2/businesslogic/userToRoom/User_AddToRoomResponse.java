@@ -1,4 +1,4 @@
-package lv.javaguru.java2.businesslogic.user;
+package lv.javaguru.java2.businesslogic.userToRoom;
 
 import lv.javaguru.java2.businesslogic.Error;
 

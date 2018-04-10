@@ -7,6 +7,7 @@ import lv.javaguru.java2.businesslogic.user.User_InputService;
 import lv.javaguru.java2.businesslogic.message.*;
 import lv.javaguru.java2.businesslogic.room.*;
 import lv.javaguru.java2.businesslogic.user.*;
+import lv.javaguru.java2.businesslogic.userToRoom.*;
 import lv.javaguru.java2.domain.Message;
 import lv.javaguru.java2.domain.Room;
 import lv.javaguru.java2.domain.User;
@@ -21,14 +22,14 @@ import java.util.Scanner;
 public class MainView implements View, Constants {
     
     @Autowired private User_AddService userAddService;
+    @Autowired private Room_AddService roomAddService;
+    @Autowired private Room_JoinOrCreateService roomJoinOrCreateService;
+    
     @Autowired private Message_AddService messageAddService;
-    @Autowired private User_AddToRoomService userAddToRoomService;
-    @Autowired private User_FindInRoomService userFindInRoomService;
+    
     @Autowired private User_InputService userInputService;
-    @Autowired private Room_JoinOrCreateService roomJoinCreateService;
     @Autowired private Message_GetChatHistoryService messageGetChatHistoryService;
     @Autowired private User_GetAListOfJoinedRoomsService userGetAListOfJoinedRoomsService;
-    @Autowired private Room_NameValidator roomNameValidator;
     
     private ApplicationContext applicationContext;
     
@@ -56,30 +57,25 @@ public class MainView implements View, Constants {
                 printErrors( userAddResponse.getErrors( ) );
         }
         
-        // Initialize guest room (join or create)
+        // Initialize guest room (use or create)
         String roomName = "GuestRoom";
         Room room = null;
-        Room_JoinOrCreateResponse roomJoinOrCreateResponse = roomJoinCreateService.init( roomName, user );
-        if ( roomJoinOrCreateResponse.isSuccess( ) ) {
-            room = roomJoinOrCreateResponse.getRoom( );
+        Room_JoinOrCreateResponse response = roomJoinOrCreateService.joinOrCreateRoom( roomName, user );
+        if ( response.isSuccess( ) ) {
+            room = response.getRoom( );
+            System.out.println( "\nYou are now chatting in '" + roomName + "'" );
         } else {
-            printErrors( roomJoinOrCreateResponse.getErrors( ) );
+            printErrors( response.getErrors( ) );
         }
         
-        // Check if user is already in that room
-        User_FindInRoomResponse userFindInRoomResponse = userFindInRoomService.find( user, room );
-        if ( userFindInRoomResponse.isSuccess( ) )
-            userAddToRoomService.add( user, room );
-        System.out.println( "\nYou are now chatting in '" + roomName + "'" );
-        
-        // user and room initialized
-        // print help for users
+        // User and room initialized
+        // Print available chat commands
         applicationContext.getBean( PrintAvailableChatCommandsView.class ).execute( );
         
-        // ready to get user input
-        System.out.println( "\n[info] Entering while(true) loop" ); //debug info, delete in prod
+        // Ready to get user input
+        System.out.println( "\n[info] Entering while(true) loop" ); // Debug info, delete in prod
         while ( true ) {
-            System.out.println( "\n[info] Ready, waiting for your input" ); //debug info, delete in prod
+            System.out.println( "\n[info] Ready, waiting for your input\n" ); // Debug info, delete in prod
             
             String input = sc.nextLine( );
             User_InputResponse userInputResponse = userInputService.handle( input );
@@ -97,7 +93,13 @@ public class MainView implements View, Constants {
                     break;
                 
                 case Constants.NORMAL_MESSAGE:
-                    // Это хотелось бы вынести в отдельный View
+                    /*
+                    Это хотелось бы вынести в отдельный View
+                    Но надо передать
+                    userInputResponse.getData( ),
+                            nickname,
+                            room.getId( )
+                    */
                     Message_AddResponse messageAddResponse = messageAddService.addMessage(
                             userInputResponse.getData( ),
                             nickname,
@@ -111,23 +113,21 @@ public class MainView implements View, Constants {
                     break;
                 
                 case Constants.JOIN_ROOM:
-                    // Это хотелось бы вынести в отдельный View
-                    
-                    // Validate room name
+                    /* Это хотелось бы вынести в отдельный View
+                       Но в таком случае надо передать:
+                       userInputResponse.getData( );
+                       Вернуть:
+                       room
+                       room = joinOrCreateResponse.getRoom( );
+                     */
                     String roomNameFromUserInput = userInputResponse.getData( );
-                    List<Error> errors = roomNameValidator.validate( roomNameFromUserInput );
-                    if ( errors.isEmpty( ) ) {
-                        // Validate and join or create new room
-                        roomJoinOrCreateResponse = roomJoinCreateService.init( userInputResponse.getData( ), user );
-                        if ( roomJoinOrCreateResponse.isSuccess( ) ) {
-                            room = roomJoinOrCreateResponse.getRoom( ); // но нужно как-то вернуть room, от него зависят
-                            // другие switch case
-                            System.out.println( "User '" + nickname + "' joined room '" + room.getName( ) + "'." );
-                        } else {
-                            printErrors( roomJoinOrCreateResponse.getErrors( ) );
-                        }
+                    Room_JoinOrCreateResponse joinOrCreateResponse =
+                            roomJoinOrCreateService.joinOrCreateRoom( roomNameFromUserInput, user );
+                    if ( joinOrCreateResponse.isSuccess( ) ) {
+                        room = joinOrCreateResponse.getRoom( );
+                        System.out.println( "\nYou are now chatting in '" + room.getName( ) + "'" );
                     } else {
-                        printErrors( errors );
+                        printErrors( joinOrCreateResponse.getErrors( ) );
                     }
                     break;
                 
@@ -154,14 +154,18 @@ public class MainView implements View, Constants {
                     // Clear console
                     System.out.println( "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" );
                     // Print whole message history in given chat room
-                    Message_GetChatHistoryResponse response = messageGetChatHistoryService.go( room );
-                    List<Message> messages = response.getChatHistory( );
+                    Message_GetChatHistoryResponse getChatHistoryResponse = messageGetChatHistoryService.go( room );
+                    List<Message> messages = getChatHistoryResponse.getChatHistory( );
                     messages.forEach( System.out::println );
                     break;
+                
                 case Constants.LEAVE:
                     List<Room> rooms = userGetAListOfJoinedRoomsService.getList( user );
                     if ( rooms.isEmpty( ) ) {
                         System.out.println( "Cant leave last room" );
+                    } else {
+                        Room_JoinOrCreateResponse joinOrCreateResponse1 =
+                                roomJoinOrCreateService.joinOrCreateRoom( "GuestRoom", user );
                     }
                     
                     break;

@@ -1,5 +1,7 @@
-package lv.javaguru.java2.businesslogic.user;
+package lv.javaguru.java2.businesslogic.userToRoom;
 
+import lv.javaguru.java2.businesslogic.userToRoom.User_FindInRoomResponse;
+import lv.javaguru.java2.businesslogic.userToRoom.User_FindInRoomService;
 import lv.javaguru.java2.database.Database;
 import lv.javaguru.java2.domain.Room;
 import lv.javaguru.java2.domain.User;

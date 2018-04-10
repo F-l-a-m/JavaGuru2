@@ -5,6 +5,7 @@ import lv.javaguru.java2.domain.Message;
 import lv.javaguru.java2.domain.Room;
 import lv.javaguru.java2.domain.User;
 import lv.javaguru.java2.domain.UserInRoom;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -141,11 +142,13 @@ public class ChatORMDatabase implements Database {
     
     @Override
     public List<Room> userInRoom_getAListOfJoinedRooms( Long userId ) {
-        List<UserInRoom> listOfRoomIds = new ArrayList<>( );
-        
-        List<UserInRoom> userInRoomList = session( ).createCriteria( UserInRoom.class )
+        List<UserInRoom> userInRoomList = session( )
+                .createCriteria( UserInRoom.class )
                 .add( Restrictions.eq( "user_id", userId ) )
                 .list( );
+        /*Query query = session().createQuery("from UserInRoom where user_id = :userId ");
+        query.setParameter("user_id", userId);
+        List<UserInRoom> userInRoomList = query.list( );*/
         
         List<Long> roomIds = new ArrayList<>( );
         for ( UserInRoom u : userInRoomList ) {
@@ -153,7 +156,7 @@ public class ChatORMDatabase implements Database {
         }
         
         List<Room> rooms = session( ).createCriteria( Room.class )
-                .add( Restrictions.eq( "id", roomIds ) )
+                .add( Restrictions.in( "id", roomIds ) )
                 .list( );
         
         return rooms;
