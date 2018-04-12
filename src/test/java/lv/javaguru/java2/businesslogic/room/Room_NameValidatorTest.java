@@ -1,8 +1,6 @@
 package lv.javaguru.java2.businesslogic.room;
 
 import lv.javaguru.java2.businesslogic.Error;
-import lv.javaguru.java2.businesslogic.user.User_NicknameValidator;
-import lv.javaguru.java2.database.Database;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -15,8 +13,6 @@ import static org.junit.Assert.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class Room_NameValidatorTest {
-    
-    @Mock Database database;
     
     @InjectMocks
     Room_NameValidator validator = new Room_NameValidator( );

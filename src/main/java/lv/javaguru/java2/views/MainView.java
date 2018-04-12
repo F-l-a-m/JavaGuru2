@@ -7,7 +7,7 @@ import lv.javaguru.java2.businesslogic.user.User_InputService;
 import lv.javaguru.java2.businesslogic.message.*;
 import lv.javaguru.java2.businesslogic.room.*;
 import lv.javaguru.java2.businesslogic.user.*;
-import lv.javaguru.java2.businesslogic.userToRoom.*;
+import lv.javaguru.java2.businesslogic.userInRoom.*;
 import lv.javaguru.java2.domain.Message;
 import lv.javaguru.java2.domain.Room;
 import lv.javaguru.java2.domain.User;

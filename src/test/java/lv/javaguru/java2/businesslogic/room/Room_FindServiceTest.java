@@ -1,7 +1,7 @@
 package lv.javaguru.java2.businesslogic.room;
 
 import lv.javaguru.java2.businesslogic.Error;
-import lv.javaguru.java2.database.Database;
+import lv.javaguru.java2.database.RoomDAO;
 import lv.javaguru.java2.domain.Room;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 @RunWith(MockitoJUnitRunner.class)
 public class Room_FindServiceTest {
     
-    @Mock Database database;
+    @Mock RoomDAO roomDAO;
     @Mock Room_NameValidator validator;
     
     @InjectMocks
@@ -32,7 +32,7 @@ public class Room_FindServiceTest {
         List<Error> errors = new ArrayList<>( );
         Mockito.when( validator.validate( roomName ) )
                 .thenReturn( errors );
-        Mockito.when( database.chatRoom_get( roomName ) )
+        Mockito.when( roomDAO.get( roomName ) )
                 .thenReturn( Optional.of( room ) );
         
         Room_FindResponse response = roomFindService.find( roomName );
@@ -46,7 +46,7 @@ public class Room_FindServiceTest {
     public void shouldFindRoomById( ) {
         Long roomId = Integer.toUnsignedLong( 1 );
         Room room = Mockito.mock( Room.class );
-        Mockito.when( database.chatRoom_get( roomId ) )
+        Mockito.when( roomDAO.get( roomId ) )
                 .thenReturn( Optional.of( room ) );
         
         Room_FindResponse response = roomFindService.find( roomId );
@@ -62,7 +62,7 @@ public class Room_FindServiceTest {
         List<Error> errors = new ArrayList<>( );
         Mockito.when( validator.validate( roomName ) )
                 .thenReturn( errors );
-        Mockito.when( database.chatRoom_get( roomName ) )
+        Mockito.when( roomDAO.get( roomName ) )
                 .thenReturn( Optional.empty( ) );
         
         Room_FindResponse response = roomFindService.find( roomName );
@@ -75,7 +75,7 @@ public class Room_FindServiceTest {
     @Test
     public void shouldNotFindRoomById( ) {
         Long roomId = Integer.toUnsignedLong( 1 );
-        Mockito.when( database.chatRoom_get( roomId ) )
+        Mockito.when( roomDAO.get( roomId ) )
                 .thenReturn( Optional.empty( ) );
         
         Room_FindResponse response = roomFindService.find( roomId );

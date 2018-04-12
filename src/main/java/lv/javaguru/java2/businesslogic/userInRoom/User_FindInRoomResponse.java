@@ -1,28 +1,16 @@
-package lv.javaguru.java2.businesslogic.userToRoom;
+package lv.javaguru.java2.businesslogic.userInRoom;
 
 import lv.javaguru.java2.businesslogic.Error;
-import lv.javaguru.java2.domain.Room;
 
 import java.util.List;
 
-public class Room_JoinOrCreateResponse {
-    
-    private Room room;
+public class User_FindInRoomResponse {
     private List<Error> errors;
     private boolean success;
     
-    public Room_JoinOrCreateResponse( Room room, List<Error> errors, boolean success ) {
-        this.room = room;
+    public User_FindInRoomResponse( List<Error> errors, boolean success ) {
         this.errors = errors;
         this.success = success;
-    }
-    
-    public Room getRoom( ) {
-        return room;
-    }
-    
-    public void setRoom( Room room ) {
-        this.room = room;
     }
     
     public List<Error> getErrors( ) {

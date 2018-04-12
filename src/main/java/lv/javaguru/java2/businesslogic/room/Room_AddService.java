@@ -1,9 +1,8 @@
 package lv.javaguru.java2.businesslogic.room;
 
 import lv.javaguru.java2.businesslogic.Error;
-import lv.javaguru.java2.businesslogic.user.User_AddResponse;
 import lv.javaguru.java2.businesslogic.user.User_NicknameValidator;
-import lv.javaguru.java2.database.Database;
+import lv.javaguru.java2.database.RoomDAO;
 import lv.javaguru.java2.domain.Room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,7 +15,7 @@ import java.util.Optional;
 @Component
 public class Room_AddService {
     
-    @Autowired private Database database;
+    @Autowired private RoomDAO roomDAO;
     @Autowired private Room_NameValidator roomNameValidator;
     @Autowired private User_NicknameValidator nicknameValidator;
     
@@ -31,12 +30,12 @@ public class Room_AddService {
         
         if ( errors.isEmpty( ) ) {
             // Search
-            Optional<Room> optionalRoom = database.chatRoom_get( roomName );
+            Optional<Room> optionalRoom = roomDAO.get( roomName );
             if ( optionalRoom.isPresent( ) ) {
                 return new Room_AddResponse( optionalRoom.get( ), null, true );
             } else {
                 // Create new
-                Room room = database.chatRoom_add( roomName, creatorNickname );
+                Room room = roomDAO.add( roomName, creatorNickname );
                 return new Room_AddResponse( room, null, true );
             }
         } else {

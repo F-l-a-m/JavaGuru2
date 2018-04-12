@@ -1,6 +1,6 @@
 package lv.javaguru.java2.businesslogic.message;
 
-import lv.javaguru.java2.database.Database;
+import lv.javaguru.java2.database.MessageDAO;
 import lv.javaguru.java2.domain.Message;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(MockitoJUnitRunner.class)
 public class Message_AddServiceTest {
     
-    @Mock Database database;
+    @Mock MessageDAO messageDAO;
     
     @InjectMocks
     Message_AddService messageAddService = new Message_AddService( );
@@ -27,7 +27,7 @@ public class Message_AddServiceTest {
         String nickname = "TestNickname";
         Long roomId = Integer.toUnsignedLong( 1 );
         Message msg = Mockito.mock( Message.class );
-        Mockito.when( database.message_add( message, nickname, roomId ) )
+        Mockito.when( messageDAO.add( message, nickname, roomId ) )
                 .thenReturn( msg );
         
         Message_AddResponse response = messageAddService.addMessage( message, nickname, roomId );

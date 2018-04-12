@@ -1,8 +1,8 @@
-package lv.javaguru.java2.businesslogic.userToRoom;
+package lv.javaguru.java2.businesslogic.userInRoom;
 
-import lv.javaguru.java2.businesslogic.userToRoom.User_FindInRoomResponse;
-import lv.javaguru.java2.businesslogic.userToRoom.User_FindInRoomService;
-import lv.javaguru.java2.database.Database;
+import lv.javaguru.java2.database.RoomDAO;
+import lv.javaguru.java2.database.UserDAO;
+import lv.javaguru.java2.database.UserInRoomDAO;
 import lv.javaguru.java2.domain.Room;
 import lv.javaguru.java2.domain.User;
 import org.junit.Test;
@@ -19,7 +19,9 @@ import static org.junit.Assert.*;
 @RunWith(MockitoJUnitRunner.class)
 public class User_FindInRoomServiceTest {
     
-    @Mock private Database database;
+    @Mock private UserInRoomDAO userInRoomDAO;
+    @Mock private UserDAO userDAO;
+    @Mock private RoomDAO roomDAO;
     
     @InjectMocks
     private User_FindInRoomService userFindInRoomService = new User_FindInRoomService( );
@@ -32,11 +34,11 @@ public class User_FindInRoomServiceTest {
         user.setId( userId );
         Room room = new Room( );
         room.setId( roomId );
-        Mockito.when( database.user_get( userId ) )
+        Mockito.when( userDAO.get( userId ) )
                 .thenReturn( Optional.of( user ) );
-        Mockito.when( database.chatRoom_get( roomId ) )
+        Mockito.when( roomDAO.get( roomId ) )
                 .thenReturn( Optional.of( room ) );
-        Mockito.when( database.userInRoom_findUserInRoom( userId, roomId ) )
+        Mockito.when( userInRoomDAO.findUserInRoom( userId, roomId ) )
                 .thenReturn( true );
         
         User_FindInRoomResponse userFindInRoomResponse = userFindInRoomService.find( user, room );
@@ -53,9 +55,9 @@ public class User_FindInRoomServiceTest {
         user.setId( userId );
         Room room = new Room( );
         room.setId( roomId );
-        Mockito.when( database.user_get( userId ) )
+        Mockito.when( userDAO.get( userId ) )
                 .thenReturn( Optional.empty( ) );
-        Mockito.when( database.chatRoom_get( roomId ) )
+        Mockito.when( roomDAO.get( roomId ) )
                 .thenReturn( Optional.of( room ) );
         
         User_FindInRoomResponse userFindInRoomResponse = userFindInRoomService.find( user, room );
@@ -73,9 +75,9 @@ public class User_FindInRoomServiceTest {
         user.setId( userId );
         Room room = new Room( );
         room.setId( roomId );
-        Mockito.when( database.user_get( userId ) )
+        Mockito.when( userDAO.get( userId ) )
                 .thenReturn( Optional.of( user ) );
-        Mockito.when( database.chatRoom_get( roomId ) )
+        Mockito.when( roomDAO.get( roomId ) )
                 .thenReturn( Optional.empty( ) );
         
         User_FindInRoomResponse userFindInRoomResponse = userFindInRoomService.find( user, room );
@@ -93,9 +95,9 @@ public class User_FindInRoomServiceTest {
         user.setId( userId );
         Room room = new Room( );
         room.setId( roomId );
-        Mockito.when( database.user_get( userId ) )
+        Mockito.when( userDAO.get( userId ) )
                 .thenReturn( Optional.empty( ) );
-        Mockito.when( database.chatRoom_get( roomId ) )
+        Mockito.when( roomDAO.get( roomId ) )
                 .thenReturn( Optional.empty( ) );
         
         User_FindInRoomResponse userFindInRoomResponse = userFindInRoomService.find( user, room );
@@ -113,18 +115,17 @@ public class User_FindInRoomServiceTest {
         user.setId( userId );
         Room room = new Room( );
         room.setId( roomId );
-        Mockito.when( database.user_get( userId ) )
+        Mockito.when( userDAO.get( userId ) )
                 .thenReturn( Optional.of( user ) );
-        Mockito.when( database.chatRoom_get( roomId ) )
+        Mockito.when( roomDAO.get( roomId ) )
                 .thenReturn( Optional.of( room ) );
-        Mockito.when( database.userInRoom_findUserInRoom( userId, roomId ) )
+        Mockito.when( userInRoomDAO.findUserInRoom( userId, roomId ) )
                 .thenReturn( false );
-    
+        
         User_FindInRoomResponse userFindInRoomResponse = userFindInRoomService.find( user, room );
-    
+        
         assertFalse( userFindInRoomResponse.isSuccess( ) );
         assertNotNull( userFindInRoomResponse.getErrors( ) );
         assertEquals( userFindInRoomResponse.getErrors( ).size( ), 1 );
     }
-    
 }

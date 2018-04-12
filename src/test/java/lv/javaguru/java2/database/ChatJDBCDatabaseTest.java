@@ -1,10 +1,10 @@
 package lv.javaguru.java2.database;
 
 import lv.javaguru.java2.configs.SpringAppConfig;
+import lv.javaguru.java2.database.JDBC.JDBCDatabase;
 import lv.javaguru.java2.domain.Message;
 import lv.javaguru.java2.domain.Room;
 import lv.javaguru.java2.domain.User;
-import org.hibernate.Transaction;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +20,9 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {SpringAppConfig.class})
 @Transactional
-public class ChatORMDatabaseTest {
+public class ChatJDBCDatabaseTest {
     
-    @Autowired Database database;
+    @Autowired JDBCDatabase database;
     
     @Test
     public void shouldCreateNewUser( ) {

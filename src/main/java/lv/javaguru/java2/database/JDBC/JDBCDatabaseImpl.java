@@ -1,4 +1,4 @@
-package lv.javaguru.java2.database;
+package lv.javaguru.java2.database.JDBC;
 
 import lv.javaguru.java2.businesslogic.MyTimestamp;
 import lv.javaguru.java2.domain.Message;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ChatJDBCDatabase extends JDBCDatabase implements Database {
+public class JDBCDatabaseImpl extends JDBCConfig implements JDBCDatabase {
     
     // user management
     @Override

@@ -20,7 +20,7 @@
 
     <dependencies>
 
-        <!-- Database connection pool -->
+        <!-- JDBCDatabase connection pool -->
         <dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>

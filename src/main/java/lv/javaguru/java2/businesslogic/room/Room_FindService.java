@@ -1,7 +1,7 @@
 package lv.javaguru.java2.businesslogic.room;
 
 import lv.javaguru.java2.businesslogic.Error;
-import lv.javaguru.java2.database.Database;
+import lv.javaguru.java2.database.RoomDAO;
 import lv.javaguru.java2.domain.Room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,14 +14,14 @@ import java.util.Optional;
 @Component
 public class Room_FindService {
     
-    @Autowired private Database database;
+    @Autowired private RoomDAO roomDAO;
     @Autowired private Room_NameValidator validator;
     
     @Transactional
     public Room_FindResponse find( String roomName ) {
         List<Error> errors = validator.validate( roomName );
         if ( errors.isEmpty( ) ) {
-            Optional<Room> optionalRoom = database.chatRoom_get( roomName );
+            Optional<Room> optionalRoom = roomDAO.get( roomName );
             if ( optionalRoom.isPresent( ) ) {
                 return new Room_FindResponse( optionalRoom.get( ), null, true );
             } else {
@@ -36,7 +36,7 @@ public class Room_FindService {
     @Transactional
     public Room_FindResponse find( Long roomId ) {
         List<Error> errors = new ArrayList<>( );
-        Optional<Room> optionalRoom = database.chatRoom_get( roomId );
+        Optional<Room> optionalRoom = roomDAO.get( roomId );
         if ( optionalRoom.isPresent( ) ) {
             return new Room_FindResponse( optionalRoom.get( ), null, true );
         } else {

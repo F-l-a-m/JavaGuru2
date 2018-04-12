@@ -1,7 +1,6 @@
 package lv.javaguru.java2.businesslogic.user;
 
 import lv.javaguru.java2.businesslogic.Error;
-import lv.javaguru.java2.database.Database;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -14,8 +13,6 @@ import static org.junit.Assert.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class User_NicknameValidatorTest {
-    
-    @Mock Database database;
     
     @InjectMocks
     User_NicknameValidator validator = new User_NicknameValidator( );
@@ -40,10 +37,10 @@ public class User_NicknameValidatorTest {
     public void shouldReturnErrorsBecauseOfLength( ) {
         String nickname1 = "a"; // length of 2
         String nickname2 = "01234567891234567"; // length of 17
-    
+        
         List<Error> result1 = validator.validate( nickname1 );
         List<Error> result2 = validator.validate( nickname2 );
-    
+        
         assertEquals( result1.size( ), 1 );
         assertEquals( result2.size( ), 1 );
     }

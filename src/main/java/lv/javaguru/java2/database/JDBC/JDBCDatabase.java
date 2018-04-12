@@ -1,4 +1,4 @@
-package lv.javaguru.java2.database;
+package lv.javaguru.java2.database.JDBC;
 
 import lv.javaguru.java2.domain.Message;
 import lv.javaguru.java2.domain.Room;
@@ -7,8 +7,7 @@ import lv.javaguru.java2.domain.User;
 import java.util.List;
 import java.util.Optional;
 
-public interface Database {
-    
+public interface JDBCDatabase {
     
     // User management
     User user_add( String nickname );
@@ -33,4 +32,5 @@ public interface Database {
     // Message management
     Message message_add( String message, String nickname, Long roomId );
     List message_getAllMessages( Long roomId );
+    
 }

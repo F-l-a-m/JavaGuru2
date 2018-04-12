@@ -1,8 +1,6 @@
 package lv.javaguru.java2.businesslogic.user;
 
 import lv.javaguru.java2.Constants;
-import lv.javaguru.java2.businesslogic.user.User_InputResponse;
-import lv.javaguru.java2.businesslogic.user.User_InputService;
 import lv.javaguru.java2.configs.SpringAppConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;

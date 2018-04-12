@@ -1,7 +1,6 @@
-package lv.javaguru.java2.businesslogic.userToRoom;
+package lv.javaguru.java2.businesslogic.userInRoom;
 
-import lv.javaguru.java2.businesslogic.userToRoom.User_GetAListOfJoinedRoomsService;
-import lv.javaguru.java2.database.Database;
+import lv.javaguru.java2.database.UserInRoomDAO;
 import lv.javaguru.java2.domain.Room;
 import lv.javaguru.java2.domain.User;
 import org.junit.Test;
@@ -19,7 +18,7 @@ import static org.junit.Assert.*;
 @RunWith(MockitoJUnitRunner.class)
 public class User_GetAListOfJoinedRoomsServiceTest {
     
-    @Mock Database database;
+    @Mock UserInRoomDAO userInRoomDAO;
     
     @InjectMocks
     User_GetAListOfJoinedRoomsService userGetAListOfJoinedRoomsService = new User_GetAListOfJoinedRoomsService( );
@@ -32,7 +31,7 @@ public class User_GetAListOfJoinedRoomsServiceTest {
         roomList.add( room );
         roomList.add( room );
         roomList.add( room );
-        Mockito.when( database.userInRoom_getAListOfJoinedRooms( user.getId( ) ) )
+        Mockito.when( userInRoomDAO.getAListOfJoinedRooms( user.getId( ) ) )
                 .thenReturn( roomList );
         
         List<Room> roomsFromService = userGetAListOfJoinedRoomsService.getList( user );
@@ -49,7 +48,7 @@ public class User_GetAListOfJoinedRoomsServiceTest {
         roomList.add( room );
         roomList.add( room );
         roomList.add( room );
-        Mockito.when( database.userInRoom_getAListOfJoinedRooms( user.getId( ) ) )
+        Mockito.when( userInRoomDAO.getAListOfJoinedRooms( user.getId( ) ) )
                 .thenReturn( roomList );
     
         List<String> stringListFromService = userGetAListOfJoinedRoomsService.getAStringListOfJoinedRooms( user );

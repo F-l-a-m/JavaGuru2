@@ -1,7 +1,7 @@
 package lv.javaguru.java2.businesslogic.user;
 
 import lv.javaguru.java2.businesslogic.Error;
-import lv.javaguru.java2.database.Database;
+import lv.javaguru.java2.database.UserDAO;
 import lv.javaguru.java2.domain.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 @RunWith(MockitoJUnitRunner.class)
 public class User_AddServiceTest {
     
-    @Mock private Database database;
+    @Mock private UserDAO userDAO;
     @Mock private User_NicknameValidator validator;
     
     @InjectMocks
@@ -32,9 +32,9 @@ public class User_AddServiceTest {
         User user = Mockito.mock( User.class );
         Mockito.when( validator.validate( userNickname ) )
                 .thenReturn( errors );
-        Mockito.when( database.user_get( userNickname ) )
+        Mockito.when( userDAO.get( userNickname ) )
                 .thenReturn( Optional.empty( ) ); // User not found, create new
-        Mockito.when( database.user_add( userNickname ))
+        Mockito.when( userDAO.add( userNickname ) )
                 .thenReturn( user );
         
         User_AddResponse userAddResponse = userAddService.addUser( userNickname );
@@ -51,11 +51,11 @@ public class User_AddServiceTest {
         User user = Mockito.mock( User.class );
         Mockito.when( validator.validate( userNickname ) )
                 .thenReturn( errors );
-        Mockito.when( database.user_get( userNickname ) )
+        Mockito.when( userDAO.get( userNickname ) )
                 .thenReturn( Optional.of( user ) ); // User already exists in db
-    
+        
         User_AddResponse userAddResponse = userAddService.addUser( userNickname );
-    
+        
         assertTrue( userAddResponse.isSuccess( ) );
         assertNotNull( userAddResponse.getUser( ) );
         assertNull( userAddResponse.getErrors( ) );

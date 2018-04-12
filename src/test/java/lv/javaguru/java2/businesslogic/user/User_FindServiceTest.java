@@ -1,7 +1,7 @@
 package lv.javaguru.java2.businesslogic.user;
 
 import lv.javaguru.java2.businesslogic.Error;
-import lv.javaguru.java2.database.Database;
+import lv.javaguru.java2.database.UserDAO;
 import lv.javaguru.java2.domain.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 @RunWith(MockitoJUnitRunner.class)
 public class User_FindServiceTest {
     
-    @Mock private Database database;
+    @Mock private UserDAO userDAO;
     @Mock private User_NicknameValidator validator;
     
     @InjectMocks
@@ -32,7 +32,7 @@ public class User_FindServiceTest {
         User user = Mockito.mock( User.class );
         Mockito.when( validator.validate( nickname ) )
                 .thenReturn( errors );
-        Mockito.when( database.user_get( nickname ) )
+        Mockito.when( userDAO.get( nickname ) )
                 .thenReturn( Optional.of( user ) );
         
         User_FindResponse userFindResponse = userFindService.find( nickname );
@@ -46,7 +46,7 @@ public class User_FindServiceTest {
     public void shouldFindUserById( ) {
         Long userId = Integer.toUnsignedLong( 1 );
         User user = Mockito.mock( User.class );
-        Mockito.when( database.user_get( userId ) )
+        Mockito.when( userDAO.get( userId ) )
                 .thenReturn( Optional.of( user ) );
         
         User_FindResponse userFindResponse = userFindService.find( userId );
@@ -62,7 +62,7 @@ public class User_FindServiceTest {
         List<Error> errors = new ArrayList<>( );
         Mockito.when( validator.validate( nickname ) )
                 .thenReturn( errors );
-        Mockito.when( database.user_get( nickname ) )
+        Mockito.when( userDAO.get( nickname ) )
                 .thenReturn( Optional.empty( ) );
         
         User_FindResponse userFindResponse = userFindService.find( nickname );
@@ -76,7 +76,7 @@ public class User_FindServiceTest {
     public void shouldFailToFindUserById( ) {
         Long userId = Integer.toUnsignedLong( 1 );
         List<Error> errors = new ArrayList<>( );
-        Mockito.when( database.user_get( userId ) )
+        Mockito.when( userDAO.get( userId ) )
                 .thenReturn( Optional.empty( ) );
         
         User_FindResponse userFindResponse = userFindService.find( userId );

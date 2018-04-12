@@ -1,4 +1,4 @@
-package lv.javaguru.java2.database;
+package lv.javaguru.java2.database.JDBC;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -6,7 +6,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-class JDBCDatabase {
+class JDBCConfig {
 
     private static final String DB_CONFIG_FILE = "database.properties";
 
@@ -16,7 +16,7 @@ class JDBCDatabase {
     private String password = null;
 
 
-    JDBCDatabase( ) {
+    JDBCConfig( ) {
         initDatabaseConnectionProperties();
         registerJDBCDriver();
     }
@@ -34,7 +34,7 @@ class JDBCDatabase {
     private void initDatabaseConnectionProperties() {
         Properties properties = new Properties();
         try {
-            properties.load(JDBCDatabase.class.getClassLoader().getResourceAsStream(DB_CONFIG_FILE));
+            properties.load(JDBCConfig.class.getClassLoader().getResourceAsStream(DB_CONFIG_FILE));
 
             jdbcUrl = properties.getProperty("jdbc.url");
             driverClass = properties.getProperty("driverClass");

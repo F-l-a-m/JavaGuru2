@@ -1,7 +1,7 @@
 package lv.javaguru.java2.businesslogic.user;
 
 import lv.javaguru.java2.businesslogic.Error;
-import lv.javaguru.java2.database.Database;
+import lv.javaguru.java2.database.UserDAO;
 import lv.javaguru.java2.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,7 +13,7 @@ import java.util.Optional;
 @Component
 public class User_AddService {
     
-    @Autowired private Database database;
+    @Autowired private UserDAO userDAO;
     @Autowired private User_NicknameValidator validator;
     
     @Transactional
@@ -22,12 +22,12 @@ public class User_AddService {
         List<Error> errors = validator.validate( nickname );
         if ( errors.isEmpty( ) ) {
             // Search
-            Optional<User> optionalUser = database.user_get( nickname );
+            Optional<User> optionalUser = userDAO.get( nickname );
             if ( optionalUser.isPresent( ) ) {
                 return new User_AddResponse( optionalUser.get( ), null, true );
             } else {
                 // Create new
-                User user = database.user_add( nickname );
+                User user = userDAO.add( nickname );
                 return new User_AddResponse( user, null, true );
             }
         } else {
