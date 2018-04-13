@@ -1,6 +1,7 @@
-package lv.javaguru.java2.database;
+package lv.javaguru.java2.database.ORM;
 
 import lv.javaguru.java2.businesslogic.MyTimestamp;
+import lv.javaguru.java2.database.RoomDAO;
 import lv.javaguru.java2.domain.Room;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,11 +13,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class RoomDAOImpl implements RoomDAO {
+class RoomDAOImpl implements RoomDAO {
     
     @Autowired private SessionFactory sessionFactory;
     
-    public Session session( ) {
+    private Session session( ) {
         return sessionFactory.getCurrentSession( );
     }
     

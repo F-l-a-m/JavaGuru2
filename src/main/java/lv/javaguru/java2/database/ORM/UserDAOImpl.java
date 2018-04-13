@@ -1,6 +1,7 @@
-package lv.javaguru.java2.database;
+package lv.javaguru.java2.database.ORM;
 
 import lv.javaguru.java2.businesslogic.MyTimestamp;
+import lv.javaguru.java2.database.UserDAO;
 import lv.javaguru.java2.domain.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,11 +12,11 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-public class UserDAOImpl implements UserDAO {
+class UserDAOImpl implements UserDAO {
     
     @Autowired private SessionFactory sessionFactory;
     
-    public Session session( ) {
+    private Session session( ) {
         return sessionFactory.getCurrentSession( );
     }
     

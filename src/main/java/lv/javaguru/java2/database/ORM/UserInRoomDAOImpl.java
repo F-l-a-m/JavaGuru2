@@ -1,5 +1,6 @@
-package lv.javaguru.java2.database;
+package lv.javaguru.java2.database.ORM;
 
+import lv.javaguru.java2.database.UserInRoomDAO;
 import lv.javaguru.java2.domain.Room;
 import lv.javaguru.java2.domain.UserInRoom;
 import org.hibernate.Session;
@@ -16,7 +17,7 @@ class UserInRoomDAOImpl implements UserInRoomDAO {
     
     @Autowired private SessionFactory sessionFactory;
     
-    public Session session( ) {
+    private Session session( ) {
         return sessionFactory.getCurrentSession( );
     }
     

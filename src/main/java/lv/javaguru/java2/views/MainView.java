@@ -23,13 +23,12 @@ public class MainView implements View, Constants {
     
     @Autowired private User_AddService userAddService;
     @Autowired private Room_AddService roomAddService;
-    @Autowired private Room_JoinOrCreateService roomJoinOrCreateService;
-    
+    @Autowired private Room_JoinOrCreateService roomJoinOrCreateRoomService;
     @Autowired private Message_AddService messageAddService;
-    
     @Autowired private User_InputService userInputService;
     @Autowired private Message_GetChatHistoryService messageGetChatHistoryService;
     @Autowired private User_GetAListOfJoinedRoomsService userGetAListOfJoinedRoomsService;
+    @Autowired private User_ChangeNicknameService userChangeNicknameService;
     
     private ApplicationContext applicationContext;
     
@@ -42,12 +41,11 @@ public class MainView implements View, Constants {
         // Initialize user (use or create)
         Scanner sc = new Scanner( System.in );
         User user = null;
-        String nickname = null;
         boolean success = false;
         while ( !success ) {
             System.out.println( );
             System.out.print( "Please enter your nickname: " );
-            nickname = sc.nextLine( );
+            String nickname = sc.nextLine( );
             
             User_AddResponse userAddResponse = userAddService.addUser( nickname );
             if ( userAddResponse.isSuccess( ) ) {
@@ -60,7 +58,7 @@ public class MainView implements View, Constants {
         // Initialize guest room (use or create)
         String roomName = "GuestRoom";
         Room room = null;
-        Room_JoinOrCreateResponse response = roomJoinOrCreateService.joinOrCreateRoom( roomName, user );
+        Room_JoinOrCreateResponse response = roomJoinOrCreateRoomService.joinOrCreateRoom( roomName, user );
         if ( response.isSuccess( ) ) {
             room = response.getRoom( );
             System.out.println( "\nYou are now chatting in '" + roomName + "'" );
@@ -88,7 +86,7 @@ public class MainView implements View, Constants {
                 
                 case Constants.EMPTY_MESSAGE:
                     // [2018/03/26 12:12] username:
-                    new EmptyMessageView( nickname ).execute( );
+                    new EmptyMessageView( user.getNickname( ) ).execute( );
                     // Тут из-за передачи nickname не получается через getBean
                     break;
                 
@@ -102,7 +100,7 @@ public class MainView implements View, Constants {
                     */
                     Message_AddResponse messageAddResponse = messageAddService.addMessage(
                             userInputResponse.getData( ),
-                            nickname,
+                            user.getNickname( ),
                             room.getId( )
                     );
                     if ( messageAddResponse.isSuccess( ) ) {
@@ -122,7 +120,7 @@ public class MainView implements View, Constants {
                      */
                     String roomNameFromUserInput = userInputResponse.getData( );
                     Room_JoinOrCreateResponse joinOrCreateResponse =
-                            roomJoinOrCreateService.joinOrCreateRoom( roomNameFromUserInput, user );
+                            roomJoinOrCreateRoomService.joinOrCreateRoom( roomNameFromUserInput, user );
                     if ( joinOrCreateResponse.isSuccess( ) ) {
                         room = joinOrCreateResponse.getRoom( );
                         System.out.println( "\nYou are now chatting in '" + room.getName( ) + "'" );
@@ -142,32 +140,26 @@ public class MainView implements View, Constants {
                 case Constants.CHANGE_NICKNAME:
                     // тут та же проблема что и с room,
                     // user будет нужен в других местах, например для нового сообщения
+                    String oldNickname = user.getNickname( );
+                    User_ChangeNicknameResponse changeNicknameResponse =
+                            userChangeNicknameService.changeNickname( user, userInputResponse.getData( ) );
+                    if ( changeNicknameResponse.isSuccess( ) ) {
+                        System.out.println( oldNickname + " successfully changed nick to " + user.getNickname( ) );
+                    } else {
+                        printErrors( changeNicknameResponse.getErrors( ) );
+                    }
                     break;
                 
                 case Constants.GET_CHAT_HISTORY:
-                    // new PrintChatHistoryInRoomView( room ).execute( );
-                    // applicationContext.getBean( PrintChatHistoryInRoomView.class ).execute( );
-                    // No qualifying bean of type 'lv.javaguru.java2.domain.Room' available
-                    // :(
-                    // И как тут быть, если код ниже хочеться вынести отдельно ?
-                    
-                    // Clear console
-                    System.out.println( "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" );
-                    // Print whole message history in given chat room
                     Message_GetChatHistoryResponse getChatHistoryResponse = messageGetChatHistoryService.go( room );
                     List<Message> messages = getChatHistoryResponse.getChatHistory( );
-                    messages.forEach( System.out::println );
+                    if ( !messages.isEmpty( ) ) {
+                        System.out.println( "\n\n\n\n\n\n\n\n" ); // Clear console
+                        messages.forEach( System.out::println );
+                    }
                     break;
                 
                 case Constants.LEAVE:
-                    List<Room> rooms = userGetAListOfJoinedRoomsService.getList( user );
-                    if ( rooms.isEmpty( ) ) {
-                        System.out.println( "Cant leave last room" );
-                    } else {
-                        Room_JoinOrCreateResponse joinOrCreateResponse1 =
-                                roomJoinOrCreateService.joinOrCreateRoom( "GuestRoom", user );
-                    }
-                    
                     break;
             }
         }

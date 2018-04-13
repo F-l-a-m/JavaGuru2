@@ -1,6 +1,7 @@
-package lv.javaguru.java2.database;
+package lv.javaguru.java2.database.ORM;
 
 import lv.javaguru.java2.businesslogic.MyTimestamp;
+import lv.javaguru.java2.database.MessageDAO;
 import lv.javaguru.java2.domain.Message;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -15,7 +16,7 @@ class MessageDAOImpl implements MessageDAO {
     
     @Autowired private SessionFactory sessionFactory;
     
-    public Session session( ) {
+    private Session session( ) {
         return sessionFactory.getCurrentSession( );
     }
     
