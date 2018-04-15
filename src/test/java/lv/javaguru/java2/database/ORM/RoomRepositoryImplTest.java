@@ -1,5 +1,6 @@
 package lv.javaguru.java2.database.ORM;
 
+import lv.javaguru.java2.businesslogic.MyTimestamp;
 import lv.javaguru.java2.configs.SpringAppConfig;
 import lv.javaguru.java2.database.RoomRepository;
 import lv.javaguru.java2.database.UserRepository;
@@ -14,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+import static lv.javaguru.java2.domain.builders.RoomBuilder.createRoom;
+import static lv.javaguru.java2.domain.builders.UserBuilder.createUser;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -24,49 +27,31 @@ public class RoomRepositoryImplTest {
     @Autowired private RoomRepository roomRepository;
     @Autowired private UserRepository userRepository;
     
-    /*@Test
+    @Test
     public void shouldCreateNewRoom( ) {
-        User user = userRepository.save( "TestUser" );
+        User user = createUser( )
+                .withNickname( "TestUser" )
+                .withCreationTime( MyTimestamp.getSQLTimestamp( ) )
+                .build( );
+        userRepository.save( user );
         
-        Room room = roomRepository.save( "TestRoom", user.getNickname( ) );
+        Room room = createRoom( )
+                .withName( "TestRoom" )
+                .withCreationTime( MyTimestamp.getSQLTimestamp() )
+                .withCreatorNickname( user.getNickname( ) )
+                .build( );
+        roomRepository.save( room );
         
-        assertNotNull( room );
-        assertEquals( room.getName( ), "TestRoom" );
+        Optional<Room> search = roomRepository.get( "TestRoom" );
+        
+        assertTrue( search.isPresent( ) );
+        assertEquals( search.get( ).getName( ), "TestRoom" );
     }
     
     @Test
-    public void shouldReturnFoundRoomById( ) {
-        User user = userRepository.save( "TestUser" );
-        Room room = roomRepository.save( "TestRoom", user.getNickname( ) );
+    public void shouldFailToFindRoom( ) {
+        Optional<Room> search = roomRepository.get( "TestRoom" );
         
-        Optional<Room> roomOptional = roomRepository.get( room.getId( ) );
-        
-        assertTrue( roomOptional.isPresent( ) );
-        assertEquals( roomOptional.get( ).getName( ), "TestRoom" );
-    }
-    
-    @Test
-    public void shouldReturnFoundRoomByName( ) {
-        User user = userRepository.save( "TestUser" );
-        Room room = roomRepository.save( "TestRoom", user.getNickname( ) );
-        
-        Optional<Room> roomOptional = roomRepository.get( "TestRoom" );
-        
-        assertTrue( roomOptional.isPresent( ) );
-        assertEquals( roomOptional.get( ).getName( ), "TestRoom" );
-    }*/
-    
-    @Test
-    public void shouldFailToFindRoomById( ) {
-        Optional<Room> roomOptional = roomRepository.get( Long.MAX_VALUE );
-        
-        assertFalse( roomOptional.isPresent( ) );
-    }
-    
-    @Test
-    public void shouldFailToFindRoomByName( ) {
-        Optional<Room> roomOptional = roomRepository.get( "NonExistentRoom" );
-        
-        assertFalse( roomOptional.isPresent( ) );
+        assertFalse( search.isPresent( ) );
     }
 }

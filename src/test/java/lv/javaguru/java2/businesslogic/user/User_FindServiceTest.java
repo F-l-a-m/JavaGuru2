@@ -25,7 +25,7 @@ public class User_FindServiceTest {
     @InjectMocks
     private User_FindService userFindService = new User_FindService( );
     
-    @Test
+    /*@Test
     public void shouldFindUserByNickname( ) {
         List<Error> errors = new ArrayList<>( );
         String nickname = "TestUser";
@@ -84,5 +84,5 @@ public class User_FindServiceTest {
         assertFalse( userFindResponse.isSuccess( ) );
         assertNotNull( userFindResponse.getErrors( ) );
         assertNull( userFindResponse.getUser( ) );
-    }
+    }*/
 }

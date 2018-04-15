@@ -26,7 +26,7 @@ public class User_AddToRoomServiceTest {
     @InjectMocks
     private User_AddToRoomService userAddToRoomService = new User_AddToRoomService( );
     
-    @Test
+    /*@Test
     public void shouldAddUserToRoom( ) {
         Long userId = Integer.toUnsignedLong( 1 );
         Long roomId = Integer.toUnsignedLong( 1 );
@@ -127,5 +127,5 @@ public class User_AddToRoomServiceTest {
         assertFalse( userAddToRoomResponse.isSuccess( ) );
         assertNotNull( userAddToRoomResponse.getErrors( ) );
         assertEquals( userAddToRoomResponse.getErrors( ).size( ), 1 );
-    }
+    }*/
 }

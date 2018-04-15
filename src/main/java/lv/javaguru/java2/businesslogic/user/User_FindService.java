@@ -32,16 +32,4 @@ public class User_FindService {
             return new User_FindResponse( null, errors, false );
         }
     }
-    
-    @Transactional
-    public User_FindResponse find( Long userId ) {
-        List<Error> errors = new ArrayList<>( );
-        Optional<User> optionalUser = userRepository.get( userId );
-        if ( optionalUser.isPresent( ) ) {
-            return new User_FindResponse( optionalUser.get( ), null, true );
-        } else {
-            errors.add( new Error( "User with id " + userId + " not found" ) );
-            return new User_FindResponse( null, errors, false );
-        }
-    }
 }

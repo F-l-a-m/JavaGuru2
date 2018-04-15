@@ -45,4 +45,9 @@ public class UserBuilder {
         this.creationTime = creationTime;
         return this;
     }
+    
+    public UserBuilder withStatus(Boolean isActive){
+        this.isActive = isActive;
+        return this;
+    }
 }

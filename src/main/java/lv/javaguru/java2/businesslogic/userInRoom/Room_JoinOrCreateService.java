@@ -39,15 +39,11 @@ public class Room_JoinOrCreateService {
                     .build( ) );
             
             // Check if user is already in that room, if not create new record
-            boolean search = userInRoomRepository.findUserInRoom( user.getId( ), room.getId( ) );
+            boolean search = userInRoomRepository.findUserInRoom( user, room );
             if ( search ) {
                 return new Room_JoinOrCreateResponse( room, null, true ); // User already in that room
             } else {
-                UserInRoom userInRoom = createUserInRoom( )
-                        .withRoom( room )
-                        .withUser( user )
-                        .build( );
-                userInRoomRepository.addUserToRoom( userInRoom );
+                userInRoomRepository.addUserToRoom( user, room );
                 return new Room_JoinOrCreateResponse( room, null, true ); // Add user to room
             }
         } else { // Room name validation errors

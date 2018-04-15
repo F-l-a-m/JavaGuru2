@@ -16,7 +16,7 @@ public class Message_GetChatHistoryService {
     
     @Transactional
     public Message_GetChatHistoryResponse go( Room room ) {
-        List<Message> chatHistory = messageRepository.getAllMessages( room.getId( ) );
+        List<Message> chatHistory = messageRepository.getAllMessages( room );
         return new Message_GetChatHistoryResponse( chatHistory );
     }
 }

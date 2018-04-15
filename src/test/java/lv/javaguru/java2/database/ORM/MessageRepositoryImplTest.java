@@ -1,5 +1,6 @@
 package lv.javaguru.java2.database.ORM;
 
+import lv.javaguru.java2.businesslogic.MyTimestamp;
 import lv.javaguru.java2.configs.SpringAppConfig;
 import lv.javaguru.java2.database.MessageRepository;
 import lv.javaguru.java2.database.RoomRepository;
@@ -16,6 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static lv.javaguru.java2.domain.builders.MessageBuilder.createMessage;
+import static lv.javaguru.java2.domain.builders.RoomBuilder.createRoom;
+import static lv.javaguru.java2.domain.builders.UserBuilder.createUser;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -27,28 +31,67 @@ public class MessageRepositoryImplTest {
     @Autowired private RoomRepository roomRepository;
     @Autowired private MessageRepository messageRepository;
     
-    /*@Test
+    @Test
     public void shouldAddNewMessage( ) {
-        User user = userRepository.save( "TestUser" );
-        Room room = roomRepository.save( "TestRoom", user.getNickname( ) );
+        User user = createUser( )
+                .withNickname( "TestUser" )
+                .withCreationTime( MyTimestamp.getSQLTimestamp( ) )
+                .build( );
+        userRepository.save( user );
         
-        Message message = messageRepository.save( "Hello", user.getNickname( ), room.getId( ) );
+        Room room = createRoom( )
+                .withName( "TestRoom" )
+                .withCreationTime( MyTimestamp.getSQLTimestamp( ) )
+                .withCreatorNickname( user.getNickname( ) )
+                .build( );
+        roomRepository.save( room );
         
-        assertNotNull( message );
+        Message message = createMessage( )
+                .withCreationTime( MyTimestamp.getSQLTimestamp( ) )
+                .withUserNickname( user.getNickname( ) )
+                .withMessageBody( "Hello World!" )
+                .withRoom( room ).build( );
+        messageRepository.save( message );
+        
+        assertNotNull( message.getId( ) );
     }
     
     @Test
     public void shouldReturnMessageList( ) {
-        User user = userRepository.save( "TestUser" );
-        Room room = roomRepository.save( "TestRoom", user.getNickname( ) );
-        String messageBody = "Hello";
-        String nickname = user.getNickname( );
-        Long roomId = room.getId( );
-        messageRepository.save( messageBody, nickname, roomId );
-        messageRepository.save( messageBody, nickname, roomId );
-        messageRepository.save( messageBody, nickname, roomId );
+        User user = createUser( )
+                .withNickname( "TestUser" )
+                .withCreationTime( MyTimestamp.getSQLTimestamp( ) )
+                .build( );
+        userRepository.save( user );
+    
+        Room room = createRoom( )
+                .withName( "TestRoom" )
+                .withCreationTime( MyTimestamp.getSQLTimestamp( ) )
+                .withCreatorNickname( user.getNickname( ) )
+                .build( );
+        roomRepository.save( room );
+    
+    
+        Message message1 = createMessage( )
+                .withCreationTime( MyTimestamp.getSQLTimestamp( ) )
+                .withUserNickname( user.getNickname( ) )
+                .withMessageBody( "Message One" )
+                .withRoom( room ).build( );
+        Message message2 = createMessage( )
+                .withCreationTime( MyTimestamp.getSQLTimestamp( ) )
+                .withUserNickname( user.getNickname( ) )
+                .withMessageBody( "Message Two" )
+                .withRoom( room ).build( );
+        Message message3 = createMessage( )
+                .withCreationTime( MyTimestamp.getSQLTimestamp( ) )
+                .withUserNickname( user.getNickname( ) )
+                .withMessageBody( "Message Three" )
+                .withRoom( room ).build( );
+        messageRepository.save( message1 );
+        messageRepository.save( message2 );
+        messageRepository.save( message3 );
         
-        List<Message> messageList = messageRepository.getAllMessages( room.getId( ) );
+        List<Message> messageList = messageRepository.getAllMessages( room );
         
         assertNotNull( messageList );
         assertEquals( messageList.size( ), 3 );
@@ -56,12 +99,21 @@ public class MessageRepositoryImplTest {
     
     @Test
     public void shouldReturnEmptyMessageList( ) {
-        User user = userRepository.save( "TestUser" );
-        Room room = roomRepository.save( "TestRoom", user.getNickname( ) );
+        User user = createUser( )
+                .withNickname( "TestUser" )
+                .withCreationTime( MyTimestamp.getSQLTimestamp( ) )
+                .build( );
+        userRepository.save( user );
+    
+        Room room = createRoom( )
+                .withName( "TestRoom" )
+                .withCreationTime( MyTimestamp.getSQLTimestamp( ) )
+                .withCreatorNickname( user.getNickname( ) )
+                .build( );
+        roomRepository.save( room );
         
-        List<Message> messageList = messageRepository.getAllMessages( room.getId( ) );
+        List<Message> messageList = messageRepository.getAllMessages( room );
         
         assertEquals( messageList.size( ), 0 );
-    }*/
-    
+    }
 }

@@ -17,7 +17,7 @@ import static lv.javaguru.java2.domain.builders.UserBuilder.createUser;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { SpringAppConfig.class })
+@ContextConfiguration(classes = {SpringAppConfig.class})
 @Transactional
 public class UserRepositoryImplTest {
     
@@ -32,73 +32,47 @@ public class UserRepositoryImplTest {
         userRepository.save( user );
         
         Optional<User> optionalUser = userRepository.get( "TestUser" );
-        User result = optionalUser.get( );
+        User foundUser = optionalUser.get( );
         
-        assertEquals( result.getNickname( ), "TestUser" );
-        assertNotNull( result.getId( ) );
-    }
-    
-    /*@Test
-    public void shouldSetUserActiveStatus( ) {
-        User user = userRepository.save( "TestUser" );
-        
-        userRepository.updateActiveStatus( user, true );
-        assertTrue( user.isActive( ) );
-        
-        userRepository.updateActiveStatus( user, false );
-        assertFalse( user.isActive( ) );
-    }
-    
-    @Test
-    public void shouldReturnFoundUserById( ) {
-        User user = userRepository.save( "TestUser" );
-        Long id = user.getId( );
-        
-        Optional<User> optionalUser = userRepository.get( id );
-        
-        assertTrue( optionalUser.isPresent( ) );
-        assertEquals( optionalUser.get( ).getNickname( ), "TestUser" );
+        assertEquals( foundUser.getNickname( ), "TestUser" );
+        assertNotNull( foundUser.getId( ) );
     }
     
     @Test
     public void shouldReturnFoundUserByNickname( ) {
-        userRepository.save( "TestUser" );
+        User user = createUser( )
+                .withNickname( "TestUser" )
+                .withCreationTime( MyTimestamp.getSQLTimestamp( ) )
+                .build( );
+        userRepository.save( user );
         
         Optional<User> optionalUser = userRepository.get( "TestUser" );
+        User foundUser = optionalUser.get( );
         
         assertTrue( optionalUser.isPresent( ) );
         assertEquals( optionalUser.get( ).getNickname( ), "TestUser" );
     }
     
     @Test
-    public void shouldFailToReturnUserById( ) {
-        Optional<User> optionalUser = userRepository.get( Long.MAX_VALUE );
-        
-        assertFalse( optionalUser.isPresent( ) );
-    }
-    
-    @Test
-    public void shouldFailToReturnUserByNickname( ) {
+    public void shouldFailToFindUser( ) {
         Optional<User> optionalUser = userRepository.get( "TestUser" );
         
         assertFalse( optionalUser.isPresent( ) );
     }
     
     @Test
-    public void shouldChangeUserNicknameByString( ) {
-        User user = userRepository.save( "TestUser" );
+    public void shouldChangeUserNickname( ) {
+        User user = createUser( )
+                .withNickname( "TestUser" )
+                .withCreationTime( MyTimestamp.getSQLTimestamp( ) )
+                .build( );
+        userRepository.save( user );
         
-        userRepository.changeNickname( "TestUser", "NewNickname" );
-        
-        assertEquals( user.getNickname( ), "NewNickname" );
-    }
+        user.setNickname( "NewNickname" );
     
-    @Test
-    public void shouldChangeUserNicknameByObject( ) {
-        User user = userRepository.save( "TestUser" );
+        Optional<User> optionalUser = userRepository.get( "NewNickname" );
+        User foundUser = optionalUser.get( );
         
-        userRepository.changeNickname( user, "NewNickname" );
-        
-        assertEquals( user.getNickname( ), "NewNickname" );
-    }*/
+        assertEquals( foundUser.getNickname( ), "NewNickname" );
+    }
 }

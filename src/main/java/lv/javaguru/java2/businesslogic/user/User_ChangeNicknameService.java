@@ -21,7 +21,7 @@ public class User_ChangeNicknameService {
         List<Error> errors = validator.validate( newNickname );
         if ( !errors.isEmpty( ) ) {
             // Failed, return new nickname validation errors
-            return new User_ChangeNicknameResponse(  errors, false );
+            return new User_ChangeNicknameResponse( errors, false );
         } else {
             Optional<User> optionalUser = userRepository.get( newNickname );
             if ( optionalUser.isPresent( ) ) {
@@ -30,7 +30,7 @@ public class User_ChangeNicknameService {
                 return new User_ChangeNicknameResponse( errors, false );
             } else {
                 // Change nickname
-                userRepository.changeNickname( user, newNickname );
+                user.setNickname( newNickname );
                 return new User_ChangeNicknameResponse( null, true );
             }
         }

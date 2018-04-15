@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface UserInRoomRepository {
     
-    void addUserToRoom( UserInRoom userInRoom );
+    void addUserToRoom( User user, Room room );
     
-    boolean findUserInRoom( Long userId, Long roomId );
+    boolean findUserInRoom( User user, Room room );
     
-    boolean removeUserFromRoom( Long userId, Long roomId );
+    void removeUserFromRoom( User user, Room room );
     
     List<Room> getAListOfJoinedRooms( User user );
     

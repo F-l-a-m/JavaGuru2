@@ -43,7 +43,7 @@ public class Room_JoinOrCreateServiceTest {
                 .thenReturn( Optional.empty( ) ); // Room does not exists
         Room room = Mockito.mock( Room.class );
         room.setId( Integer.toUnsignedLong( 1 ) );
-        Mockito.when( userInRoomRepository.findUserInRoom( user.getId( ), room.getId( ) ) )
+        Mockito.when( userInRoomRepository.findUserInRoom( user, room ) )
                 .thenReturn( false ); // User is not in room
         
         Room_JoinOrCreateResponse response = joinOrCreateService.joinOrCreateRoom( roomName, user );
@@ -66,7 +66,7 @@ public class Room_JoinOrCreateServiceTest {
         room.setId( Integer.toUnsignedLong( 1 ) );
         Mockito.when( roomRepository.get( roomName ) )
                 .thenReturn( Optional.of( room ) ); // Room is already in db
-        Mockito.when( userInRoomRepository.findUserInRoom( user.getId( ), room.getId( ) ) )
+        Mockito.when( userInRoomRepository.findUserInRoom( user, room ) )
                 .thenReturn( false ); // User is not in room
         
         Room_JoinOrCreateResponse response = joinOrCreateService.joinOrCreateRoom( roomName, user );
@@ -89,7 +89,7 @@ public class Room_JoinOrCreateServiceTest {
         room.setId( Integer.toUnsignedLong( 1 ) );
         Mockito.when( roomRepository.get( roomName ) )
                 .thenReturn( Optional.of( room ) ); // Room is already in db
-        Mockito.when( userInRoomRepository.findUserInRoom( user.getId( ), room.getId( ) ) )
+        Mockito.when( userInRoomRepository.findUserInRoom( user, room ) )
                 .thenReturn( true ); // User is already in that room
         
         Room_JoinOrCreateResponse response = joinOrCreateService.joinOrCreateRoom( roomName, user );

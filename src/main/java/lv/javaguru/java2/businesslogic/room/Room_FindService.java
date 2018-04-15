@@ -32,16 +32,4 @@ public class Room_FindService {
             return new Room_FindResponse( null, errors, false );
         }
     }
-    
-    @Transactional
-    public Room_FindResponse find( Long roomId ) {
-        List<Error> errors = new ArrayList<>( );
-        Optional<Room> optionalRoom = roomRepository.get( roomId );
-        if ( optionalRoom.isPresent( ) ) {
-            return new Room_FindResponse( optionalRoom.get( ), null, true );
-        } else {
-            errors.add( new Error( "Room with id " + roomId + " not found" ) );
-            return new Room_FindResponse( null, errors, false );
-        }
-    }
 }

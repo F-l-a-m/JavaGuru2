@@ -26,12 +26,12 @@ public class User_FindInRoomService {
         List<Error> errors = new ArrayList<>( );
         
         // Check if user exists
-        Optional<User> optionalUser = userRepository.get( user.getId( ) );
+        Optional<User> optionalUser = userRepository.get( user.getNickname( ) );
         if ( !optionalUser.isPresent( ) ) {
             errors.add( new Error( "User with nickname " + user.getNickname( ) + " not found" ) );
         }
         // Check if room exists
-        Optional<Room> optionalRoom = roomRepository.get( room.getId( ) );
+        Optional<Room> optionalRoom = roomRepository.get( room.getName( ) );
         if ( !optionalRoom.isPresent( ) ) {
             errors.add( new Error( "Room with name " + room.getName( ) + " not found" ) );
         }
@@ -40,7 +40,7 @@ public class User_FindInRoomService {
         }
         
         // Check if user is already in that room
-        if ( userInRoomRepository.findUserInRoom( user.getId( ), room.getId( ) ) ) {
+        if ( userInRoomRepository.findUserInRoom( user, room ) ) {
             return new User_FindInRoomResponse( null, true );
         } else {
             errors.add( new Error(

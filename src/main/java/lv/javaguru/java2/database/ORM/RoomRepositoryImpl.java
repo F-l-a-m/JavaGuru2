@@ -1,6 +1,5 @@
 package lv.javaguru.java2.database.ORM;
 
-import lv.javaguru.java2.businesslogic.MyTimestamp;
 import lv.javaguru.java2.database.RoomRepository;
 import lv.javaguru.java2.domain.Room;
 import org.hibernate.criterion.Restrictions;
@@ -18,14 +17,6 @@ class RoomRepositoryImpl extends ORMRepository implements RoomRepository {
     }
     
     @Override
-    public Optional<Room> get( Long roomId ) {
-        Room room = (Room) session( ).createCriteria( Room.class )
-                .add( Restrictions.eq( "id", roomId ) )
-                .uniqueResult( );
-        return Optional.ofNullable( room );
-    }
-    
-    @Override
     public Optional<Room> get( String roomName ) {
         Room room = (Room) session( ).createCriteria( Room.class )
                 .add( Restrictions.eq( "name", roomName ) )
@@ -34,7 +25,7 @@ class RoomRepositoryImpl extends ORMRepository implements RoomRepository {
     }
     
     @Override
-    public List getAllRooms( ) {
+    public List<Room> getAllRooms( ) {
         return session( ).createCriteria( Room.class )
                 .list( );
     }

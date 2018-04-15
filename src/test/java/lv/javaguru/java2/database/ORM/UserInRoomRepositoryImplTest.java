@@ -1,11 +1,13 @@
 package lv.javaguru.java2.database.ORM;
 
+import lv.javaguru.java2.businesslogic.MyTimestamp;
 import lv.javaguru.java2.configs.SpringAppConfig;
 import lv.javaguru.java2.database.RoomRepository;
 import lv.javaguru.java2.database.UserInRoomRepository;
 import lv.javaguru.java2.database.UserRepository;
 import lv.javaguru.java2.domain.Room;
 import lv.javaguru.java2.domain.User;
+import lv.javaguru.java2.domain.UserInRoom;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +15,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.*;
+import java.util.List;
 
+import static lv.javaguru.java2.domain.builders.RoomBuilder.createRoom;
+import static lv.javaguru.java2.domain.builders.UserBuilder.createUser;
+import static lv.javaguru.java2.domain.builders.UserInRoomBuilder.createUserInRoom;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {SpringAppConfig.class})
@@ -25,109 +31,112 @@ public class UserInRoomRepositoryImplTest {
     @Autowired private RoomRepository roomRepository;
     @Autowired private UserInRoomRepository userInRoomRepository;
     
-    /*@Test
-    public void shouldAddUserToRoom( ) { // Should save new record to "user_in_room" table (userId; RoomId)
-        User user = userRepository.save( "TestUser" );
-        Room room = roomRepository.save( "TestRoom", user.getNickname( ) );
+    @Test
+    public void shouldAddUserToRoom( ) {
+        User user = createUser( )
+                .withNickname( "TestUser" )
+                .withCreationTime( MyTimestamp.getSQLTimestamp( ) )
+                .build( );
+        userRepository.save( user );
         
-        userInRoomRepository.addUserToRoom( user.getId( ), room.getId( ) );
-        boolean result = userInRoomRepository.findUserInRoom( user.getId( ), room.getId( ) );
+        Room room = createRoom( )
+                .withName( "TestRoom" )
+                .withCreationTime( MyTimestamp.getSQLTimestamp( ) )
+                .withCreatorNickname( user.getNickname( ) )
+                .build( );
+        roomRepository.save( room );
+        
+        userInRoomRepository.addUserToRoom( user, room );
+        
+        boolean result = userInRoomRepository.findUserInRoom( user, room );
         
         assertTrue( result );
     }
     
     @Test
-    public void shouldFailToAddUserToRoom( ) {
-        // database.userInRoom_addUserToRoom( Long.MAX_VALUE, Long.MAX_VALUE );
-        // Does not check FK    :(
+    public void shouldRemoveUserFromRoom( ) {
+        User user = createUser( )
+                .withNickname( "TestUser" )
+                .withCreationTime( MyTimestamp.getSQLTimestamp( ) )
+                .build( );
+        userRepository.save( user );
         
-        // 1 case - non-existent user
+        Room room = createRoom( )
+                .withName( "TestRoom" )
+                .withCreationTime( MyTimestamp.getSQLTimestamp( ) )
+                .withCreatorNickname( user.getNickname( ) )
+                .build( );
+        roomRepository.save( room );
         
-        // 2 case - non-existent room
+        userInRoomRepository.addUserToRoom( user, room );
         
-    }
-    
-    @Test
-    public void shouldRemoveUserFromRoom( ) {// Should remove record from "user_in_room" table (userId; RoomId)
-        User user = userRepository.save( "TestUser" );
-        Room room = roomRepository.save( "TestRoom", user.getNickname( ) );
-        userInRoomRepository.addUserToRoom( user.getId( ), room.getId( ) );
+        userInRoomRepository.removeUserFromRoom( user, room );
         
-        boolean isRemoved = userInRoomRepository.removeUserFromRoom( user.getId( ), room.getId( ) );
-        boolean isFound = userInRoomRepository.findUserInRoom( user.getId( ), room.getId( ) );
+        boolean isFound = userInRoomRepository.findUserInRoom( user, room );
         
-        assertTrue( isRemoved );
         assertFalse( isFound );
-    }
-    
-    @Test
-    public void shouldFailToRemoveUserFromRoom( ) {
-        // Non-existent room
-        User user = userRepository.save( "TestUser" );
-        boolean isRemoved = userInRoomRepository.removeUserFromRoom( user.getId( ), Long.MAX_VALUE );
-        assertFalse( isRemoved );
-        
-        // Non-existent user
-        Room room = roomRepository.save( "TestRoom", user.getNickname( ) );
-        isRemoved = userInRoomRepository.removeUserFromRoom( Long.MAX_VALUE, room.getId( ) );
-        assertFalse( isRemoved );
-        
-        // Non-existent room and user
-        isRemoved = userInRoomRepository.removeUserFromRoom( Long.MAX_VALUE, Long.MAX_VALUE );
-        assertFalse( isRemoved );
-    }
-    
-    @Test
-    public void shouldFindUserInRoom( ) {
-        User user = userRepository.save( "TestUser" );
-        Room room = roomRepository.save( "TestRoom", user.getNickname( ) );
-        userInRoomRepository.addUserToRoom( user.getId( ), room.getId( ) );
-        
-        boolean result = userInRoomRepository.findUserInRoom( user.getId( ), room.getId( ) );
-        
-        assertTrue( result );
     }
     
     @Test
     public void shouldFailToFindUserInRoom( ) {
-        // Non-existent room
-        User user = userRepository.save( "TestUser" );
-        boolean isFound = userInRoomRepository.findUserInRoom( user.getId( ), Long.MAX_VALUE );
-        assertFalse( isFound );
+        User user = createUser( )
+                .withNickname( "TestUser" )
+                .withCreationTime( MyTimestamp.getSQLTimestamp( ) )
+                .build( );
+        userRepository.save( user );
         
-        // Non-existent user
-        Room room = roomRepository.save( "TestRoom", user.getNickname( ) );
-        isFound = userInRoomRepository.findUserInRoom( Long.MAX_VALUE, room.getId( ) );
-        assertFalse( isFound );
+        Room room = createRoom( )
+                .withName( "TestRoom" )
+                .withCreationTime( MyTimestamp.getSQLTimestamp( ) )
+                .withCreatorNickname( user.getNickname( ) )
+                .build( );
+        roomRepository.save( room );
         
-        // Non-existent room and user
-        isFound = userInRoomRepository.findUserInRoom( Long.MAX_VALUE, Long.MAX_VALUE );
-        assertFalse( isFound );
-    }*/
+        userInRoomRepository.addUserToRoom( user, room );
+        
+        userInRoomRepository.removeUserFromRoom( user, room );
+        
+        boolean result = userInRoomRepository.findUserInRoom( user, room );
+        
+        assertFalse( result );
+    }
     
     @Test
     public void shouldReturnAListOfJoinedRooms( ) {
-        /*User user = null;
-        user = userRepository.save( "TestUser" );
-    
-        Room room1 = null;
-        room1 = roomRepository.save( "TestRoom1", user.getNickname( ) );
-        Room room2 = null;
-        room2 = roomRepository.save( "TestRoom2", user.getNickname( ) );
-        // org.hibernate.NonUniqueObjectException:
-        // A different object with the same identifier value was already associated with the session :
+        User user = createUser( )
+                .withNickname( "TestUser" )
+                .withCreationTime( MyTimestamp.getSQLTimestamp( ) )
+                .build( );
+        userRepository.save( user );
         
+        Room room1 = createRoom( )
+                .withName( "TestRoomOne" )
+                .withCreationTime( MyTimestamp.getSQLTimestamp( ) )
+                .withCreatorNickname( user.getNickname( ) )
+                .build( );
+        roomRepository.save( room1 );
         
+        Room room2 = createRoom( )
+                .withName( "TestRoomTwo" )
+                .withCreationTime( MyTimestamp.getSQLTimestamp( ) )
+                .withCreatorNickname( user.getNickname( ) )
+                .build( );
+        roomRepository.save( room2 );
         
-        Room room3 = null;
-        room3 = roomRepository.save( "TestRoom3", user.getNickname( ) );
-    
-        userInRoomRepository.addUserToRoom( user.getId( ), room1.getId( ) );
-        userInRoomRepository.addUserToRoom( user.getId( ), room2.getId( ) );
-        userInRoomRepository.addUserToRoom( user.getId( ), room3.getId( ) );
-    
-        List<Room> rooms = null;
-        rooms = userInRoomRepository.getAListOfJoinedRooms( user.getId() );
-        assertNotNull( rooms );*/
+        Room room3 = createRoom( )
+                .withName( "TestRoomThree" )
+                .withCreationTime( MyTimestamp.getSQLTimestamp( ) )
+                .withCreatorNickname( user.getNickname( ) )
+                .build( );
+        roomRepository.save( room3 );
+        
+        userInRoomRepository.addUserToRoom( user, room1 );
+        userInRoomRepository.addUserToRoom( user, room2 );
+        userInRoomRepository.addUserToRoom( user, room3 );
+        
+        List<Room> roomList = userInRoomRepository.getAListOfJoinedRooms( user );
+        
+        assertFalse( roomList.isEmpty( ) );
+        assertEquals( roomList.size( ), 3 );
     }
 }

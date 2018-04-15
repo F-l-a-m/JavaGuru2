@@ -9,10 +9,8 @@ public interface RoomRepository {
     
     void save( Room room );
     
-    Optional<Room> get( Long roomId );
-    
     Optional<Room> get( String roomName );
     
-    List getAllRooms( );
+    List<Room> getAllRooms( );
     
 }

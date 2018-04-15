@@ -25,7 +25,7 @@ public class Room_FindServiceTest {
     @InjectMocks
     Room_FindService roomFindService = new Room_FindService( );
     
-    @Test
+    /*@Test
     public void shouldFindRoomByName( ) {
         String roomName = "TestRoom";
         Room room = Mockito.mock( Room.class );
@@ -83,5 +83,5 @@ public class Room_FindServiceTest {
         assertFalse( response.isSuccess( ) );
         assertNull( response.getRoom( ) );
         assertNotNull( response.getErrors( ) );
-    }
+    }*/
 }

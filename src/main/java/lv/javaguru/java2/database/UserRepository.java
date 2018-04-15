@@ -8,14 +8,6 @@ public interface UserRepository {
     
     void save( User user );
     
-    void updateActiveStatus( User user, boolean activeStatus );
-    
-    Optional<User> get( Long userId );
-    
     Optional<User> get( String nickname );
-    
-    void changeNickname( String oldNickname, String newNickname );
-    
-    void changeNickname( User user, String newNickname );
     
 }

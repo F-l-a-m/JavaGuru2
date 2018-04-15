@@ -30,12 +30,12 @@ public class User_AddToRoomService {
         List<Error> errors = new ArrayList<>( );
         
         // Check if user exists
-        Optional<User> optionalUser = userRepository.get( user.getId( ) );
+        Optional<User> optionalUser = userRepository.get( user.getNickname( ) );
         if ( !optionalUser.isPresent( ) ) {
             errors.add( new Error( "User with nickname " + user.getNickname( ) + " not found" ) );
         }
         // Check if room exists
-        Optional<Room> optionalRoom = roomRepository.get( room.getId( ) );
+        Optional<Room> optionalRoom = roomRepository.get( room.getName() );
         if ( !optionalRoom.isPresent( ) ) {
             errors.add( new Error( "Room with name " + room.getName( ) + " not found" ) );
         }
@@ -43,18 +43,14 @@ public class User_AddToRoomService {
             return new User_AddToRoomResponse( errors, false );
         } else {
             // Check if user is already in that room
-            if ( userInRoomRepository.findUserInRoom( user.getId( ), room.getId( ) ) ) {
+            if ( userInRoomRepository.findUserInRoom( user, room ) ) {
                 errors.add( new Error(
                         "User " + user.getNickname( ) + " is already in room " + room.getName( ) + '.'
                 ) );
                 return new User_AddToRoomResponse( errors, false );
             } else {
                 // Add user to room
-                UserInRoom userInRoom = createUserInRoom( )
-                        .withRoom( room )
-                        .withUser( user )
-                        .build( );
-                userInRoomRepository.addUserToRoom( userInRoom );
+                userInRoomRepository.addUserToRoom( user, room );
                 return new User_AddToRoomResponse( null, true );
             }
         }

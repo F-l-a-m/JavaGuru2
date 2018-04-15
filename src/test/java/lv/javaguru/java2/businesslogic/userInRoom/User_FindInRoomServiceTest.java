@@ -26,7 +26,7 @@ public class User_FindInRoomServiceTest {
     @InjectMocks
     private User_FindInRoomService userFindInRoomService = new User_FindInRoomService( );
     
-    @Test
+    /*@Test
     public void shouldFindUserInRoom( ) {
         Long userId = Integer.toUnsignedLong( 1 );
         Long roomId = Integer.toUnsignedLong( 1 );
@@ -127,5 +127,5 @@ public class User_FindInRoomServiceTest {
         assertFalse( userFindInRoomResponse.isSuccess( ) );
         assertNotNull( userFindInRoomResponse.getErrors( ) );
         assertEquals( userFindInRoomResponse.getErrors( ).size( ), 1 );
-    }
+    }*/
 }

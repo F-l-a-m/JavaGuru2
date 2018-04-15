@@ -7,74 +7,58 @@ import lv.javaguru.java2.domain.UserInRoom;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import static lv.javaguru.java2.domain.builders.UserInRoomBuilder.createUserInRoom;
 
 @Component
 class UserInRoomRepositoryImpl extends ORMRepository implements UserInRoomRepository {
     
     @Override
-    public void addUserToRoom( UserInRoom userInRoom ) {
+    public void addUserToRoom( User user, Room room ) {
+        UserInRoom userInRoom = createUserInRoom( )
+                .withUser( user )
+                .withRoom( room ).build( );
         session( ).save( userInRoom );
     }
     
     @Override
-    public boolean findUserInRoom( Long userId, Long roomId ) {
-        /*User user = (User) session( ).createCriteria( User.class )
-                .save( Restrictions.eq( "id", userId) )
+    public boolean findUserInRoom( User user, Room room ) {
+        String query = "from UserInRoom u " +
+                "where u.user = :user " +
+                "and u.room = :room";
+        UserInRoom userInRoom = (UserInRoom) session( ).createQuery( query )
+                .setParameter( "user", user )
+                .setParameter( "room", room )
                 .uniqueResult( );
-        return user != null;*/
-        UserInRoom userInRoom = (UserInRoom) session( ).createCriteria( UserInRoom.class )
+        
+        /*UserInRoom userInRoom = (UserInRoom) session( ).createCriteria( UserInRoom.class )
                 .add( Restrictions.eq( "user_id", userId ) )
                 .add( Restrictions.eq( "room_id", roomId ) )
-                .uniqueResult( );
+                .uniqueResult( );*/
         if ( userInRoom == null )
             return false;
         else return true;
     }
     
     @Override
-    public boolean removeUserFromRoom( Long userId, Long roomId ) {
-        
-        //UserInRoom userInRoom = new UserInRoom( userId, roomId );
-        // С таким вариантом
-        // org.hibernate.NonUniqueObjectException:
-        // A different object with the same identifier value was already associated with the session :
-        
-        UserInRoom userInRoom = (UserInRoom) session( ).createCriteria( UserInRoom.class )
-                .add( Restrictions.eq( "user_id", userId ) )
-                .add( Restrictions.eq( "room_id", roomId ) )
+    public void removeUserFromRoom( User user, Room room ) {
+        String query = "from UserInRoom u " +
+                "where u.user = :user " +
+                "and u.room = :room";
+        UserInRoom userInRoom = (UserInRoom) session( ).createQuery( query )
+                .setParameter( "user", user )
+                .setParameter( "room", room )
                 .uniqueResult( );
-        if ( userInRoom == null )
-            return false;
         session( ).delete( userInRoom );
-        return true;
     }
     
     @Override
     public List<Room> getAListOfJoinedRooms( User user ) {
-        String query = "from UserInRoom u" +
+        String query = "from UserInRoom u " +
                 "where u.user = :user";
         return session( ).createQuery( query )
                 .setParameter( "user", user )
                 .list( );
-        
-        
-        
-        /*List<UserInRoom> userInRoomList = session( ).createCriteria( UserInRoom.class )
-                .save( Restrictions.eq( "user_id", userId ) )
-                .list( );
-        *//*Query query = session().createQuery("from UserInRoom where user_id = :userId ");
-        query.setParameter("user_id", userId);
-        List<UserInRoom> userInRoomList = query.list( );*//*
-        
-        List<Long> roomIds = new ArrayList<>( );
-        for ( UserInRoom u : userInRoomList ) {
-            roomIds.save( u.getRoom_id( ) );
-        }
-        
-        List<Room> rooms = session( ).createCriteria( Room.class )
-                .save( Restrictions.in( "id", roomIds ) )
-                .list( );*/
     }
 }
