@@ -5,9 +5,9 @@ import lv.javaguru.java2.domain.Room;
 import java.util.List;
 import java.util.Optional;
 
-public interface RoomDAO {
+public interface RoomRepository {
     
-    Room add( String roomName, String creatorNickname );
+    void save( Room room );
     
     Optional<Room> get( Long roomId );
     

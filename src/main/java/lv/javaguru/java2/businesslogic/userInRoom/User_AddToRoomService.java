@@ -1,11 +1,12 @@
 package lv.javaguru.java2.businesslogic.userInRoom;
 
 import lv.javaguru.java2.businesslogic.Error;
-import lv.javaguru.java2.database.RoomDAO;
-import lv.javaguru.java2.database.UserDAO;
-import lv.javaguru.java2.database.UserInRoomDAO;
+import lv.javaguru.java2.database.RoomRepository;
+import lv.javaguru.java2.database.UserInRoomRepository;
+import lv.javaguru.java2.database.UserRepository;
 import lv.javaguru.java2.domain.Room;
 import lv.javaguru.java2.domain.User;
+import lv.javaguru.java2.domain.UserInRoom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,12 +15,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static lv.javaguru.java2.domain.builders.UserInRoomBuilder.createUserInRoom;
+
 @Component
 public class User_AddToRoomService {
     
-    @Autowired private UserDAO userDAO;
-    @Autowired private RoomDAO roomDAO;
-    @Autowired private UserInRoomDAO userInRoomDAO;
+    @Autowired private UserRepository userRepository;
+    @Autowired private RoomRepository roomRepository;
+    @Autowired private UserInRoomRepository userInRoomRepository;
     
     @Transactional
     public User_AddToRoomResponse add( User user, Room room ) {
@@ -27,12 +30,12 @@ public class User_AddToRoomService {
         List<Error> errors = new ArrayList<>( );
         
         // Check if user exists
-        Optional<User> optionalUser = userDAO.get( user.getId( ) );
+        Optional<User> optionalUser = userRepository.get( user.getId( ) );
         if ( !optionalUser.isPresent( ) ) {
             errors.add( new Error( "User with nickname " + user.getNickname( ) + " not found" ) );
         }
         // Check if room exists
-        Optional<Room> optionalRoom = roomDAO.get( room.getId( ) );
+        Optional<Room> optionalRoom = roomRepository.get( room.getId( ) );
         if ( !optionalRoom.isPresent( ) ) {
             errors.add( new Error( "Room with name " + room.getName( ) + " not found" ) );
         }
@@ -40,14 +43,18 @@ public class User_AddToRoomService {
             return new User_AddToRoomResponse( errors, false );
         } else {
             // Check if user is already in that room
-            if ( userInRoomDAO.findUserInRoom( user.getId( ), room.getId( ) ) ) {
+            if ( userInRoomRepository.findUserInRoom( user.getId( ), room.getId( ) ) ) {
                 errors.add( new Error(
                         "User " + user.getNickname( ) + " is already in room " + room.getName( ) + '.'
                 ) );
                 return new User_AddToRoomResponse( errors, false );
             } else {
                 // Add user to room
-                userInRoomDAO.addUserToRoom( user.getId( ), room.getId( ) );
+                UserInRoom userInRoom = createUserInRoom( )
+                        .withRoom( room )
+                        .withUser( user )
+                        .build( );
+                userInRoomRepository.addUserToRoom( userInRoom );
                 return new User_AddToRoomResponse( null, true );
             }
         }

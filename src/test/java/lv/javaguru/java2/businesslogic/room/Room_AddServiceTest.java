@@ -2,7 +2,7 @@ package lv.javaguru.java2.businesslogic.room;
 
 import lv.javaguru.java2.businesslogic.Error;
 import lv.javaguru.java2.businesslogic.user.User_NicknameValidator;
-import lv.javaguru.java2.database.RoomDAO;
+import lv.javaguru.java2.database.RoomRepository;
 import lv.javaguru.java2.domain.Room;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 @RunWith(MockitoJUnitRunner.class)
 public class Room_AddServiceTest {
     
-    @Mock RoomDAO roomDAO;
+    @Mock RoomRepository roomRepository;
     @Mock User_NicknameValidator nicknameValidator;
     @Mock Room_NameValidator roomNameValidator;
     
@@ -37,10 +37,8 @@ public class Room_AddServiceTest {
                 .thenReturn( errors );
         Mockito.when( nicknameValidator.validate( creatorNickname ) )
                 .thenReturn( errors );
-        Mockito.when( roomDAO.get( roomName ) )
+        Mockito.when( roomRepository.get( roomName ) )
                 .thenReturn( Optional.empty( ) ); // Room not found, create new
-        Mockito.when( roomDAO.add( roomName, creatorNickname ) )
-                .thenReturn( room );
         
         Room_AddResponse response = addService.addRoom( roomName, creatorNickname );
         
@@ -59,7 +57,7 @@ public class Room_AddServiceTest {
                 .thenReturn( errors );
         Mockito.when( nicknameValidator.validate( creatorNickname ) )
                 .thenReturn( errors );
-        Mockito.when( roomDAO.get( roomName ) )
+        Mockito.when( roomRepository.get( roomName ) )
                 .thenReturn( Optional.of( room ) ); // Room already exists in db
         
         Room_AddResponse response = addService.addRoom( roomName, creatorNickname );

@@ -1,6 +1,6 @@
 package lv.javaguru.java2.businesslogic.userInRoom;
 
-import lv.javaguru.java2.database.UserInRoomDAO;
+import lv.javaguru.java2.database.UserInRoomRepository;
 import lv.javaguru.java2.domain.Room;
 import lv.javaguru.java2.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +13,11 @@ import java.util.List;
 @Component
 public class User_GetAListOfJoinedRoomsService {
     
-    @Autowired UserInRoomDAO userInRoomDAO;
+    @Autowired UserInRoomRepository userInRoomRepository;
     
     @Transactional
     public List<Room> getList( User user ) {
-        List<Room> roomList = userInRoomDAO.getAListOfJoinedRooms( user.getId( ) );
+        List<Room> roomList = userInRoomRepository.getAListOfJoinedRooms( user );
         if ( !roomList.isEmpty( ) ) {
             return roomList;
         }
@@ -26,7 +26,7 @@ public class User_GetAListOfJoinedRoomsService {
     
     @Transactional
     public List<String> getAStringListOfJoinedRooms( User user ) {
-        List<Room> roomList = userInRoomDAO.getAListOfJoinedRooms( user.getId( ) );
+        List<Room> roomList = userInRoomRepository.getAListOfJoinedRooms( user );
         if ( !roomList.isEmpty( ) ) {
             List<String> stringList = new ArrayList<>( );
             roomList.forEach( room -> stringList.add( room.getName( ) ) );

@@ -1,31 +1,22 @@
 package lv.javaguru.java2.database.ORM;
 
-import lv.javaguru.java2.businesslogic.MyTimestamp;
-import lv.javaguru.java2.database.UserDAO;
+import lv.javaguru.java2.database.UserRepository;
 import lv.javaguru.java2.domain.User;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
-class UserDAOImpl implements UserDAO {
-    
-    @Autowired private SessionFactory sessionFactory;
-    
-    private Session session( ) {
-        return sessionFactory.getCurrentSession( );
-    }
+class UserRepositoryImpl extends ORMRepository implements UserRepository {
     
     @Override
-    public User add( String nickname ) {
-        User user = new User( nickname, MyTimestamp.getSQLTimestamp( ) );
+    public void save( User user ) {
+        /*User user = new User( nickname, MyTimestamp.getSQLTimestamp( ) );
         Long id = (Long) session( ).save( user );
         user.setId( id );
-        return user;
+        return user;*/
+        session( ).save( user );
     }
     
     @Override

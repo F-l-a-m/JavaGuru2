@@ -4,9 +4,9 @@ import lv.javaguru.java2.domain.Message;
 
 import java.util.List;
 
-public interface MessageDAO {
+public interface MessageRepository {
     
-    Message add( String message, String nickname, Long roomId );
+    void save( Message message );
     
     List getAllMessages( Long roomId );
     

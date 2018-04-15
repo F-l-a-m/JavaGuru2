@@ -1,6 +1,6 @@
 package lv.javaguru.java2.businesslogic.room;
 
-import lv.javaguru.java2.database.RoomDAO;
+import lv.javaguru.java2.database.RoomRepository;
 import lv.javaguru.java2.domain.Room;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 @RunWith(MockitoJUnitRunner.class)
 public class Room_GetAllServiceTest {
     
-    @Mock RoomDAO roomDAO;
+    @Mock RoomRepository roomRepository;
     
     @InjectMocks
     Room_GetAllService roomGetAllService = new Room_GetAllService( );
@@ -29,7 +29,7 @@ public class Room_GetAllServiceTest {
         roomList.add( room );
         roomList.add( room );
         roomList.add( room );
-        Mockito.when( roomDAO.getAllRooms( ) )
+        Mockito.when( roomRepository.getAllRooms( ) )
                 .thenReturn( roomList );
         
         Room_GetAllResponse response = roomGetAllService.getRoomList( );
@@ -45,7 +45,7 @@ public class Room_GetAllServiceTest {
         roomList.add( room );
         roomList.add( room );
         roomList.add( room );
-        Mockito.when( roomDAO.getAllRooms( ) )
+        Mockito.when( roomRepository.getAllRooms( ) )
                 .thenReturn( roomList );
         
         Room_GetAllResponse response = roomGetAllService.getStringList( );

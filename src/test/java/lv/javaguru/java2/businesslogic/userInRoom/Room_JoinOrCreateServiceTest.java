@@ -2,8 +2,8 @@ package lv.javaguru.java2.businesslogic.userInRoom;
 
 import lv.javaguru.java2.businesslogic.Error;
 import lv.javaguru.java2.businesslogic.room.Room_NameValidator;
-import lv.javaguru.java2.database.RoomDAO;
-import lv.javaguru.java2.database.UserInRoomDAO;
+import lv.javaguru.java2.database.RoomRepository;
+import lv.javaguru.java2.database.UserInRoomRepository;
 import lv.javaguru.java2.domain.Room;
 import lv.javaguru.java2.domain.User;
 import org.junit.Test;
@@ -24,8 +24,8 @@ public class Room_JoinOrCreateServiceTest {
     
     
     @Mock private Room_NameValidator validator;
-    @Mock private RoomDAO roomDAO;
-    @Mock private UserInRoomDAO userInRoomDAO;
+    @Mock private RoomRepository roomRepository;
+    @Mock private UserInRoomRepository userInRoomRepository;
     
     @InjectMocks
     Room_JoinOrCreateService joinOrCreateService = new Room_JoinOrCreateService( );
@@ -39,13 +39,11 @@ public class Room_JoinOrCreateServiceTest {
         List<Error> errors = new ArrayList<>( );
         Mockito.when( validator.validate( roomName ) )
                 .thenReturn( errors );
-        Mockito.when( roomDAO.get( roomName ) )
+        Mockito.when( roomRepository.get( roomName ) )
                 .thenReturn( Optional.empty( ) ); // Room does not exists
         Room room = Mockito.mock( Room.class );
         room.setId( Integer.toUnsignedLong( 1 ) );
-        Mockito.when( roomDAO.add( roomName, user.getNickname( ) ) )
-                .thenReturn( room );
-        Mockito.when( userInRoomDAO.findUserInRoom( user.getId( ), room.getId( ) ) )
+        Mockito.when( userInRoomRepository.findUserInRoom( user.getId( ), room.getId( ) ) )
                 .thenReturn( false ); // User is not in room
         
         Room_JoinOrCreateResponse response = joinOrCreateService.joinOrCreateRoom( roomName, user );
@@ -66,9 +64,9 @@ public class Room_JoinOrCreateServiceTest {
                 .thenReturn( errors );
         Room room = Mockito.mock( Room.class );
         room.setId( Integer.toUnsignedLong( 1 ) );
-        Mockito.when( roomDAO.get( roomName ) )
+        Mockito.when( roomRepository.get( roomName ) )
                 .thenReturn( Optional.of( room ) ); // Room is already in db
-        Mockito.when( userInRoomDAO.findUserInRoom( user.getId( ), room.getId( ) ) )
+        Mockito.when( userInRoomRepository.findUserInRoom( user.getId( ), room.getId( ) ) )
                 .thenReturn( false ); // User is not in room
         
         Room_JoinOrCreateResponse response = joinOrCreateService.joinOrCreateRoom( roomName, user );
@@ -89,9 +87,9 @@ public class Room_JoinOrCreateServiceTest {
                 .thenReturn( errors );
         Room room = Mockito.mock( Room.class );
         room.setId( Integer.toUnsignedLong( 1 ) );
-        Mockito.when( roomDAO.get( roomName ) )
+        Mockito.when( roomRepository.get( roomName ) )
                 .thenReturn( Optional.of( room ) ); // Room is already in db
-        Mockito.when( userInRoomDAO.findUserInRoom( user.getId( ), room.getId( ) ) )
+        Mockito.when( userInRoomRepository.findUserInRoom( user.getId( ), room.getId( ) ) )
                 .thenReturn( true ); // User is already in that room
         
         Room_JoinOrCreateResponse response = joinOrCreateService.joinOrCreateRoom( roomName, user );

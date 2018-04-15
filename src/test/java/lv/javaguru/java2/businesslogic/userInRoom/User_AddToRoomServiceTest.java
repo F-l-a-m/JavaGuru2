@@ -1,8 +1,8 @@
 package lv.javaguru.java2.businesslogic.userInRoom;
 
-import lv.javaguru.java2.database.RoomDAO;
-import lv.javaguru.java2.database.UserDAO;
-import lv.javaguru.java2.database.UserInRoomDAO;
+import lv.javaguru.java2.database.RoomRepository;
+import lv.javaguru.java2.database.UserRepository;
+import lv.javaguru.java2.database.UserInRoomRepository;
 import lv.javaguru.java2.domain.Room;
 import lv.javaguru.java2.domain.User;
 import org.junit.Test;
@@ -19,9 +19,9 @@ import static org.junit.Assert.*;
 @RunWith(MockitoJUnitRunner.class)
 public class User_AddToRoomServiceTest {
     
-    @Mock private UserInRoomDAO userInRoomDAO;
-    @Mock private UserDAO userDAO;
-    @Mock private RoomDAO roomDAO;
+    @Mock private UserInRoomRepository userInRoomRepository;
+    @Mock private UserRepository userRepository;
+    @Mock private RoomRepository roomRepository;
     
     @InjectMocks
     private User_AddToRoomService userAddToRoomService = new User_AddToRoomService( );
@@ -34,11 +34,11 @@ public class User_AddToRoomServiceTest {
         user.setId( userId );
         Room room = new Room( );
         room.setId( roomId );
-        Mockito.when( userDAO.get( userId ) )
+        Mockito.when( userRepository.get( userId ) )
                 .thenReturn( Optional.of( user ) );
-        Mockito.when( roomDAO.get( roomId ) )
+        Mockito.when( roomRepository.get( roomId ) )
                 .thenReturn( Optional.of( room ) );
-        Mockito.when( userInRoomDAO.findUserInRoom( userId, roomId ) )
+        Mockito.when( userInRoomRepository.findUserInRoom( userId, roomId ) )
                 .thenReturn( false );
         
         User_AddToRoomResponse userAddToRoomResponse = userAddToRoomService.add( user, room );
@@ -55,9 +55,9 @@ public class User_AddToRoomServiceTest {
         user.setId( userId );
         Room room = new Room( );
         room.setId( roomId );
-        Mockito.when( userDAO.get( userId ) )
+        Mockito.when( userRepository.get( userId ) )
                 .thenReturn( Optional.empty( ) );
-        Mockito.when( roomDAO.get( roomId ) )
+        Mockito.when( roomRepository.get( roomId ) )
                 .thenReturn( Optional.of( room ) );
         
         User_AddToRoomResponse userAddToRoomResponse = userAddToRoomService.add( user, room );
@@ -75,9 +75,9 @@ public class User_AddToRoomServiceTest {
         user.setId( userId );
         Room room = new Room( );
         room.setId( roomId );
-        Mockito.when( userDAO.get( userId ) )
+        Mockito.when( userRepository.get( userId ) )
                 .thenReturn( Optional.of( user ) );
-        Mockito.when( roomDAO.get( roomId ) )
+        Mockito.when( roomRepository.get( roomId ) )
                 .thenReturn( Optional.empty( ) );
         
         User_AddToRoomResponse userAddToRoomResponse = userAddToRoomService.add( user, room );
@@ -95,9 +95,9 @@ public class User_AddToRoomServiceTest {
         user.setId( userId );
         Room room = new Room( );
         room.setId( roomId );
-        Mockito.when( userDAO.get( userId ) )
+        Mockito.when( userRepository.get( userId ) )
                 .thenReturn( Optional.empty( ) );
-        Mockito.when( roomDAO.get( roomId ) )
+        Mockito.when( roomRepository.get( roomId ) )
                 .thenReturn( Optional.empty( ) );
         
         User_AddToRoomResponse userAddToRoomResponse = userAddToRoomService.add( user, room );
@@ -115,11 +115,11 @@ public class User_AddToRoomServiceTest {
         user.setId( userId );
         Room room = new Room( );
         room.setId( roomId );
-        Mockito.when( userDAO.get( userId ) )
+        Mockito.when( userRepository.get( userId ) )
                 .thenReturn( Optional.of( user ) );
-        Mockito.when( roomDAO.get( roomId ) )
+        Mockito.when( roomRepository.get( roomId ) )
                 .thenReturn( Optional.of( room ) );
-        Mockito.when( userInRoomDAO.findUserInRoom( userId, roomId ) )
+        Mockito.when( userInRoomRepository.findUserInRoom( userId, roomId ) )
                 .thenReturn( true ); // <-- true, when user is already in that room
         
         User_AddToRoomResponse userAddToRoomResponse = userAddToRoomService.add( user, room );

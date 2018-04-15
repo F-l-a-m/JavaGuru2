@@ -20,23 +20,14 @@ public class User {
     @Column(name = "password")
     private String password;
     
-    @Column(name = "nickname")
+    @Column(name = "nickname", nullable = false, unique = true)
     private String nickname;
     
-    @Column(name = "creationTime")
+    @Column(name = "creationTime", nullable = false)
     private Date creationTime;
     
     @Column(name = "isActive")
     private boolean isActive;
-    
-    public User( ) {
-    
-    }
-    
-    public User( String nickname, Timestamp timestamp ) {
-        this.nickname = nickname;
-        this.creationTime = timestamp;
-    }
     
     public Long getId( ) {
         return id;
@@ -98,5 +89,17 @@ public class User {
     public int hashCode( ) {
         
         return Objects.hash( id );
+    }
+    
+    @Override
+    public String toString( ) {
+        return "User{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", creationTime=" + creationTime +
+                ", isActive=" + isActive +
+                '}';
     }
 }

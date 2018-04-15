@@ -4,9 +4,9 @@ import lv.javaguru.java2.domain.User;
 
 import java.util.Optional;
 
-public interface UserDAO {
+public interface UserRepository {
     
-    User add( String nickname );
+    void save( User user );
     
     void updateActiveStatus( User user, boolean activeStatus );
     

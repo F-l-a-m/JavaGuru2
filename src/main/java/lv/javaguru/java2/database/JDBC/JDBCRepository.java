@@ -6,7 +6,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-class JDBCConfig {
+class JDBCRepository {
 
     private static final String DB_CONFIG_FILE = "database.properties";
 
@@ -16,7 +16,7 @@ class JDBCConfig {
     private String password = null;
 
 
-    JDBCConfig( ) {
+    JDBCRepository( ) {
         initDatabaseConnectionProperties();
         registerJDBCDriver();
     }
@@ -34,7 +34,7 @@ class JDBCConfig {
     private void initDatabaseConnectionProperties() {
         Properties properties = new Properties();
         try {
-            properties.load(JDBCConfig.class.getClassLoader().getResourceAsStream(DB_CONFIG_FILE));
+            properties.load(JDBCRepository.class.getClassLoader().getResourceAsStream(DB_CONFIG_FILE));
 
             jdbcUrl = properties.getProperty("jdbc.url");
             driverClass = properties.getProperty("driverClass");

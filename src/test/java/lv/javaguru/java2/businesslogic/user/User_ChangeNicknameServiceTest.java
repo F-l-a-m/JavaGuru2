@@ -1,7 +1,7 @@
 package lv.javaguru.java2.businesslogic.user;
 
 import lv.javaguru.java2.businesslogic.Error;
-import lv.javaguru.java2.database.UserDAO;
+import lv.javaguru.java2.database.UserRepository;
 import lv.javaguru.java2.domain.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 @RunWith(MockitoJUnitRunner.class)
 public class User_ChangeNicknameServiceTest {
     
-    @Mock private UserDAO userDAO;
+    @Mock private UserRepository userRepository;
     @Mock private User_NicknameValidator validator;
     
     @InjectMocks private User_ChangeNicknameService changeNicknameService;
@@ -32,7 +32,7 @@ public class User_ChangeNicknameServiceTest {
         User user = Mockito.mock( User.class );
         Mockito.when( validator.validate( userNickname ) )
                 .thenReturn( errors );
-        Mockito.when( userDAO.get( newNickname ) )
+        Mockito.when( userRepository.get( newNickname ) )
                 .thenReturn( Optional.empty( ) ); // User not found, nickname must be unique
         
         User_ChangeNicknameResponse response = changeNicknameService.changeNickname( user, newNickname );

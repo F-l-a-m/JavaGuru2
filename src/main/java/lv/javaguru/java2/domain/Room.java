@@ -13,24 +13,14 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
     
-    @Column(name = "creatorNickname")
+    @Column(name = "creatorNickname", nullable = false)
     private String creatorNickname;
     
-    @Column(name = "creationTime")
+    @Column(name = "creationTime", nullable = false)
     private Date creationTime;
-    
-    public Room( ) {
-    
-    }
-    
-    public Room( String name, String creatorNickname, Timestamp timestamp ) {
-        this.name = name;
-        this.creatorNickname = creatorNickname;
-        this.creationTime = timestamp;
-    }
     
     public Long getId( ) {
         return id;

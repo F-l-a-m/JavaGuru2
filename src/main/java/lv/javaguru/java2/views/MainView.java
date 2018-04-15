@@ -101,7 +101,7 @@ public class MainView implements View, Constants {
                     Message_AddResponse messageAddResponse = messageAddService.addMessage(
                             userInputResponse.getData( ),
                             user.getNickname( ),
-                            room.getId( )
+                            room
                     );
                     if ( messageAddResponse.isSuccess( ) ) {
                         System.out.println( messageAddResponse.getMessage( ) );

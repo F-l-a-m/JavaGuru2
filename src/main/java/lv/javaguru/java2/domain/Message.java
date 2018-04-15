@@ -15,9 +15,6 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    @Column(name = "room_id", nullable = false)
-    private Long room_id;
-    
     @Column(name = "creationTime", nullable = false)
     private Date creationTime;
     
@@ -27,17 +24,9 @@ public class Message {
     @Column(name = "message_body", nullable = false)
     private String message_body;
     
-    public Message( ) {
-    
-    }
-    
-    // [2018/03/01 12:12:12] Flam: Hello message!
-    public Message( Timestamp creationTime, String user_nickname, String message_body, Long room_id ) {
-        this.creationTime = creationTime;
-        this.user_nickname = user_nickname;
-        this.message_body = message_body;
-        this.room_id = room_id;
-    }
+    @ManyToOne
+    @JoinColumn(name = "room_id", nullable = false)
+    private Room room;
     
     public Long getId( ) {
         return id;
@@ -71,12 +60,12 @@ public class Message {
         this.message_body = message_body;
     }
     
-    public Long getRoom_id( ) {
-        return room_id;
+    public Room getRoom( ) {
+        return room;
     }
     
-    public void setRoom_id( Long room_id ) {
-        this.room_id = room_id;
+    public void setRoom( Room room ) {
+        this.room = room;
     }
     
     @Override

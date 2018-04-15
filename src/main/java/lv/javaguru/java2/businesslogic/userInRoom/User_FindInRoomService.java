@@ -1,9 +1,9 @@
 package lv.javaguru.java2.businesslogic.userInRoom;
 
 import lv.javaguru.java2.businesslogic.Error;
-import lv.javaguru.java2.database.RoomDAO;
-import lv.javaguru.java2.database.UserDAO;
-import lv.javaguru.java2.database.UserInRoomDAO;
+import lv.javaguru.java2.database.RoomRepository;
+import lv.javaguru.java2.database.UserInRoomRepository;
+import lv.javaguru.java2.database.UserRepository;
 import lv.javaguru.java2.domain.Room;
 import lv.javaguru.java2.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,21 +17,21 @@ import java.util.Optional;
 @Component
 public class User_FindInRoomService {
     
-    @Autowired private UserDAO userDAO;
-    @Autowired private RoomDAO roomDAO;
-    @Autowired private UserInRoomDAO userInRoomDAO;
+    @Autowired private UserRepository userRepository;
+    @Autowired private RoomRepository roomRepository;
+    @Autowired private UserInRoomRepository userInRoomRepository;
     
     @Transactional
     public User_FindInRoomResponse find( User user, Room room ) {
         List<Error> errors = new ArrayList<>( );
         
         // Check if user exists
-        Optional<User> optionalUser = userDAO.get( user.getId( ) );
+        Optional<User> optionalUser = userRepository.get( user.getId( ) );
         if ( !optionalUser.isPresent( ) ) {
             errors.add( new Error( "User with nickname " + user.getNickname( ) + " not found" ) );
         }
         // Check if room exists
-        Optional<Room> optionalRoom = roomDAO.get( room.getId( ) );
+        Optional<Room> optionalRoom = roomRepository.get( room.getId( ) );
         if ( !optionalRoom.isPresent( ) ) {
             errors.add( new Error( "Room with name " + room.getName( ) + " not found" ) );
         }
@@ -40,7 +40,7 @@ public class User_FindInRoomService {
         }
         
         // Check if user is already in that room
-        if ( userInRoomDAO.findUserInRoom( user.getId( ), room.getId( ) ) ) {
+        if ( userInRoomRepository.findUserInRoom( user.getId( ), room.getId( ) ) ) {
             return new User_FindInRoomResponse( null, true );
         } else {
             errors.add( new Error(

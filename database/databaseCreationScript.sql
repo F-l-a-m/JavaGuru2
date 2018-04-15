@@ -5,63 +5,71 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 CREATE SCHEMA IF NOT EXISTS `chat` DEFAULT CHARACTER SET utf8 ;
 USE `chat` ;
 
-DROP TABLE IF EXISTS `chat`.`message` ;
-DROP TABLE IF EXISTS `chat`.`user_in_room` ;
-DROP TABLE IF EXISTS `chat`.`chat_room` ;
-DROP TABLE IF EXISTS `chat`.`user` ;
+DROP TABLE IF EXISTS `message` ;
+DROP TABLE IF EXISTS `user_in_room` ;
+DROP TABLE IF EXISTS `chat_room` ;
+DROP TABLE IF EXISTS `user` ;
 
-CREATE TABLE IF NOT EXISTS `chat`.`user` (
+CREATE TABLE IF NOT EXISTS `user` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `login` VARCHAR(16) NULL,
   `password` VARCHAR(128) NULL,
   `nickname` VARCHAR(16) NOT NULL,
   `creationTime` DATETIME NOT NULL,
   `isActive` TINYINT(1) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `user_id_UNIQUE` (`id` ASC),
-  UNIQUE INDEX `login_UNIQUE` (`login` ASC),
-  UNIQUE INDEX `nickname_UNIQUE` (`nickname` ASC))
+  PRIMARY KEY (`id`)
+)
 ENGINE = InnoDB;
 
 
-CREATE TABLE IF NOT EXISTS `chat`.`chat_room` (
+CREATE TABLE IF NOT EXISTS `chat_room` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `creatorNickname` VARCHAR(16) NOT NULL,
   `creationTime` DATETIME NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `room_id_UNIQUE` (`id` ASC),
-  UNIQUE INDEX `name_UNIQUE` (`name` ASC))
+  PRIMARY KEY (`id`)
+)
 ENGINE = InnoDB;
 
+CREATE TABLE IF NOT EXISTS `user_in_room` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` BIGINT UNSIGNED NOT NULL,
+  `room_id` BIGINT UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`)
+)
+ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `chat`.`message` (
+ALTER TABLE `user_in_room`
+ADD CONSTRAINT `fk_userInroom_user_id`
+FOREIGN KEY (`user_id`) REFERENCES `user`(`id`);
+
+ALTER TABLE `user_in_room`
+ADD INDEX `ix_userInroom_user_id`(`user_id`);
+
+ALTER TABLE `user_in_room`
+ADD CONSTRAINT `fk_userInroom_room_id`
+FOREIGN KEY (`room_id`) REFERENCES `room`(`id`);
+
+ALTER TABLE `user_in_room`
+ADD INDEX `ix_userInroom_room_id`(`room_id`);
+
+
+CREATE TABLE IF NOT EXISTS `message` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `room_id` BIGINT UNSIGNED NOT NULL,
   `creationTime` DATETIME NOT NULL,
   `user_nickname` VARCHAR(16) NOT NULL,
   `message_body` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `message_id_UNIQUE` (`id` ASC),
-  INDEX `fk_message_1_idx` (`room_id` ASC),
-  CONSTRAINT `fk_message`
-    FOREIGN KEY (`room_id`)
-    REFERENCES `chat`.`chat_room` (`id`))
+  PRIMARY KEY (`id`)
+)
 ENGINE = InnoDB;
 
+ALTER TABLE `message`
+ADD CONSTRAINT `fk_message_room_id`
+FOREIGN KEY(`room_id`) REFERENCES `chat_room`(`id`);
 
-CREATE TABLE IF NOT EXISTS `chat`.`user_in_room` (
-  `user_id` BIGINT UNSIGNED NOT NULL,
-  `room_id` BIGINT UNSIGNED NOT NULL,
-  PRIMARY KEY (`user_id`, `room_id`),
-  INDEX `fk_user_has_chat_room_1_idx` (`user_id` ASC),
-  CONSTRAINT `fk_user`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `chat`.`user` (`id`),
-  CONSTRAINT `fk_chat_room`
-    FOREIGN KEY (`room_id`)
-    REFERENCES `chat`.`chat_room` (`id`))
-ENGINE = InnoDB;
+ALTER TABLE `message`
+ADD INDEX `ix_message_room_id`(`room_id`);
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
