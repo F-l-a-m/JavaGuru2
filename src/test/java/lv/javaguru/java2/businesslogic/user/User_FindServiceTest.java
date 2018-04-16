@@ -25,7 +25,7 @@ public class User_FindServiceTest {
     @InjectMocks
     private User_FindService userFindService = new User_FindService( );
     
-    /*@Test
+    @Test
     public void shouldFindUserByNickname( ) {
         List<Error> errors = new ArrayList<>( );
         String nickname = "TestUser";
@@ -36,20 +36,6 @@ public class User_FindServiceTest {
                 .thenReturn( Optional.of( user ) );
         
         User_FindResponse userFindResponse = userFindService.find( nickname );
-        
-        assertTrue( userFindResponse.isSuccess( ) );
-        assertNotNull( userFindResponse.getUser( ) );
-        assertNull( userFindResponse.getErrors( ) );
-    }
-    
-    @Test
-    public void shouldFindUserById( ) {
-        Long userId = Integer.toUnsignedLong( 1 );
-        User user = Mockito.mock( User.class );
-        Mockito.when( userRepository.get( userId ) )
-                .thenReturn( Optional.of( user ) );
-        
-        User_FindResponse userFindResponse = userFindService.find( userId );
         
         assertTrue( userFindResponse.isSuccess( ) );
         assertNotNull( userFindResponse.getUser( ) );
@@ -71,18 +57,4 @@ public class User_FindServiceTest {
         assertNotNull( userFindResponse.getErrors( ) );
         assertNull( userFindResponse.getUser( ) );
     }
-    
-    @Test
-    public void shouldFailToFindUserById( ) {
-        Long userId = Integer.toUnsignedLong( 1 );
-        List<Error> errors = new ArrayList<>( );
-        Mockito.when( userRepository.get( userId ) )
-                .thenReturn( Optional.empty( ) );
-        
-        User_FindResponse userFindResponse = userFindService.find( userId );
-        
-        assertFalse( userFindResponse.isSuccess( ) );
-        assertNotNull( userFindResponse.getErrors( ) );
-        assertNull( userFindResponse.getUser( ) );
-    }*/
 }

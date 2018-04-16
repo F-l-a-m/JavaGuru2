@@ -25,7 +25,7 @@ public class Room_FindServiceTest {
     @InjectMocks
     Room_FindService roomFindService = new Room_FindService( );
     
-    /*@Test
+    @Test
     public void shouldFindRoomByName( ) {
         String roomName = "TestRoom";
         Room room = Mockito.mock( Room.class );
@@ -36,20 +36,6 @@ public class Room_FindServiceTest {
                 .thenReturn( Optional.of( room ) );
         
         Room_FindResponse response = roomFindService.find( roomName );
-        
-        assertTrue( response.isSuccess( ) );
-        assertNotNull( response.getRoom( ) );
-        assertNull( response.getErrors( ) );
-    }
-    
-    @Test
-    public void shouldFindRoomById( ) {
-        Long roomId = Integer.toUnsignedLong( 1 );
-        Room room = Mockito.mock( Room.class );
-        Mockito.when( roomRepository.get( roomId ) )
-                .thenReturn( Optional.of( room ) );
-        
-        Room_FindResponse response = roomFindService.find( roomId );
         
         assertTrue( response.isSuccess( ) );
         assertNotNull( response.getRoom( ) );
@@ -71,17 +57,4 @@ public class Room_FindServiceTest {
         assertNull( response.getRoom( ) );
         assertNotNull( response.getErrors( ) );
     }
-    
-    @Test
-    public void shouldNotFindRoomById( ) {
-        Long roomId = Integer.toUnsignedLong( 1 );
-        Mockito.when( roomRepository.get( roomId ) )
-                .thenReturn( Optional.empty( ) );
-        
-        Room_FindResponse response = roomFindService.find( roomId );
-        
-        assertFalse( response.isSuccess( ) );
-        assertNull( response.getRoom( ) );
-        assertNotNull( response.getErrors( ) );
-    }*/
 }

@@ -4,6 +4,7 @@ import lv.javaguru.java2.database.UserInRoomRepository;
 import lv.javaguru.java2.domain.Room;
 import lv.javaguru.java2.domain.User;
 import lv.javaguru.java2.domain.UserInRoom;
+import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Component;
 
@@ -56,6 +57,7 @@ class UserInRoomRepositoryImpl extends ORMRepository implements UserInRoomReposi
     
     @Override
     public List<Room> getAListOfJoinedRooms( User user ) {
+        /*
         String query = "from UserInRoom u " +
                 "where u.user = :user";
         List<UserInRoom> userInRoomList = session( ).createQuery( query )
@@ -72,5 +74,17 @@ class UserInRoomRepositoryImpl extends ORMRepository implements UserInRoomReposi
                 .list( );
         
         return rooms;
+        */
+        
+        /*
+        Query query = session( ).createQuery( "SELECT u.room FROM UserInRoom u WHERE u.user=:user" );
+        query.setParameter( "user", user );
+        List<Room> rooms = query.list( );
+        return rooms;
+        */
+        
+        return session( ).createQuery( "SELECT u.room FROM UserInRoom u WHERE u.user=:user" )
+                .setParameter( "user", user )
+                .list( );
     }
 }

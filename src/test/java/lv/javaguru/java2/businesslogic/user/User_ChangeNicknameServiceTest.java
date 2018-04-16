@@ -29,7 +29,7 @@ public class User_ChangeNicknameServiceTest {
         String oldNickname = "TestUser";
         String newNickname = "NewNickname";
         List<Error> errors = new ArrayList<>( );
-        Mockito.when( validator.validate( oldNickname ) )
+        Mockito.when( validator.validate( newNickname ) )
                 .thenReturn( errors );
         Mockito.when( userRepository.get( newNickname ) )
                 .thenReturn( Optional.empty( ) ); // User not found, nickname must be unique

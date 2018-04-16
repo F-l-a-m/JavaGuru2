@@ -2,6 +2,7 @@ package lv.javaguru.java2.businesslogic.message;
 
 import lv.javaguru.java2.database.MessageRepository;
 import lv.javaguru.java2.domain.Message;
+import lv.javaguru.java2.domain.Room;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -21,19 +22,16 @@ public class Message_AddServiceTest {
     @InjectMocks
     Message_AddService messageAddService = new Message_AddService( );
     
-    /*@Test
+    @Test
     public void shouldAddMessageToDatabase( ) {
-        String message = "Hello, World!";
-        String nickname = "TestNickname";
-        Long roomId = Integer.toUnsignedLong( 1 );
-        Message msg = Mockito.mock( Message.class );
-        Mockito.when( messageRepository.save( message) )
-                .thenReturn( msg );
+        String messageText = "Hello, World!";
+        String userNickname = "TestNickname";
+        Room room = Mockito.mock( Room.class );
         
-        Message_AddResponse response = messageAddService.addMessage( message, nickname, roomId );
+        Message_AddResponse response = messageAddService.addMessage( messageText, userNickname, room );
         
         assertTrue( response.isSuccess( ) );
         assertNotNull( response.getMessage( ) );
         assertNull( response.getErrors( ) );
-    }*/
+    }
 }

@@ -26,19 +26,17 @@ public class User_AddToRoomServiceTest {
     @InjectMocks
     private User_AddToRoomService userAddToRoomService = new User_AddToRoomService( );
     
-    /*@Test
+    @Test
     public void shouldAddUserToRoom( ) {
-        Long userId = Integer.toUnsignedLong( 1 );
-        Long roomId = Integer.toUnsignedLong( 1 );
         User user = new User( );
-        user.setId( userId );
+        user.setNickname( "Nickname" );
         Room room = new Room( );
-        room.setId( roomId );
-        Mockito.when( userRepository.get( userId ) )
+        room.setName( "RoomName" );
+        Mockito.when( userRepository.get( "Nickname" ) )
                 .thenReturn( Optional.of( user ) );
-        Mockito.when( roomRepository.get( roomId ) )
+        Mockito.when( roomRepository.get( "RoomName" ) )
                 .thenReturn( Optional.of( room ) );
-        Mockito.when( userInRoomRepository.findUserInRoom( userId, roomId ) )
+        Mockito.when( userInRoomRepository.findUserInRoom( user, room ) )
                 .thenReturn( false );
         
         User_AddToRoomResponse userAddToRoomResponse = userAddToRoomService.add( user, room );
@@ -49,15 +47,13 @@ public class User_AddToRoomServiceTest {
     
     @Test
     public void shouldFailToAddUserToRoom_notExistentUser( ) {
-        Long userId = Integer.toUnsignedLong( 1 );
-        Long roomId = Integer.toUnsignedLong( 1 );
         User user = new User( );
-        user.setId( userId );
+        user.setNickname( "Nickname" );
         Room room = new Room( );
-        room.setId( roomId );
-        Mockito.when( userRepository.get( userId ) )
+        room.setName( "RoomName" );
+        Mockito.when( userRepository.get( "Nickname" ) )
                 .thenReturn( Optional.empty( ) );
-        Mockito.when( roomRepository.get( roomId ) )
+        Mockito.when( roomRepository.get( "RoomName" ) )
                 .thenReturn( Optional.of( room ) );
         
         User_AddToRoomResponse userAddToRoomResponse = userAddToRoomService.add( user, room );
@@ -69,15 +65,13 @@ public class User_AddToRoomServiceTest {
     
     @Test
     public void shouldFailToAddUserToRoom_notExistentRoom( ) {
-        Long userId = Integer.toUnsignedLong( 1 );
-        Long roomId = Integer.toUnsignedLong( 1 );
         User user = new User( );
-        user.setId( userId );
+        user.setNickname( "Nickname" );
         Room room = new Room( );
-        room.setId( roomId );
-        Mockito.when( userRepository.get( userId ) )
+        room.setName( "RoomName" );
+        Mockito.when( userRepository.get( "Nickname" ) )
                 .thenReturn( Optional.of( user ) );
-        Mockito.when( roomRepository.get( roomId ) )
+        Mockito.when( roomRepository.get( "RoomName" ) )
                 .thenReturn( Optional.empty( ) );
         
         User_AddToRoomResponse userAddToRoomResponse = userAddToRoomService.add( user, room );
@@ -89,15 +83,13 @@ public class User_AddToRoomServiceTest {
     
     @Test
     public void shouldFailToAddUserToRoom_notExistentUserAndRoom( ) {
-        Long userId = Integer.toUnsignedLong( 1 );
-        Long roomId = Integer.toUnsignedLong( 1 );
         User user = new User( );
-        user.setId( userId );
+        user.setNickname( "Nickname" );
         Room room = new Room( );
-        room.setId( roomId );
-        Mockito.when( userRepository.get( userId ) )
+        room.setName( "RoomName" );
+        Mockito.when( userRepository.get( "Nickname" ) )
                 .thenReturn( Optional.empty( ) );
-        Mockito.when( roomRepository.get( roomId ) )
+        Mockito.when( roomRepository.get( "RoomName" ) )
                 .thenReturn( Optional.empty( ) );
         
         User_AddToRoomResponse userAddToRoomResponse = userAddToRoomService.add( user, room );
@@ -109,17 +101,15 @@ public class User_AddToRoomServiceTest {
     
     @Test
     public void shouldFailToAddUserToRoom_userAlreadyInThatRoom( ) {
-        Long userId = Integer.toUnsignedLong( 1 );
-        Long roomId = Integer.toUnsignedLong( 1 );
         User user = new User( );
-        user.setId( userId );
+        user.setNickname( "Nickname" );
         Room room = new Room( );
-        room.setId( roomId );
-        Mockito.when( userRepository.get( userId ) )
+        room.setName( "RoomName" );
+        Mockito.when( userRepository.get( "Nickname" ) )
                 .thenReturn( Optional.of( user ) );
-        Mockito.when( roomRepository.get( roomId ) )
+        Mockito.when( roomRepository.get( "RoomName" ) )
                 .thenReturn( Optional.of( room ) );
-        Mockito.when( userInRoomRepository.findUserInRoom( userId, roomId ) )
+        Mockito.when( userInRoomRepository.findUserInRoom( user, room ) )
                 .thenReturn( true ); // <-- true, when user is already in that room
         
         User_AddToRoomResponse userAddToRoomResponse = userAddToRoomService.add( user, room );
@@ -127,5 +117,5 @@ public class User_AddToRoomServiceTest {
         assertFalse( userAddToRoomResponse.isSuccess( ) );
         assertNotNull( userAddToRoomResponse.getErrors( ) );
         assertEquals( userAddToRoomResponse.getErrors( ).size( ), 1 );
-    }*/
+    }
 }

@@ -26,19 +26,17 @@ public class User_FindInRoomServiceTest {
     @InjectMocks
     private User_FindInRoomService userFindInRoomService = new User_FindInRoomService( );
     
-    /*@Test
+    @Test
     public void shouldFindUserInRoom( ) {
-        Long userId = Integer.toUnsignedLong( 1 );
-        Long roomId = Integer.toUnsignedLong( 1 );
         User user = new User( );
-        user.setId( userId );
+        user.setNickname( "Nickname" );
         Room room = new Room( );
-        room.setId( roomId );
-        Mockito.when( userRepository.get( userId ) )
+        room.setName( "RoomName" );
+        Mockito.when( userRepository.get( "Nickname" ) )
                 .thenReturn( Optional.of( user ) );
-        Mockito.when( roomRepository.get( roomId ) )
+        Mockito.when( roomRepository.get( "RoomName" ) )
                 .thenReturn( Optional.of( room ) );
-        Mockito.when( userInRoomRepository.findUserInRoom( userId, roomId ) )
+        Mockito.when( userInRoomRepository.findUserInRoom( user, room ) )
                 .thenReturn( true );
         
         User_FindInRoomResponse userFindInRoomResponse = userFindInRoomService.find( user, room );
@@ -49,15 +47,13 @@ public class User_FindInRoomServiceTest {
     
     @Test
     public void shouldNotFindUserInRoom_notExistentUser( ) {
-        Long userId = Integer.toUnsignedLong( 1 );
-        Long roomId = Integer.toUnsignedLong( 1 );
         User user = new User( );
-        user.setId( userId );
+        user.setNickname( "Nickname" );
         Room room = new Room( );
-        room.setId( roomId );
-        Mockito.when( userRepository.get( userId ) )
-                .thenReturn( Optional.empty( ) );
-        Mockito.when( roomRepository.get( roomId ) )
+        room.setName( "RoomName" );
+        Mockito.when( userRepository.get( "Nickname" ) )
+                .thenReturn( Optional.empty() );
+        Mockito.when( roomRepository.get( "RoomName" ) )
                 .thenReturn( Optional.of( room ) );
         
         User_FindInRoomResponse userFindInRoomResponse = userFindInRoomService.find( user, room );
@@ -69,16 +65,14 @@ public class User_FindInRoomServiceTest {
     
     @Test
     public void shouldNotFindUserInRoom_notExistentRoom( ) {
-        Long userId = Integer.toUnsignedLong( 1 );
-        Long roomId = Integer.toUnsignedLong( 1 );
         User user = new User( );
-        user.setId( userId );
+        user.setNickname( "Nickname" );
         Room room = new Room( );
-        room.setId( roomId );
-        Mockito.when( userRepository.get( userId ) )
+        room.setName( "RoomName" );
+        Mockito.when( userRepository.get( "Nickname" ) )
                 .thenReturn( Optional.of( user ) );
-        Mockito.when( roomRepository.get( roomId ) )
-                .thenReturn( Optional.empty( ) );
+        Mockito.when( roomRepository.get( "RoomName" ) )
+                .thenReturn( Optional.empty() );
         
         User_FindInRoomResponse userFindInRoomResponse = userFindInRoomService.find( user, room );
         
@@ -89,16 +83,14 @@ public class User_FindInRoomServiceTest {
     
     @Test
     public void shouldNotFindUserInRoom_notExistentUserAndRoom( ) {
-        Long userId = Integer.toUnsignedLong( 1 );
-        Long roomId = Integer.toUnsignedLong( 1 );
         User user = new User( );
-        user.setId( userId );
+        user.setNickname( "Nickname" );
         Room room = new Room( );
-        room.setId( roomId );
-        Mockito.when( userRepository.get( userId ) )
-                .thenReturn( Optional.empty( ) );
-        Mockito.when( roomRepository.get( roomId ) )
-                .thenReturn( Optional.empty( ) );
+        room.setName( "RoomName" );
+        Mockito.when( userRepository.get( "Nickname" ) )
+                .thenReturn( Optional.empty() );
+        Mockito.when( roomRepository.get( "RoomName" ) )
+                .thenReturn( Optional.empty() );
         
         User_FindInRoomResponse userFindInRoomResponse = userFindInRoomService.find( user, room );
         
@@ -109,17 +101,15 @@ public class User_FindInRoomServiceTest {
     
     @Test
     public void shouldNotFindUserInRoom_userIsNotInThatRoom( ) {
-        Long userId = Integer.toUnsignedLong( 1 );
-        Long roomId = Integer.toUnsignedLong( 1 );
         User user = new User( );
-        user.setId( userId );
+        user.setNickname( "Nickname" );
         Room room = new Room( );
-        room.setId( roomId );
-        Mockito.when( userRepository.get( userId ) )
+        room.setName( "RoomName" );
+        Mockito.when( userRepository.get( "Nickname" ) )
                 .thenReturn( Optional.of( user ) );
-        Mockito.when( roomRepository.get( roomId ) )
+        Mockito.when( roomRepository.get( "RoomName" ) )
                 .thenReturn( Optional.of( room ) );
-        Mockito.when( userInRoomRepository.findUserInRoom( userId, roomId ) )
+        Mockito.when( userInRoomRepository.findUserInRoom( user, room ) )
                 .thenReturn( false );
         
         User_FindInRoomResponse userFindInRoomResponse = userFindInRoomService.find( user, room );
@@ -127,5 +117,5 @@ public class User_FindInRoomServiceTest {
         assertFalse( userFindInRoomResponse.isSuccess( ) );
         assertNotNull( userFindInRoomResponse.getErrors( ) );
         assertEquals( userFindInRoomResponse.getErrors( ).size( ), 1 );
-    }*/
+    }
 }
