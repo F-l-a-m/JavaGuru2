@@ -28,26 +28,33 @@ public class Room_JoinOrCreateService {
     @Transactional
     public Room_JoinOrCreateResponse joinOrCreateRoom( String roomName, User user ) {
         List<Error> errors = validator.validate( roomName );
-        if ( errors.isEmpty( ) ) {
-            Optional<Room> optionalRoom = roomRepository.get( roomName ); // Check if room exists
-            // Use found room or save new
-            Room room = null;
-            room = optionalRoom.orElseGet( ( ) -> createRoom( )
-                    .withName( roomName )
-                    .withCreatorNickname( user.getNickname( ) )
-                    .withCreationTime( MyTimestamp.getSQLTimestamp( ) )
-                    .build( ) );
-            
-            // Check if user is already in that room, if not create new record
-            boolean search = userInRoomRepository.findUserInRoom( user, room );
-            if ( search ) {
-                return new Room_JoinOrCreateResponse( room, null, true ); // User already in that room
+        if ( !errors.isEmpty( ) ) {
+            // Room name validation errors
+            return new Room_JoinOrCreateResponse( null, errors, false );
+        } else {
+            // Check if room exists
+            Optional<Room> optionalRoom = roomRepository.get( roomName );
+            Room room;
+            if ( optionalRoom.isPresent( ) ) {
+                room = optionalRoom.get( );
+                boolean isUserAlreadyInThatRoom = userInRoomRepository.findUserInRoom( user, room );
+                if ( isUserAlreadyInThatRoom ) {
+                    return new Room_JoinOrCreateResponse( room, null, true );
+                } else {
+                    userInRoomRepository.addUserToRoom( user, room );
+                    return new Room_JoinOrCreateResponse( room, null, true );
+                }
             } else {
+                room = createRoom( )
+                        .withName( roomName )
+                        .withCreatorNickname( user.getNickname( ) )
+                        .withCreationTime( MyTimestamp.getSQLTimestamp( ) )
+                        .build( );
+                roomRepository.save( room );
+        
                 userInRoomRepository.addUserToRoom( user, room );
                 return new Room_JoinOrCreateResponse( room, null, true ); // Add user to room
             }
-        } else { // Room name validation errors
-            return new Room_JoinOrCreateResponse( null, errors, false );
         }
     }
 }

@@ -22,29 +22,24 @@ import static org.junit.Assert.*;
 @RunWith(MockitoJUnitRunner.class)
 public class Room_JoinOrCreateServiceTest {
     
-    
     @Mock private Room_NameValidator validator;
     @Mock private RoomRepository roomRepository;
     @Mock private UserInRoomRepository userInRoomRepository;
     
     @InjectMocks
-    Room_JoinOrCreateService joinOrCreateService = new Room_JoinOrCreateService( );
+    private Room_JoinOrCreateService joinOrCreateService = new Room_JoinOrCreateService( );
     
     @Test
-    public void shouldCreateChatRoom( ) {
+    public void shouldCreateChatRoomAndJoinUser( ) {
         String roomName = "TestRoom";
         User user = Mockito.mock( User.class );
-        user.setNickname( "TestUser" );
-        user.setId( Integer.toUnsignedLong( 1 ) );
+        //user.setNickname( "TestUser" );
+        //user.setId( Integer.toUnsignedLong( 1 ) );
         List<Error> errors = new ArrayList<>( );
         Mockito.when( validator.validate( roomName ) )
                 .thenReturn( errors );
         Mockito.when( roomRepository.get( roomName ) )
-                .thenReturn( Optional.empty( ) ); // Room does not exists
-        Room room = Mockito.mock( Room.class );
-        room.setId( Integer.toUnsignedLong( 1 ) );
-        Mockito.when( userInRoomRepository.findUserInRoom( user, room ) )
-                .thenReturn( false ); // User is not in room
+                .thenReturn( Optional.empty( ) ); // Room does not exists, need to create new
         
         Room_JoinOrCreateResponse response = joinOrCreateService.joinOrCreateRoom( roomName, user );
         

@@ -7,6 +7,7 @@ import lv.javaguru.java2.domain.UserInRoom;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static lv.javaguru.java2.domain.builders.UserInRoomBuilder.createUserInRoom;
@@ -57,8 +58,19 @@ class UserInRoomRepositoryImpl extends ORMRepository implements UserInRoomReposi
     public List<Room> getAListOfJoinedRooms( User user ) {
         String query = "from UserInRoom u " +
                 "where u.user = :user";
-        return session( ).createQuery( query )
+        List<UserInRoom> userInRoomList = session( ).createQuery( query )
                 .setParameter( "user", user )
                 .list( );
+        
+        List<Long> roomIds = new ArrayList<>( );
+        for ( UserInRoom u : userInRoomList ) {
+            roomIds.add( u.getRoom( ).getId( ) );
+        }
+        
+        List<Room> rooms = session( ).createCriteria( Room.class )
+                .add( Restrictions.in( "id", roomIds ) )
+                .list( );
+        
+        return rooms;
     }
 }

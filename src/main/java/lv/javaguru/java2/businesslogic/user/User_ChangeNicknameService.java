@@ -17,21 +17,29 @@ public class User_ChangeNicknameService {
     @Autowired private User_NicknameValidator validator;
     
     @Transactional
-    public User_ChangeNicknameResponse changeNickname( User user, String newNickname ) {
+    public User_ChangeNicknameResponse changeNickname( String OldNickname, String newNickname ) {
         List<Error> errors = validator.validate( newNickname );
         if ( !errors.isEmpty( ) ) {
             // Failed, return new nickname validation errors
-            return new User_ChangeNicknameResponse( errors, false );
+            return new User_ChangeNicknameResponse( null, errors, false );
         } else {
             Optional<User> optionalUser = userRepository.get( newNickname );
             if ( optionalUser.isPresent( ) ) {
                 errors.add( new Error( "Failed to change nickname, user with nickname " +
                         newNickname + " already exists" ) );
-                return new User_ChangeNicknameResponse( errors, false );
+                return new User_ChangeNicknameResponse( null, errors, false );
             } else {
                 // Change nickname
-                user.setNickname( newNickname );
-                return new User_ChangeNicknameResponse( null, true );
+                optionalUser = userRepository.get( OldNickname );
+                if ( optionalUser.isPresent( ) ) {
+                    User user = optionalUser.get( );
+                    user.setNickname( newNickname );
+                    return new User_ChangeNicknameResponse( user, null, true );
+                } else {
+                    errors.add( new Error( "Error. User with nickname " +
+                            OldNickname + " not found." ) );
+                    return new User_ChangeNicknameResponse( null, errors, false );
+                }
             }
         }
     }

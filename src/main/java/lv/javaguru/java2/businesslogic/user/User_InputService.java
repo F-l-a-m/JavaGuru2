@@ -45,7 +45,7 @@ public class User_InputService implements Constants {
             case "/quit":   return Constants.QUIT_APP;
             case "/r":      return Constants.GET_CHAT_HISTORY;
             case "/list":   return Constants.LIST;
-            case "/leave":  break;
+            case "/leave":  return Constants.LEAVE;
         }
         return Constants.BAD_COMMAND;
     }

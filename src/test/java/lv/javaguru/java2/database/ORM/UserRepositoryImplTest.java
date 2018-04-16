@@ -31,15 +31,11 @@ public class UserRepositoryImplTest {
                 .build( );
         userRepository.save( user );
         
-        Optional<User> optionalUser = userRepository.get( "TestUser" );
-        User foundUser = optionalUser.get( );
-        
-        assertEquals( foundUser.getNickname( ), "TestUser" );
-        assertNotNull( foundUser.getId( ) );
+        assertNotNull( user.getId( ) );
     }
     
     @Test
-    public void shouldReturnFoundUserByNickname( ) {
+    public void shouldFindUserByNickname( ) {
         User user = createUser( )
                 .withNickname( "TestUser" )
                 .withCreationTime( MyTimestamp.getSQLTimestamp( ) )

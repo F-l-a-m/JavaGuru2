@@ -29,6 +29,7 @@ public class MainView implements View, Constants {
     @Autowired private Message_GetChatHistoryService messageGetChatHistoryService;
     @Autowired private User_GetAListOfJoinedRoomsService userGetAListOfJoinedRoomsService;
     @Autowired private User_ChangeNicknameService userChangeNicknameService;
+    @Autowired private User_RemoveFromRoomService userRemoveFromRoomService;
     
     private ApplicationContext applicationContext;
     
@@ -141,9 +142,11 @@ public class MainView implements View, Constants {
                     // тут та же проблема что и с room,
                     // user будет нужен в других местах, например для нового сообщения
                     String oldNickname = user.getNickname( );
+                    String newNickname = userInputResponse.getData( );
                     User_ChangeNicknameResponse changeNicknameResponse =
-                            userChangeNicknameService.changeNickname( user, userInputResponse.getData( ) );
+                            userChangeNicknameService.changeNickname( oldNickname, newNickname );
                     if ( changeNicknameResponse.isSuccess( ) ) {
+                        user = changeNicknameResponse.getUser( );
                         System.out.println( oldNickname + " successfully changed nick to " + user.getNickname( ) );
                     } else {
                         printErrors( changeNicknameResponse.getErrors( ) );
@@ -160,6 +163,15 @@ public class MainView implements View, Constants {
                     break;
                 
                 case Constants.LEAVE:
+                    User_RemoveFromRoomResponse removeFromRoomResponse =
+                            userRemoveFromRoomService.leaveRoom( user.getNickname( ), room.getName( ) );
+                    if ( removeFromRoomResponse.isSuccess( ) ) {
+                        System.out.println( "User " + user.getNickname( ) + " left " + room.getName( ) );
+                        room = removeFromRoomResponse.getRoom( );
+                        System.out.println( "You are now chatting in " + room.getName( ) );
+                    } else {
+                        printErrors( removeFromRoomResponse.getErrors( ) );
+                    }
                     break;
             }
         }

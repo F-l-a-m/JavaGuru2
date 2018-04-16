@@ -37,15 +37,12 @@ public class RoomRepositoryImplTest {
         
         Room room = createRoom( )
                 .withName( "TestRoom" )
-                .withCreationTime( MyTimestamp.getSQLTimestamp() )
+                .withCreationTime( MyTimestamp.getSQLTimestamp( ) )
                 .withCreatorNickname( user.getNickname( ) )
                 .build( );
         roomRepository.save( room );
         
-        Optional<Room> search = roomRepository.get( "TestRoom" );
-        
-        assertTrue( search.isPresent( ) );
-        assertEquals( search.get( ).getName( ), "TestRoom" );
+        assertNotNull( room.getId( ) );
     }
     
     @Test

@@ -1,5 +1,6 @@
 package lv.javaguru.java2.businesslogic.message;
 
+import lv.javaguru.java2.businesslogic.MyTimestamp;
 import lv.javaguru.java2.database.MessageRepository;
 import lv.javaguru.java2.domain.Message;
 import lv.javaguru.java2.domain.Room;
@@ -20,6 +21,7 @@ public class Message_AddService {
         Message message = createMessage( )
                 .withMessageBody( messageBody )
                 .withUserNickname( nickname )
+                .withCreationTime( MyTimestamp.getSQLTimestamp( ) )
                 .withRoom( room )
                 .build( );
         messageRepository.save( message );

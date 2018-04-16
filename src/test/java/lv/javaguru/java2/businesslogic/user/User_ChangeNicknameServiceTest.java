@@ -26,16 +26,18 @@ public class User_ChangeNicknameServiceTest {
     
     @Test
     public void shouldChangeUserNickname( ) {
-        String userNickname = "TestUser";
+        String oldNickname = "TestUser";
         String newNickname = "NewNickname";
         List<Error> errors = new ArrayList<>( );
-        User user = Mockito.mock( User.class );
-        Mockito.when( validator.validate( userNickname ) )
+        Mockito.when( validator.validate( oldNickname ) )
                 .thenReturn( errors );
         Mockito.when( userRepository.get( newNickname ) )
                 .thenReturn( Optional.empty( ) ); // User not found, nickname must be unique
+        User user = Mockito.mock( User.class );
+        Mockito.when( userRepository.get( oldNickname ) )
+                .thenReturn( Optional.of( user ) );
         
-        User_ChangeNicknameResponse response = changeNicknameService.changeNickname( user, newNickname );
+        User_ChangeNicknameResponse response = changeNicknameService.changeNickname( oldNickname, newNickname );
         
         assertTrue( response.isSuccess( ) );
         assertNull( response.getErrors( ) );

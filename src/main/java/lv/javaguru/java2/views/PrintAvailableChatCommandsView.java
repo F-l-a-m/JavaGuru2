@@ -7,7 +7,7 @@ import java.util.List;
 
 @Component
 public class PrintAvailableChatCommandsView implements View {
-
+    
     @Override
     public void execute() {
         List<String> commands = new ArrayList<>();
@@ -16,21 +16,21 @@ public class PrintAvailableChatCommandsView implements View {
         commands.add("/r - refresh view, /list - show all rooms");
         commands.add("/join - join or create new message room");
         commands.add("/leave - leave current active message room");
-
+        
         // calculate the longest string
         int longestString = 0;
         for(String s : commands){
             if(s.length() > longestString)
                 longestString = s.length();
         }
-
+        
         // header
         System.out.print('╔');
         for(int i = 0; i < longestString; i++){
             System.out.print('═');
         }
         System.out.println('╗');
-
+        
         // body
         for(String s : commands){
             System.out.print('║' + s);
@@ -41,7 +41,7 @@ public class PrintAvailableChatCommandsView implements View {
             }
             System.out.println('║');
         }
-
+        
         // footer
         System.out.print('╚');
         for(int i = 0; i < longestString; i++){
