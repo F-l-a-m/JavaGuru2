@@ -6,7 +6,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-class JDBCRepository {
+abstract class JDBCRepository {
 
     private static final String DB_CONFIG_FILE = "database.properties";
 
