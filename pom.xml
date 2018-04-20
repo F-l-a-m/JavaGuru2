@@ -8,7 +8,7 @@
     <artifactId>java2</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
     <repositories>
         <repository>
@@ -20,7 +20,7 @@
 
     <dependencies>
 
-        <!-- JDBCDatabase connection pool -->
+        <!-- Database connection pool -->
         <dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
@@ -70,6 +70,13 @@
         </dependency>
 
         <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
@@ -87,7 +94,7 @@
 
     <build>
         <finalName>java2</finalName>
-        
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -102,18 +109,9 @@
             </plugin>
 
             <plugin>
-                <!-- Build an executable JAR -->
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.0.2</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <!-- <addClasspath>true</addClasspath> -->
-                            <mainClass>lv.javaguru.java2.ChatApplication</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.1</version>
             </plugin>
 
         </plugins>
