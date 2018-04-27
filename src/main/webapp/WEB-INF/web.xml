@@ -5,7 +5,7 @@
                       http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
 
-    <servlet>
+<!--    <servlet>
         <servlet-name>HelloServlet</servlet-name>
         <servlet-class>lv.javaguru.java2.servlets.HelloServlet</servlet-class>
     </servlet>
@@ -31,5 +31,15 @@
         <servlet-name>Threads</servlet-name>
         <url-pattern>/threads</url-pattern>
     </servlet-mapping>
+-->
+    <filter>
+        <filter-name>MVCFilter</filter-name>
+        <filter-class>lv.javaguru.java2.servlets.mvc.MVCDispatcherFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>MVCFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
 </web-app>
