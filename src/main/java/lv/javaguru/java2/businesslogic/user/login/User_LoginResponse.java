@@ -1,33 +1,34 @@
 package lv.javaguru.java2.businesslogic.user.login;
 
 import lv.javaguru.java2.businesslogic.Error;
+import lv.javaguru.java2.domain.User;
 
 import java.util.List;
 
 public class User_LoginResponse {
     
-    private Long userId;
+    private User user;
     private boolean success;
     private List<Error> errors;
     
-    public User_LoginResponse( Long userId ) {
-        this.userId = userId;
+    public User_LoginResponse( User user ) {
+        this.user = user;
         this.success = true;
         this.errors = null;
     }
     
     public User_LoginResponse( List<Error> errors ) {
-        this.userId = null;
+        this.user = null;
         this.success = false;
         this.errors = errors;
     }
     
-    public Long getUserId( ) {
-        return userId;
+    public User getUser( ) {
+        return user;
     }
     
-    public void setUserId( Long userId ) {
-        this.userId = userId;
+    public void setUser( User user ) {
+        this.user = user;
     }
     
     public boolean isSuccess( ) {

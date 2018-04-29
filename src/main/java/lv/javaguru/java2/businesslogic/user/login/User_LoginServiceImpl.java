@@ -37,7 +37,7 @@ class User_LoginServiceImpl implements User_LoginService {
             String truePassword = optionalUser.get( ).getPassword( );
             String enteredPassword = request.getPassword( );
             if ( enteredPassword.equals( truePassword ) ) {
-                return new User_LoginResponse( optionalUser.get( ).getId( ) );
+                return new User_LoginResponse( optionalUser.get( ) );
             } else {
                 errors.add( new Error( "Password does not match!" ) );
                 return new User_LoginResponse( errors );

@@ -35,6 +35,6 @@ class User_RegistrationServiceImpl implements User_RegistrationService {
                 .build( );
         
         userRepository.save( user );
-        return new User_RegistrationResponse( user.getId( ) );
+        return new User_RegistrationResponse( user );
     }
 }

@@ -8,7 +8,7 @@ public interface Constants {
     byte BAD_COMMAND = 4;
     byte LIST = 5;
     byte CHANGE_NICKNAME = 6;
-    byte GET_CHAT_HISTORY = 7;
+    byte PRINT_CHAT_HISTORY = 7;
     byte LEAVE = 8;
     byte REGISTER = 9;
     byte LOGIN = 10;

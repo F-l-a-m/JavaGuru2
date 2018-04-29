@@ -1,5 +1,6 @@
 package lv.javaguru.java2.businesslogic.Session;
 
+import lv.javaguru.java2.businesslogic.user.User_InputResponse;
 import lv.javaguru.java2.domain.Room;
 import lv.javaguru.java2.domain.User;
 
@@ -7,9 +8,13 @@ public interface ConsoleSession {
     
     User getUser( );
     
-    User setUser( User user );
+    void setUser( User user );
     
     Room getRoom( );
     
-    Room setRoom( Room room );
+    void setRoom( Room room );
+    
+    User_InputResponse getUserConsoleInputResponse( );
+    
+    void setUserConsoleInputResponse( User_InputResponse response );
 }

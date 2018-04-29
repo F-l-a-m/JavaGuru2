@@ -41,7 +41,7 @@ public class User_InputServiceTest implements Constants {
     public void shouldReturnRefreshConstant() {
         User_InputResponse response = userInputService.handle("/r");
         byte result = response.getCommand();
-        assertEquals(result, Constants.GET_CHAT_HISTORY);
+        assertEquals(result, Constants.PRINT_CHAT_HISTORY);
     }
     
     @Test

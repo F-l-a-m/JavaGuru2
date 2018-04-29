@@ -1,8 +1,6 @@
 package lv.javaguru.java2.views;
 
 import lv.javaguru.java2.businesslogic.Session.ConsoleSession;
-import lv.javaguru.java2.businesslogic.room.Room_AddService;
-import lv.javaguru.java2.businesslogic.room.Room_FindService;
 import lv.javaguru.java2.businesslogic.userInRoom.Room_JoinOrCreateResponse;
 import lv.javaguru.java2.businesslogic.userInRoom.Room_JoinOrCreateService;
 import lv.javaguru.java2.domain.Room;
@@ -11,19 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class JoinChatRoomView implements View {
+public class JoinDefaultRoomView implements View {
     
     @Autowired private Room_JoinOrCreateService joinOrCreateService;
     @Autowired private ConsoleSession session;
     
     @Override
     public void execute( ) {
-
-        String roomNameFromUserInput = session.getUserConsoleInputResponse( ).getData( );
+        
         User user = session.getUser( );
-
+        
         Room_JoinOrCreateResponse response =
-                joinOrCreateService.joinOrCreateRoom( roomNameFromUserInput, user );
+                joinOrCreateService.joinOrCreateRoom( "GuestRoom", user );
         if ( response.isSuccess( ) ) {
             Room room = response.getRoom( );
             session.setRoom( room );
