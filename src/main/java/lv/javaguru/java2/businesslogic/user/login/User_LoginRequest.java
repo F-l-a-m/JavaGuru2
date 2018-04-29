@@ -2,8 +2,8 @@ package lv.javaguru.java2.businesslogic.user.login;
 
 public class User_LoginRequest {
     
-    String login;
-    String password;
+    private String login;
+    private String password;
     
     public User_LoginRequest( String login, String password ) {
         this.login = login;

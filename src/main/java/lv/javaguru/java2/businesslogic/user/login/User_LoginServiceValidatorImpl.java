@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class User_LoginServiceValidatorImpl implements User_LoginServiceValidator {
+class User_LoginServiceValidatorImpl implements User_LoginServiceValidator {
     
-    @Autowired lv.javaguru.java2.businesslogic.user.User_LoginValidator loginValidator;
-    @Autowired User_PasswordValidator passwordValidator;
+    @Autowired private lv.javaguru.java2.businesslogic.user.User_LoginValidator loginValidator;
+    @Autowired private User_PasswordValidator passwordValidator;
     
     @Override
     public List<Error> validate( User_LoginRequest request ) {

@@ -14,11 +14,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class User_LoginServiceImpl implements User_LoginService {
+class User_LoginServiceImpl implements User_LoginService {
     
     
-    @Autowired UserRepository repository;
-    @Autowired User_LoginServiceValidator validator;
+    @Autowired private UserRepository repository;
+    @Autowired private User_LoginServiceValidator validator;
     
     @Override
     @Transactional

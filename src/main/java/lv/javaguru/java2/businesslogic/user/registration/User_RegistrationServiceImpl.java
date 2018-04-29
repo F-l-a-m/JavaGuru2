@@ -13,10 +13,10 @@ import java.util.List;
 import static lv.javaguru.java2.domain.builders.UserBuilder.createUser;
 
 @Component
-public class User_RegistrationServiceImpl implements User_RegistrationService {
+class User_RegistrationServiceImpl implements User_RegistrationService {
     
-    @Autowired User_RegistrationValidator validator;
-    @Autowired UserRepository userRepository;
+    @Autowired private User_RegistrationValidator validator;
+    @Autowired private UserRepository userRepository;
     
     @Override
     @Transactional

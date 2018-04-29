@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class User_RegistrationValidatorImpl implements User_RegistrationValidator {
+class User_RegistrationValidatorImpl implements User_RegistrationValidator {
     
-    @Autowired User_LoginValidator loginValidator;
-    @Autowired User_PasswordValidator passwordValidator;
-    @Autowired User_NicknameValidator nicknameValidator;
+    @Autowired private User_LoginValidator loginValidator;
+    @Autowired private User_PasswordValidator passwordValidator;
+    @Autowired private User_NicknameValidator nicknameValidator;
     
     @Override
     public List<Error> validate( User_RegistrationRequest request ) {

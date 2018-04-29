@@ -2,9 +2,9 @@ package lv.javaguru.java2.businesslogic.user.registration;
 
 public class User_RegistrationRequest {
     
-    String login;
-    String password;
-    String nickname;
+    private String login;
+    private String password;
+    private String nickname;
     
     public User_RegistrationRequest( String login, String password, String nickname ) {
         this.login = login;
