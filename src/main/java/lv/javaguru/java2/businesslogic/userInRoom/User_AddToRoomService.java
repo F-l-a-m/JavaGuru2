@@ -6,7 +6,6 @@ import lv.javaguru.java2.database.UserInRoomRepository;
 import lv.javaguru.java2.database.UserRepository;
 import lv.javaguru.java2.domain.Room;
 import lv.javaguru.java2.domain.User;
-import lv.javaguru.java2.domain.UserInRoom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,8 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static lv.javaguru.java2.domain.builders.UserInRoomBuilder.createUserInRoom;
 
 @Component
 public class User_AddToRoomService {
@@ -30,7 +27,7 @@ public class User_AddToRoomService {
         List<Error> errors = new ArrayList<>( );
         
         // Check if user exists
-        Optional<User> optionalUser = userRepository.get( user.getNickname( ) );
+        Optional<User> optionalUser = userRepository.getByNickname( user.getNickname( ) );
         if ( !optionalUser.isPresent( ) ) {
             errors.add( new Error( "User with nickname " + user.getNickname( ) + " not found" ) );
         }

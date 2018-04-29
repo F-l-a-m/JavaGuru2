@@ -10,4 +10,6 @@ public interface Constants {
     byte CHANGE_NICKNAME = 6;
     byte GET_CHAT_HISTORY = 7;
     byte LEAVE = 8;
+    byte REGISTER = 9;
+    byte LOGIN = 10;
 }

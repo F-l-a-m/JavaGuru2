@@ -32,7 +32,7 @@ public class User_AddServiceTest {
         User user = Mockito.mock( User.class );
         Mockito.when( validator.validate( userNickname ) )
                 .thenReturn( errors );
-        Mockito.when( userRepository.get( userNickname ) )
+        Mockito.when( userRepository.getByNickname( userNickname ) )
                 .thenReturn( Optional.empty( ) ); // User not found, create new
         
         User_AddResponse userAddResponse = userAddService.addUser( userNickname );
@@ -49,7 +49,7 @@ public class User_AddServiceTest {
         User user = Mockito.mock( User.class );
         Mockito.when( validator.validate( userNickname ) )
                 .thenReturn( errors );
-        Mockito.when( userRepository.get( userNickname ) )
+        Mockito.when( userRepository.getByNickname( userNickname ) )
                 .thenReturn( Optional.of( user ) ); // User already exists in db
         
         User_AddResponse userAddResponse = userAddService.addUser( userNickname );

@@ -23,14 +23,14 @@ public class User_ChangeNicknameService {
             // Failed, return new nickname validation errors
             return new User_ChangeNicknameResponse( null, errors, false );
         } else {
-            Optional<User> optionalUser = userRepository.get( newNickname );
+            Optional<User> optionalUser = userRepository.getByNickname( newNickname );
             if ( optionalUser.isPresent( ) ) {
                 errors.add( new Error( "Failed to change nickname, user with nickname " +
                         newNickname + " already exists" ) );
                 return new User_ChangeNicknameResponse( null, errors, false );
             } else {
                 // Change nickname
-                optionalUser = userRepository.get( OldNickname );
+                optionalUser = userRepository.getByNickname( OldNickname );
                 if ( optionalUser.isPresent( ) ) {
                     User user = optionalUser.get( );
                     user.setNickname( newNickname );

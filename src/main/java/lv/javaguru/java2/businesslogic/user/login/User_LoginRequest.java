@@ -1,15 +1,13 @@
-package lv.javaguru.java2.businesslogic.user.registration;
+package lv.javaguru.java2.businesslogic.user.login;
 
-public class User_RegistrationRequest {
+public class User_LoginRequest {
     
     String login;
     String password;
-    String nickname;
     
-    public User_RegistrationRequest( String login, String password, String nickname ) {
+    public User_LoginRequest( String login, String password ) {
         this.login = login;
         this.password = password;
-        this.nickname = nickname;
     }
     
     public String getLogin( ) {
@@ -26,13 +24,5 @@ public class User_RegistrationRequest {
     
     public void setPassword( String password ) {
         this.password = password;
-    }
-    
-    public String getNickname( ) {
-        return nickname;
-    }
-    
-    public void setNickname( String nickname ) {
-        this.nickname = nickname;
     }
 }

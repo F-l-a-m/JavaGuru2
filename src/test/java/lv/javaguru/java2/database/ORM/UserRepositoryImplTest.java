@@ -42,7 +42,7 @@ public class UserRepositoryImplTest {
                 .build( );
         userRepository.save( user );
         
-        Optional<User> optionalUser = userRepository.get( "TestUser" );
+        Optional<User> optionalUser = userRepository.getByNickname( "TestUser" );
         User foundUser = optionalUser.get( );
         
         assertTrue( optionalUser.isPresent( ) );
@@ -51,7 +51,7 @@ public class UserRepositoryImplTest {
     
     @Test
     public void shouldFailToFindUser( ) {
-        Optional<User> optionalUser = userRepository.get( "TestUser" );
+        Optional<User> optionalUser = userRepository.getByNickname( "TestUser" );
         
         assertFalse( optionalUser.isPresent( ) );
     }
@@ -66,7 +66,7 @@ public class UserRepositoryImplTest {
         
         user.setNickname( "NewNickname" );
     
-        Optional<User> optionalUser = userRepository.get( "NewNickname" );
+        Optional<User> optionalUser = userRepository.getByNickname( "NewNickname" );
         User foundUser = optionalUser.get( );
         
         assertEquals( foundUser.getNickname( ), "NewNickname" );

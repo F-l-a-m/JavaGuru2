@@ -39,7 +39,7 @@ public class UserRepositoryImpl extends JDBCRepository implements UserRepository
     }
     
     @Override
-    public Optional<User> get( String nickname ) {
+    public Optional<User> getByNickname( String nickname ) {
         Connection connection = null;
         try {
             connection = getConnection( );
@@ -51,13 +51,73 @@ public class UserRepositoryImpl extends JDBCRepository implements UserRepository
             if ( resultSet.next( ) ) {
                 user = new User( );
                 user.setId( resultSet.getLong( "id" ) );
+                user.setLogin( resultSet.getString( "login" ) );
+                user.setPassword( resultSet.getString( "password" ) );
                 user.setNickname( resultSet.getString( "nickname" ) );
                 user.setActive( resultSet.getBoolean( "isActive" ) );
                 user.setCreationTime( resultSet.getTimestamp( "creationTime" ) );
             }
             return Optional.ofNullable( user );
         } catch (Throwable e) {
-            System.out.println( "Exception while execute JDBCRepository.get()" );
+            System.out.println( "Exception while execute JDBCRepository.getByNickname()" );
+            e.printStackTrace( );
+            throw new RuntimeException( e );
+        } finally {
+            closeConnection( connection );
+        }
+    }
+
+    @Override
+    public Optional<User> getByLogin( String login ) {
+        Connection connection = null;
+        try {
+            connection = getConnection( );
+            String sql = "select * from user where login = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement( sql );
+            preparedStatement.setString( 1, login );
+            ResultSet resultSet = preparedStatement.executeQuery( );
+            User user = null;
+            if ( resultSet.next( ) ) {
+                user = new User( );
+                user.setId( resultSet.getLong( "id" ) );
+                user.setLogin( resultSet.getString( "login" ) );
+                user.setPassword( resultSet.getString( "password" ) );
+                user.setNickname( resultSet.getString( "nickname" ) );
+                user.setActive( resultSet.getBoolean( "isActive" ) );
+                user.setCreationTime( resultSet.getTimestamp( "creationTime" ) );
+            }
+            return Optional.ofNullable( user );
+        } catch (Throwable e) {
+            System.out.println( "Exception while execute JDBCRepository.getByLogin()" );
+            e.printStackTrace( );
+            throw new RuntimeException( e );
+        } finally {
+            closeConnection( connection );
+        }
+    }
+
+    @Override
+    public Optional<User> getById( Long id ) {
+        Connection connection = null;
+        try {
+            connection = getConnection( );
+            String sql = "select * from user where id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement( sql );
+            preparedStatement.setLong( 1, id );
+            ResultSet resultSet = preparedStatement.executeQuery( );
+            User user = null;
+            if ( resultSet.next( ) ) {
+                user = new User( );
+                user.setId( resultSet.getLong( "id" ) );
+                user.setLogin( resultSet.getString( "login" ) );
+                user.setPassword( resultSet.getString( "password" ) );
+                user.setNickname( resultSet.getString( "nickname" ) );
+                user.setActive( resultSet.getBoolean( "isActive" ) );
+                user.setCreationTime( resultSet.getTimestamp( "creationTime" ) );
+            }
+            return Optional.ofNullable( user );
+        } catch (Throwable e) {
+            System.out.println( "Exception while execute JDBCRepository.getById()" );
             e.printStackTrace( );
             throw new RuntimeException( e );
         } finally {

@@ -7,6 +7,12 @@ import lv.javaguru.java2.businesslogic.user.User_InputService;
 import lv.javaguru.java2.businesslogic.message.*;
 import lv.javaguru.java2.businesslogic.room.*;
 import lv.javaguru.java2.businesslogic.user.*;
+import lv.javaguru.java2.businesslogic.user.login.User_LoginRequest;
+import lv.javaguru.java2.businesslogic.user.login.User_LoginResponse;
+import lv.javaguru.java2.businesslogic.user.login.User_LoginService;
+import lv.javaguru.java2.businesslogic.user.registration.User_RegistrationRequest;
+import lv.javaguru.java2.businesslogic.user.registration.User_RegistrationResponse;
+import lv.javaguru.java2.businesslogic.user.registration.User_RegistrationService;
 import lv.javaguru.java2.businesslogic.userInRoom.*;
 import lv.javaguru.java2.domain.Message;
 import lv.javaguru.java2.domain.Room;
@@ -16,6 +22,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 @Component
@@ -30,6 +37,9 @@ public class MainView implements View, Constants {
     @Autowired private User_GetAListOfJoinedRoomsService userGetAListOfJoinedRoomsService;
     @Autowired private User_ChangeNicknameService userChangeNicknameService;
     @Autowired private User_RemoveFromRoomService userRemoveFromRoomService;
+    @Autowired private User_RegistrationService registrationService;
+    @Autowired private User_LoginService loginService;
+    @Autowired private User_FindService userFindService;
     
     private ApplicationContext applicationContext;
     
@@ -71,7 +81,7 @@ public class MainView implements View, Constants {
         // Print available chat commands
         applicationContext.getBean( PrintAvailableChatCommandsView.class ).execute( );
         
-        // Ready to get user input
+        // Ready to getByNickname user input
         System.out.println( "\n[info] Entering while(true) loop" ); // Debug info, delete in prod
         while ( true ) {
             System.out.println( "\n[info] Ready, waiting for your input\n" ); // Debug info, delete in prod
@@ -173,6 +183,53 @@ public class MainView implements View, Constants {
                         printErrors( removeFromRoomResponse.getErrors( ) );
                     }
                     break;
+                
+                case Constants.REGISTER:
+                    //applicationContext.getBean( RegistrationView.class ).execute( );
+                    System.out.println( "- - - - - User registration - - - - - " );
+                    System.out.println( "- - - - - - - - - - - - - - - - - - - " );
+                    
+                    sc = new Scanner( System.in );
+                    System.out.print( "Login: " );
+                    String login = sc.nextLine( );
+                    System.out.print( "Password: " );
+                    String password = sc.nextLine( );
+                    System.out.print( "Nickname: " );
+                    String nickname = sc.nextLine( );
+                    
+                    User_RegistrationRequest registrationRequest =
+                            new User_RegistrationRequest( login, password, nickname );
+                    User_RegistrationResponse registrationResponse =
+                            registrationService.register( registrationRequest );
+                    
+                    if ( !registrationResponse.isSuccess( ) ) {
+                        printErrors( registrationResponse.getErrors( ) );
+                    } else {
+                        System.out.println( "Success new user registered!" );
+                    }
+                    break;
+                
+                case Constants.LOGIN:
+                    System.out.println( "- - - - - User login - - - - - - - - " );
+                    System.out.println( "- - - - - - - - - - - - - - - - - - -" );
+                    
+                    sc = new Scanner( System.in );
+                    System.out.print( "Login: " );
+                    login = sc.nextLine( );
+                    System.out.print( "Password: " );
+                    password = sc.nextLine( );
+                    
+                    User_LoginRequest loginRequest =
+                            new User_LoginRequest( login, password );
+                    User_LoginResponse loginResponse = loginService.login( loginRequest );
+                    
+                    if ( !loginResponse.isSuccess( ) ) {
+                        printErrors( loginResponse.getErrors( ) );
+                    } else {
+                        User_FindResponse findResponse = userFindService.find( loginResponse.getUserId( ) );
+                        user = findResponse.getUser( );
+                        System.out.println( "Success you are logged in as " + loginRequest.getLogin( ) );
+                    }
             }
         }
     }

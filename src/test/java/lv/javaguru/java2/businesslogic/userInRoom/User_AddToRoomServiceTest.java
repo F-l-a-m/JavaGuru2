@@ -32,7 +32,7 @@ public class User_AddToRoomServiceTest {
         user.setNickname( "Nickname" );
         Room room = new Room( );
         room.setName( "RoomName" );
-        Mockito.when( userRepository.get( "Nickname" ) )
+        Mockito.when( userRepository.getByNickname( "Nickname" ) )
                 .thenReturn( Optional.of( user ) );
         Mockito.when( roomRepository.get( "RoomName" ) )
                 .thenReturn( Optional.of( room ) );
@@ -51,7 +51,7 @@ public class User_AddToRoomServiceTest {
         user.setNickname( "Nickname" );
         Room room = new Room( );
         room.setName( "RoomName" );
-        Mockito.when( userRepository.get( "Nickname" ) )
+        Mockito.when( userRepository.getByNickname( "Nickname" ) )
                 .thenReturn( Optional.empty( ) );
         Mockito.when( roomRepository.get( "RoomName" ) )
                 .thenReturn( Optional.of( room ) );
@@ -69,7 +69,7 @@ public class User_AddToRoomServiceTest {
         user.setNickname( "Nickname" );
         Room room = new Room( );
         room.setName( "RoomName" );
-        Mockito.when( userRepository.get( "Nickname" ) )
+        Mockito.when( userRepository.getByNickname( "Nickname" ) )
                 .thenReturn( Optional.of( user ) );
         Mockito.when( roomRepository.get( "RoomName" ) )
                 .thenReturn( Optional.empty( ) );
@@ -87,7 +87,7 @@ public class User_AddToRoomServiceTest {
         user.setNickname( "Nickname" );
         Room room = new Room( );
         room.setName( "RoomName" );
-        Mockito.when( userRepository.get( "Nickname" ) )
+        Mockito.when( userRepository.getByNickname( "Nickname" ) )
                 .thenReturn( Optional.empty( ) );
         Mockito.when( roomRepository.get( "RoomName" ) )
                 .thenReturn( Optional.empty( ) );
@@ -105,7 +105,7 @@ public class User_AddToRoomServiceTest {
         user.setNickname( "Nickname" );
         Room room = new Room( );
         room.setName( "RoomName" );
-        Mockito.when( userRepository.get( "Nickname" ) )
+        Mockito.when( userRepository.getByNickname( "Nickname" ) )
                 .thenReturn( Optional.of( user ) );
         Mockito.when( roomRepository.get( "RoomName" ) )
                 .thenReturn( Optional.of( room ) );

@@ -26,7 +26,7 @@ public class User_FindInRoomService {
         List<Error> errors = new ArrayList<>( );
         
         // Check if user exists
-        Optional<User> optionalUser = userRepository.get( user.getNickname( ) );
+        Optional<User> optionalUser = userRepository.getByNickname( user.getNickname( ) );
         if ( !optionalUser.isPresent( ) ) {
             errors.add( new Error( "User with nickname " + user.getNickname( ) + " not found" ) );
         }

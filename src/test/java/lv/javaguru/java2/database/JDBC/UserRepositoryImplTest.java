@@ -30,7 +30,7 @@ public class UserRepositoryImplTest {
     @Test
     public void shouldFindUser( ) {
         System.out.println( "shouldFindUser" );
-        Optional<User> optionalUser = repository.get( "TestUser" );
+        Optional<User> optionalUser = repository.getByNickname( "TestUser" );
         if ( optionalUser.isPresent( ) ) {
             System.out.println( "User " + user.getNickname( ) + " has been found in database." );
         }
@@ -40,7 +40,7 @@ public class UserRepositoryImplTest {
     @Test
     public void shouldNotFindUser( ) {
         System.out.println( "shouldNotFindUser" );
-        Optional<User> optionalUser = repository.get( "TestUser2" );
+        Optional<User> optionalUser = repository.getByNickname( "TestUser2" );
         if ( !optionalUser.isPresent( ) ) {
             System.out.println( "User TestUser2 has not been found in database." );
         }

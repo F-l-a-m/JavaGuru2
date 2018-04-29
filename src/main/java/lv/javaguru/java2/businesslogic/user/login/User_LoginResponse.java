@@ -1,22 +1,22 @@
-package lv.javaguru.java2.businesslogic.user.registration;
+package lv.javaguru.java2.businesslogic.user.login;
 
 import lv.javaguru.java2.businesslogic.Error;
 
 import java.util.List;
 
-public class User_RegistrationResponse {
+public class User_LoginResponse {
     
     private Long userId;
     private boolean success;
     private List<Error> errors;
     
-    public User_RegistrationResponse( Long userId ) {
+    public User_LoginResponse( Long userId ) {
         this.userId = userId;
         this.success = true;
         this.errors = null;
     }
     
-    public User_RegistrationResponse( List<Error> errors ) {
+    public User_LoginResponse( List<Error> errors ) {
         this.userId = null;
         this.success = false;
         this.errors = errors;
@@ -45,4 +45,5 @@ public class User_RegistrationResponse {
     public void setErrors( List<Error> errors ) {
         this.errors = errors;
     }
+    
 }

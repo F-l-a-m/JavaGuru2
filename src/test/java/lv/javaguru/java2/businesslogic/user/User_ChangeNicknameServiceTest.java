@@ -31,10 +31,10 @@ public class User_ChangeNicknameServiceTest {
         List<Error> errors = new ArrayList<>( );
         Mockito.when( validator.validate( newNickname ) )
                 .thenReturn( errors );
-        Mockito.when( userRepository.get( newNickname ) )
+        Mockito.when( userRepository.getByNickname( newNickname ) )
                 .thenReturn( Optional.empty( ) ); // User not found, nickname must be unique
         User user = Mockito.mock( User.class );
-        Mockito.when( userRepository.get( oldNickname ) )
+        Mockito.when( userRepository.getByNickname( oldNickname ) )
                 .thenReturn( Optional.of( user ) );
         
         User_ChangeNicknameResponse response = changeNicknameService.changeNickname( oldNickname, newNickname );

@@ -42,10 +42,12 @@ public class User_InputService implements Constants {
     private byte oneWordCommand( String command ) {
         // One word commands
         switch ( command ) {
-            case "/quit":   return Constants.QUIT_APP;
-            case "/r":      return Constants.GET_CHAT_HISTORY;
-            case "/list":   return Constants.LIST;
-            case "/leave":  return Constants.LEAVE;
+            case "/quit":       return Constants.QUIT_APP;
+            case "/r":          return Constants.GET_CHAT_HISTORY;
+            case "/list":       return Constants.LIST;
+            case "/leave":      return Constants.LEAVE;
+            case "/register":   return Constants.REGISTER;
+            case "/login":      return Constants.LOGIN;
         }
         return Constants.BAD_COMMAND;
     }

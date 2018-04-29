@@ -32,7 +32,7 @@ public class User_FindServiceTest {
         User user = Mockito.mock( User.class );
         Mockito.when( validator.validate( nickname ) )
                 .thenReturn( errors );
-        Mockito.when( userRepository.get( nickname ) )
+        Mockito.when( userRepository.getByNickname( nickname ) )
                 .thenReturn( Optional.of( user ) );
         
         User_FindResponse userFindResponse = userFindService.find( nickname );
@@ -48,7 +48,7 @@ public class User_FindServiceTest {
         List<Error> errors = new ArrayList<>( );
         Mockito.when( validator.validate( nickname ) )
                 .thenReturn( errors );
-        Mockito.when( userRepository.get( nickname ) )
+        Mockito.when( userRepository.getByNickname( nickname ) )
                 .thenReturn( Optional.empty( ) );
         
         User_FindResponse userFindResponse = userFindService.find( nickname );

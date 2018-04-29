@@ -57,7 +57,7 @@ public class RoomRepositoryImpl extends JDBCRepository implements RoomRepository
             }
             return Optional.ofNullable( room );
         } catch (Throwable e) {
-            System.out.println( "Exception while execute RoomRepository.get()" );
+            System.out.println( "Exception while execute RoomRepository.getByNickname()" );
             e.printStackTrace( );
             throw new RuntimeException( e );
         } finally {

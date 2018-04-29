@@ -21,7 +21,7 @@ public class User_FindService {
     public User_FindResponse find( String nickname ) {
         List<Error> errors = validator.validate( nickname );
         if ( errors.isEmpty( ) ) {
-            Optional<User> optionalUser = userRepository.get( nickname );
+            Optional<User> optionalUser = userRepository.getByNickname( nickname );
             if ( optionalUser.isPresent( ) ) {
                 return new User_FindResponse( optionalUser.get( ), null, true );
             } else {
@@ -30,6 +30,18 @@ public class User_FindService {
             }
         } else {
             return new User_FindResponse( null, errors, false );
+        }
+    }
+
+    @Transactional
+    public User_FindResponse find( Long id ) {
+        List<Error> errors = new ArrayList<>( );
+        Optional<User> optionalUser = userRepository.getById( id );
+        if ( !optionalUser.isPresent( ) ) {
+            errors.add( new Error( "User with id " + id + " not found" ) );
+            return new User_FindResponse( null, errors, false );
+        } else {
+            return new User_FindResponse( optionalUser.get( ), null, true );
         }
     }
 }

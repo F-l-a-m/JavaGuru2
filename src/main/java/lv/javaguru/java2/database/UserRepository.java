@@ -8,6 +8,10 @@ public interface UserRepository {
     
     void save( User user );
     
-    Optional<User> get( String nickname );
+    Optional<User> getByNickname( String nickname );
+    
+    Optional<User> getByLogin( String login );
+    
+    Optional<User> getById( Long id );
     
 }

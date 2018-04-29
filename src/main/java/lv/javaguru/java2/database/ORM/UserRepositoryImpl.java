@@ -16,9 +16,25 @@ class UserRepositoryImpl extends ORMRepository implements UserRepository {
     }
     
     @Override
-    public Optional<User> get( String nickname ) {
+    public Optional<User> getByNickname( String nickname ) {
         User user = (User) session( ).createCriteria( User.class )
                 .add( Restrictions.eq( "nickname", nickname ) )
+                .uniqueResult( );
+        return Optional.ofNullable( user );
+    }
+
+    @Override
+    public Optional<User> getByLogin( String login ) {
+        User user = (User) session( ).createCriteria( User.class )
+                .add( Restrictions.eq( "login", login ) )
+                .uniqueResult( );
+        return Optional.ofNullable( user );
+    }
+
+    @Override
+    public Optional<User> getById( Long id ) {
+        User user = (User) session( ).createCriteria( User.class )
+                .add( Restrictions.eq( "id", id ) )
                 .uniqueResult( );
         return Optional.ofNullable( user );
     }

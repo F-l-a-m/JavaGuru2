@@ -24,7 +24,7 @@ public class User_RemoveFromRoomService {
     
     @Transactional
     public User_RemoveFromRoomResponse leaveRoom( String userNickname, String roomName ) {
-        Optional<User> optionalUser = userRepository.get( userNickname );
+        Optional<User> optionalUser = userRepository.getByNickname( userNickname );
         List<Error> errors = new ArrayList<>( );
         if ( !optionalUser.isPresent( ) ) {
             errors.add( new Error( "User with nickname " + userNickname + " not found" ) );

@@ -25,7 +25,7 @@ public class User_AddService {
         List<Error> errors = validator.validate( nickname );
         if ( errors.isEmpty( ) ) {
             // Search
-            Optional<User> optionalUser = userRepository.get( nickname );
+            Optional<User> optionalUser = userRepository.getByNickname( nickname );
             if ( optionalUser.isPresent( ) ) {
                 return new User_AddResponse( optionalUser.get( ), null, true );
             } else {
