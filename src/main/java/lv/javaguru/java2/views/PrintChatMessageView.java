@@ -1,6 +1,6 @@
 package lv.javaguru.java2.views;
 
-import lv.javaguru.java2.businesslogic.Session.ConsoleSession;
+import lv.javaguru.java2.businesslogic.session.ConsoleSession;
 import lv.javaguru.java2.businesslogic.message.Message_AddResponse;
 import lv.javaguru.java2.businesslogic.message.Message_AddService;
 import lv.javaguru.java2.domain.Room;

@@ -1,6 +1,6 @@
 package lv.javaguru.java2;
 
-import lv.javaguru.java2.businesslogic.Session.ConsoleSession;
+import lv.javaguru.java2.businesslogic.session.ConsoleSession;
 import lv.javaguru.java2.businesslogic.user.User_InputResponse;
 import lv.javaguru.java2.businesslogic.user.User_InputService;
 import lv.javaguru.java2.views.*;

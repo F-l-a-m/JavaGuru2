@@ -33,6 +33,7 @@ public class MVCDispatcherFilter implements Filter {
         controllerMapping.put( "/hello", getBean( HelloController.class ) );
         controllerMapping.put( "/hello1", getBean( HelloController.class ) );
         controllerMapping.put( "/hello2", getBean( HelloController.class ) );
+        controllerMapping.put( "/", getBean( ChatController.class ) );
     }
     
     private MVCController getBean( Class clazz ) {

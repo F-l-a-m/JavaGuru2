@@ -1,6 +1,6 @@
 package lv.javaguru.java2.views;
 
-import lv.javaguru.java2.businesslogic.Session.ConsoleSession;
+import lv.javaguru.java2.businesslogic.session.ConsoleSession;
 import lv.javaguru.java2.businesslogic.user.login.User_LoginRequest;
 import lv.javaguru.java2.businesslogic.user.login.User_LoginResponse;
 import lv.javaguru.java2.businesslogic.user.login.User_LoginService;

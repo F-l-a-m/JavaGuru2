@@ -1,8 +1,6 @@
 package lv.javaguru.java2.views;
 
-import lv.javaguru.java2.businesslogic.Session.ConsoleSession;
-import lv.javaguru.java2.businesslogic.room.Room_AddService;
-import lv.javaguru.java2.businesslogic.room.Room_FindService;
+import lv.javaguru.java2.businesslogic.session.ConsoleSession;
 import lv.javaguru.java2.businesslogic.userInRoom.Room_JoinOrCreateResponse;
 import lv.javaguru.java2.businesslogic.userInRoom.Room_JoinOrCreateService;
 import lv.javaguru.java2.domain.Room;

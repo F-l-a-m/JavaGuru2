@@ -1,6 +1,6 @@
 package lv.javaguru.java2.views;
 
-import lv.javaguru.java2.businesslogic.Session.ConsoleSession;
+import lv.javaguru.java2.businesslogic.session.ConsoleSession;
 import lv.javaguru.java2.businesslogic.user.User_ChangeNicknameResponse;
 import lv.javaguru.java2.businesslogic.user.User_ChangeNicknameService;
 import lv.javaguru.java2.domain.User;

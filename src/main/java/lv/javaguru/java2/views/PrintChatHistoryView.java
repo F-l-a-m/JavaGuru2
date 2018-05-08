@@ -1,8 +1,8 @@
 package lv.javaguru.java2.views;
 
-import lv.javaguru.java2.businesslogic.Session.ConsoleSession;
-import lv.javaguru.java2.businesslogic.message.Message_GetChatHistoryResponse;
-import lv.javaguru.java2.businesslogic.message.Message_GetChatHistoryService;
+import lv.javaguru.java2.businesslogic.session.ConsoleSession;
+import lv.javaguru.java2.businesslogic.message.getChatHistory.Message_GetChatHistoryResponse;
+import lv.javaguru.java2.businesslogic.message.getChatHistory.Message_GetChatHistoryService;
 import lv.javaguru.java2.domain.Message;
 import lv.javaguru.java2.domain.Room;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class PrintChatHistoryView implements View {
     @Override
     public void execute( ) {
         Room room = session.getRoom( );
-        Message_GetChatHistoryResponse response = getChatHistoryService.go( room );
+        Message_GetChatHistoryResponse response = getChatHistoryService.getChatHistoryForRoom( room );
         List<Message> messages = response.getChatHistory( );
         if ( !messages.isEmpty( ) ) {
             System.out.println( "\n\n\n\n\n\n\n\n" ); // Clear console :)

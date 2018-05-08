@@ -1,6 +1,6 @@
 package lv.javaguru.java2.views;
 
-import lv.javaguru.java2.businesslogic.Session.ConsoleSession;
+import lv.javaguru.java2.businesslogic.session.ConsoleSession;
 import lv.javaguru.java2.businesslogic.userInRoom.User_RemoveFromRoomResponse;
 import lv.javaguru.java2.businesslogic.userInRoom.User_RemoveFromRoomService;
 import lv.javaguru.java2.domain.Room;

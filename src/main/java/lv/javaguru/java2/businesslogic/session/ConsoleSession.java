@@ -1,4 +1,4 @@
-package lv.javaguru.java2.businesslogic.Session;
+package lv.javaguru.java2.businesslogic.session;
 
 import lv.javaguru.java2.businesslogic.user.User_InputResponse;
 import lv.javaguru.java2.domain.Room;

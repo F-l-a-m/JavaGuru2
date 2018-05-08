@@ -1,4 +1,4 @@
-package lv.javaguru.java2.businesslogic.message;
+package lv.javaguru.java2.businesslogic.message.getChatHistory;
 
 import lv.javaguru.java2.domain.Message;
 
