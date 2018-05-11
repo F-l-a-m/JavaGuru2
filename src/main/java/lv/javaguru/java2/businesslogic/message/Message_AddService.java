@@ -25,6 +25,7 @@ public class Message_AddService {
                 .withRoom( room )
                 .build( );
         messageRepository.save( message );
+        
         return new Message_AddResponse( true, message, null );
     }
 }

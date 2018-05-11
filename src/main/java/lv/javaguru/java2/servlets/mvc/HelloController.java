@@ -1,19 +1,27 @@
 package lv.javaguru.java2.servlets.mvc;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.logging.Logger;
 
-@Component
-public class HelloController implements MVCController {
+@Controller
+public class HelloController {
     
-    @Override
-    public MVCModel processGet( HttpServletRequest request ) {
-        return new MVCModel("/helloWorld.jsp", "Hello from MVC!");
+    private static Logger logger = Logger.getLogger( HelloController.class.getName( ) );
+    
+    @RequestMapping(value = "hello", method = {RequestMethod.GET})
+    public ModelAndView hello( HttpServletRequest request ) {
+        return new ModelAndView( "helloWorld", "model", "Hello from MVC!" );
     }
     
-    @Override
-    public MVCModel processPost( HttpServletRequest request ) {
-        throw new UnsupportedOperationException( );
+    @RequestMapping(value = "hello/{id}", method = {RequestMethod.GET})
+    public ModelAndView helloWithParameter( HttpServletRequest request, @PathVariable Long id ) {
+        logger.info( "ID = " + id );
+        return new ModelAndView( "helloWorld", "model", "Hello from MVC!\n ID = " + id );
     }
 }
