@@ -19,17 +19,32 @@ public class ChatController {
     @Autowired private Message_GetChatHistoryService getChatHistoryService;
     @Autowired private Room_FindService roomFindService;
     
-    @RequestMapping(value = "chat", method = {RequestMethod.GET})
-    public ModelAndView getChatHistory( HttpServletRequest request ) {
+    @RequestMapping(value = "chat1", method = {RequestMethod.GET})
+    public ModelAndView chat1( HttpServletRequest request ) {
         Room_FindResponse findResponse = roomFindService.find( "GuestRoom" );
         if ( findResponse.isSuccess( ) ) {
             Room room = findResponse.getRoom( );
             Message_GetChatHistoryResponse response = getChatHistoryService.getChatHistoryForRoom( room );
             if ( response.getChatHistory( ).isEmpty( ) ) {
-                
                 return new ModelAndView( "error", "model", "no messages in room" );
             } else {
                 return new ModelAndView( "chat", "model", response.getChatHistory( ) );
+            }
+        }
+        return new ModelAndView( "error", "model", "room not found" );
+    }
+    
+    
+    @RequestMapping(value = "chat2", method = {RequestMethod.GET})
+    public ModelAndView chat2( HttpServletRequest request ) {
+        Room_FindResponse findResponse = roomFindService.find( "GuestRoom" );
+        if ( findResponse.isSuccess( ) ) {
+            Room room = findResponse.getRoom( );
+            Message_GetChatHistoryResponse response = getChatHistoryService.getChatHistoryForRoom( room );
+            if ( response.getChatHistory( ).isEmpty( ) ) {
+                return new ModelAndView( "error", "model", "no messages in room" );
+            } else {
+                return new ModelAndView( "chat-bootstrap", "model", response.getChatHistory( ) );
             }
         }
         return new ModelAndView( "error", "model", "room not found" );
