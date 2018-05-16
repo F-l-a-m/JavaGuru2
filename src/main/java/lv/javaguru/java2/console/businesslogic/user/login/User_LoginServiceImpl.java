@@ -1,15 +1,12 @@
 package lv.javaguru.java2.console.businesslogic.user.login;
 
 import lv.javaguru.java2.console.businesslogic.Error;
-import lv.javaguru.java2.console.businesslogic.user.User_LoginValidator;
-import lv.javaguru.java2.console.businesslogic.user.User_PasswordValidator;
 import lv.javaguru.java2.console.database.UserRepository;
 import lv.javaguru.java2.console.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

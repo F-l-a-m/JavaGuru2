@@ -1,4 +1,4 @@
-package lv.javaguru.java2.console.businesslogic.user;
+package lv.javaguru.java2.console.businesslogic.user.commonValidators;
 
 import lv.javaguru.java2.console.businesslogic.Error;
 import org.springframework.stereotype.Component;

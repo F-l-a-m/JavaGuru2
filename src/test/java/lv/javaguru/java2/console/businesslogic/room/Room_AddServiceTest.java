@@ -1,7 +1,7 @@
 package lv.javaguru.java2.console.businesslogic.room;
 
 import lv.javaguru.java2.console.businesslogic.Error;
-import lv.javaguru.java2.console.businesslogic.user.User_NicknameValidator;
+import lv.javaguru.java2.console.businesslogic.user.commonValidators.User_NicknameValidator;
 import lv.javaguru.java2.console.database.RoomRepository;
 import lv.javaguru.java2.console.domain.Room;
 import org.junit.Test;

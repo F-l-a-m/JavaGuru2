@@ -1,6 +1,7 @@
 package lv.javaguru.java2.console.businesslogic.user;
 
 import lv.javaguru.java2.console.businesslogic.Error;
+import lv.javaguru.java2.console.businesslogic.user.commonValidators.User_NicknameValidator;
 import lv.javaguru.java2.console.database.UserRepository;
 import lv.javaguru.java2.console.domain.User;
 import org.junit.Test;

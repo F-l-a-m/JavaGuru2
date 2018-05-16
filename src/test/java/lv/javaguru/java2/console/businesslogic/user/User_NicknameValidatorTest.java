@@ -1,10 +1,10 @@
 package lv.javaguru.java2.console.businesslogic.user;
 
 import lv.javaguru.java2.console.businesslogic.Error;
+import lv.javaguru.java2.console.businesslogic.user.commonValidators.User_NicknameValidator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;

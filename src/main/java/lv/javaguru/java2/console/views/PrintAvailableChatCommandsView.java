@@ -16,6 +16,7 @@ public class PrintAvailableChatCommandsView implements View {
         commands.add("/r - refresh view, /list - show all rooms");
         commands.add("/join - join or create new message room");
         commands.add("/leave - leave current active message room");
+        commands.add( "/login, /register" );
         
         // calculate the longest string
         int longestString = 0;

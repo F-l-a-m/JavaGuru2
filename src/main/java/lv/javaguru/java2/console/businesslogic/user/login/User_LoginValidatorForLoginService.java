@@ -1,4 +1,4 @@
-package lv.javaguru.java2.console.businesslogic.user;
+package lv.javaguru.java2.console.businesslogic.user.login;
 
 import lv.javaguru.java2.console.businesslogic.Error;
 import lv.javaguru.java2.console.database.UserRepository;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class User_LoginValidator {
+public class User_LoginValidatorForLoginService {
     
     @Autowired private UserRepository repository;
     private String login;
@@ -24,7 +24,6 @@ public class User_LoginValidator {
         validateEmpty( ).ifPresent( errors::add );
         if ( !isEmpty ) validateLength( ).ifPresent( errors::add );
         if ( !isEmpty ) validateAllowedSymbols( ).ifPresent( errors::add );
-        if ( !isEmpty ) validateDuplicateLogin( ).ifPresent( errors::add );
         return errors;
     }
     
@@ -46,14 +45,5 @@ public class User_LoginValidator {
         if ( !login.matches( "[0-9A-Za-z]+" ) )
             return Optional.of( new Error( "Login contains illegal characters (letters and numbers only please)" ) );
         return Optional.empty( );
-    }
-    
-    private Optional<Error> validateDuplicateLogin( ) {
-        Optional<User> optionalUser = repository.getByNickname( login );
-        if ( optionalUser.isPresent( ) ) {
-            return Optional.of( new Error( "User with login " + login + " already exists" ) );
-        } else {
-            return Optional.empty( );
-        }
     }
 }

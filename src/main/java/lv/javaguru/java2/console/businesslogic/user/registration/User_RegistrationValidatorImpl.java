@@ -1,14 +1,13 @@
 package lv.javaguru.java2.console.businesslogic.user.registration;
 
 import lv.javaguru.java2.console.businesslogic.Error;
-import lv.javaguru.java2.console.businesslogic.user.User_LoginValidator;
-import lv.javaguru.java2.console.businesslogic.user.User_NicknameValidator;
-import lv.javaguru.java2.console.businesslogic.user.User_PasswordValidator;
+import lv.javaguru.java2.console.businesslogic.user.commonValidators.User_LoginValidator;
+import lv.javaguru.java2.console.businesslogic.user.commonValidators.User_NicknameValidator;
+import lv.javaguru.java2.console.businesslogic.user.commonValidators.User_PasswordValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 class User_RegistrationValidatorImpl implements User_RegistrationValidator {
