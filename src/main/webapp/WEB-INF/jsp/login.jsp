@@ -11,9 +11,8 @@
     </head>
 
     <body>
-        <h1>Welcome to Java Chat</h1>
-        <hr/>
-        <form action="/java2/" method="post">
+        <%@include file="header.jsp" %>
+        <form action="/java2/login" method="post">
              <table>
                 <tr>
                     <th>Please login or register</th>
@@ -32,6 +31,7 @@
             </table>
         </form>
         <p>First time here? </p><a href="/java2/register">Register!</a>
+        <%@include file="footer.jsp" %>
     </body>
 
 </html>

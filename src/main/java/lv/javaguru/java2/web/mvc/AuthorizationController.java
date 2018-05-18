@@ -25,12 +25,12 @@ public class AuthorizationController {
     @Autowired private Room_FindService roomFindService;
     @Autowired private ChatController chatController;
     
-    @RequestMapping(value = "/", method = {RequestMethod.GET})
+    @RequestMapping(value = "/login", method = {RequestMethod.GET})
     public String login( HttpServletRequest request ) {
         return "login";
     }
     
-    @RequestMapping(value = "/", method = {RequestMethod.POST})
+    @RequestMapping(value = "/login", method = {RequestMethod.POST})
     public ModelAndView loginSubmit( HttpServletRequest request ) {
         // Check credentials
         String login = request.getParameter( "login" );

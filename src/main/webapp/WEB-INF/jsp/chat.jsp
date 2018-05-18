@@ -16,8 +16,7 @@
 
         <div class="container">
 
-            <h1>Welcome to Java Chat</h1>
-            <hr/>
+            <%@include file="header.jsp" %>
 
             <form action="/java2/chat" method="post">
                  <table>
@@ -43,6 +42,8 @@
             <%
                }
             %>
+
+        <%@include file="footer.jsp" %>
 
         </div>
 

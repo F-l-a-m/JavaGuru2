@@ -9,8 +9,9 @@
         <%@ page import = "lv.javaguru.java2.console.businesslogic.Error" %>
         <%@ page import = "java.util.*"%>
 
-        <h1>Error, something went wrong</h1>
-        <hr>
+        <%@include file="header.jsp" %>
+
+        <h2>Error, something went wrong</h2>
         <%
         List<Error> errors = (List<Error>) request.getAttribute("model");
         if(!errors.isEmpty( )) {
@@ -21,6 +22,8 @@
             }
         }
         %>
+
+        <%@include file="footer.jsp" %>
 
     </body>
 
