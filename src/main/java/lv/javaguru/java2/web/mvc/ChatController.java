@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping(value = "chat")
@@ -40,15 +41,22 @@ public class ChatController {
     
     @RequestMapping(method = {RequestMethod.POST})
     public ModelAndView saveUserInput( HttpServletRequest request ) {
-        Room_FindResponse findResponse = roomFindService.find( "GuestRoom" );
-        if ( findResponse.isSuccess( ) ) {
-            Room room = findResponse.getRoom( );
-            
-            String msg = request.getParameter( "userInput" );
-            // save new message to db
+        HttpSession session = request.getSession( );
+        String currentRoom = (String) session.getAttribute( "currentRoom" );
+        String nickname = (String) session.getAttribute( "nickname" );
+        if ( currentRoom == null && nickname == null ) {
+            currentRoom = "GuestRoom";
+            nickname = "Anonymous";
+        }
+        // Get room object
+        Room_FindResponse roomFindResponse = roomFindService.find( currentRoom );
+        if ( roomFindResponse.isSuccess( ) ) {
+            Room room = roomFindResponse.getRoom( );
+            // Save new message to db
+            String message = request.getParameter( "userInput" );
             Message_AddResponse messageAddResponse =
-                    messageAddService.addMessage( msg, "nickname", room );
-            
+                    messageAddService.addMessage( message, nickname, room );
+            // Get full chat history for current room and forward it to jsp
             Message_GetChatHistoryResponse chatHistoryResponse = getChatHistoryService.getChatHistoryForRoom( room );
             if ( chatHistoryResponse.getChatHistory( ).isEmpty( ) ) {
                 return new ModelAndView( "error", "model", "no messages in room" );
@@ -58,4 +66,5 @@ public class ChatController {
         }
         return new ModelAndView( "error", "model", "room not found" );
     }
+    
 }
