@@ -1,4 +1,4 @@
-package lv.javaguru.java2.web.servlets.config;
+package lv.javaguru.java2.web.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

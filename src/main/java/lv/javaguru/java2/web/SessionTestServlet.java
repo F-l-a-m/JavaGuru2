@@ -1,4 +1,4 @@
-package lv.javaguru.java2.web.servlets;
+package lv.javaguru.java2.web;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

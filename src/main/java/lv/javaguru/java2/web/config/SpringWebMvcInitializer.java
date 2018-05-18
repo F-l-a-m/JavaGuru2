@@ -1,4 +1,4 @@
-package lv.javaguru.java2.web.servlets.config;
+package lv.javaguru.java2.web.config;
 
 import lv.javaguru.java2.console.configs.SpringAppConfig;
 import org.springframework.web.context.WebApplicationContext;

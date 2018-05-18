@@ -1,5 +1,7 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <html>
 
     <head>
@@ -17,12 +19,26 @@
             <h1>Welcome to Java Chat</h1>
             <hr/>
 
+            <form action="/java2/chat" method="post">
+                 <table>
+                    <tr>
+                        <th>Input</th>
+                    </tr>
+                    <tr>
+                        <td><input type="submit" value="Submit"/></td>
+                        <td><input type="text" name="userInput" style="width:100%"><br></td>
+                    </tr>
+                </table>
+            </form>
+
+            <hr/>
+
             <% List<Message> messageList = (List<Message>) request.getAttribute("model");
-               for(Message m : messageList) {
+               for( int i = messageList.size( ) - 1; i >= 0; i-- ) {
             %>
             <div class="message-container">
-                <p> <strong> <%= m.getUser_nickname() + ": " %> </strong> <%= m.getMessage_body() %> </p>
-                <span class="time-right"><%=m.getCreationTime()%></span>
+                <p> <strong> <%= messageList.get(i).getUser_nickname() + ": " %> </strong> <%= messageList.get(i).getMessage_body() %> </p>
+                <span class="time-right"><%=messageList.get(i).getCreationTime()%></span>
             </div>
             <%
                }

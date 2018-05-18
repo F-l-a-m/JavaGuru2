@@ -1,4 +1,4 @@
-package lv.javaguru.java2.web.servlets.mvc;
+package lv.javaguru.java2.web.mvc;
 
 import lv.javaguru.java2.console.configs.SpringAppConfig;
 import org.springframework.beans.BeansException;

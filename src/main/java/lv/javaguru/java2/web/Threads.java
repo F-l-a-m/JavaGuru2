@@ -1,4 +1,4 @@
-package lv.javaguru.java2.web.servlets;
+package lv.javaguru.java2.web;
 
 import lv.javaguru.java2.console.businesslogic.threadTest.Add;
 import lv.javaguru.java2.console.businesslogic.threadTest.BankAccount;
