@@ -33,7 +33,7 @@ public class ChatController {
             if ( response.getChatHistory( ).isEmpty( ) ) {
                 return new ModelAndView( "error", "model", "no messages in room" );
             } else {
-                return new ModelAndView( "chat", "model", response.getChatHistory( ) );
+                return new ModelAndView( "chat-v2", "model", response.getChatHistory( ) );
             }
         }
         return new ModelAndView( "error", "model", "room not found" );
@@ -61,7 +61,7 @@ public class ChatController {
             if ( chatHistoryResponse.getChatHistory( ).isEmpty( ) ) {
                 return new ModelAndView( "error", "model", "no messages in room" );
             } else {
-                return new ModelAndView( "chat", "model", chatHistoryResponse.getChatHistory( ) );
+                return new ModelAndView( "chat-v2", "model", chatHistoryResponse.getChatHistory( ) );
             }
         }
         return new ModelAndView( "error", "model", "room not found" );
