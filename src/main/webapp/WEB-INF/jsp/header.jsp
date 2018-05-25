@@ -12,7 +12,14 @@
       </li>
     </ul>
     <ul class="navbar-nav ml-auto">
-      <li><a class="nav-link" href="/java2/register">Sign Up</a></li>
-      <li><a class="nav-link" href="/java2/login">Login</a></li>
+      <%
+        if(session.getAttribute("nickname") == null) { %>
+            <li><a class="nav-link" href="/java2/login">Login</a></li>
+        <%
+        } else { %>
+            <li><a class="nav-link" href="/java2/logout">Logout</a></li>
+        <%
+        }
+      %>
     </ul>
 </nav>

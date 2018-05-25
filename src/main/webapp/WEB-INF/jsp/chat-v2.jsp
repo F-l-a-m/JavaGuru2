@@ -15,7 +15,16 @@
             <%@include file="header.jsp" %>
             <div class="msger-header">
                 <div class="msger-header-title">
-                  <i class="fas fa-comment-alt">Roomname</i>
+
+                  <%
+                      if(session.getAttribute("currentRoom") == null) { %>
+                          <i class="fas fa-comment-alt">Roomname</i>
+                      <%
+                      } else { %>
+                          <i class="fas fa-comment-alt"><%=session.getAttribute("currentRoom")%></i>
+                      <%
+                      }
+                  %>
                 </div>
                 <div class="msger-header-options">
                   <span><i class="fas fa-cog"></i></span>

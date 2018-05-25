@@ -7,6 +7,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/chat-template.css" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+        <style>
+          .field-label-responsive {
+            padding-top: .5rem;
+            text-align: right;
+          }
+        </style>
     </head>
     <body>
         <section class="msger">
