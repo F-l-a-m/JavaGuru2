@@ -6,6 +6,7 @@ import lv.javaguru.java2.console.businesslogic.message.getChatHistory.Message_Ge
 import lv.javaguru.java2.console.businesslogic.message.getChatHistory.Message_GetChatHistoryService;
 import lv.javaguru.java2.console.businesslogic.room.Room_FindResponse;
 import lv.javaguru.java2.console.businesslogic.room.Room_FindService;
+import lv.javaguru.java2.console.domain.Message;
 import lv.javaguru.java2.console.domain.Room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 
 @Controller
 @RequestMapping(value = "chat")
@@ -30,13 +32,9 @@ public class ChatController {
         if ( findResponse.isSuccess( ) ) {
             Room room = findResponse.getRoom( );
             Message_GetChatHistoryResponse response = getChatHistoryService.getChatHistoryForRoom( room );
-            if ( response.getChatHistory( ).isEmpty( ) ) {
-                return new ModelAndView( "error", "model", "no messages in room" );
-            } else {
-                return new ModelAndView( "chat-v2", "model", response.getChatHistory( ) );
-            }
+            return new ModelAndView( "chat-v2", "model", response.getChatHistory( ) );
         }
-        return new ModelAndView( "error", "model", "room not found" );
+        return new ModelAndView( "error", "model", findResponse.getErrors() );
     }
     
     @RequestMapping(method = {RequestMethod.POST})
@@ -58,13 +56,8 @@ public class ChatController {
                     messageAddService.addMessage( message, nickname, room );
             // Get full chat history for current room and forward it to jsp
             Message_GetChatHistoryResponse chatHistoryResponse = getChatHistoryService.getChatHistoryForRoom( room );
-            if ( chatHistoryResponse.getChatHistory( ).isEmpty( ) ) {
-                return new ModelAndView( "error", "model", "no messages in room" );
-            } else {
-                return new ModelAndView( "chat-v2", "model", chatHistoryResponse.getChatHistory( ) );
-            }
+            return new ModelAndView( "chat-v2", "model", chatHistoryResponse.getChatHistory( ) );
         }
-        return new ModelAndView( "error", "model", "room not found" );
+        return new ModelAndView( "error", "model", roomFindResponse.getErrors() );
     }
-    
 }
