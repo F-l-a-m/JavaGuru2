@@ -11,7 +11,7 @@
     <body>
         <section class="msger">
         <%@include file="header.jsp" %>
-        <p>You have been logged out</p>
+
         <%@include file="footer.jsp" %>
         </section>
     </body>
